@@ -1,13 +1,22 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
+    <article>
+      <h1>TCMS</h1>
+    </article>
+
     <router-view/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      msg: 'TS'
+    }
+  }
 }
 </script>
 
