@@ -26,12 +26,22 @@
         </el-menu>
       </el-aside>
       <el-container>
-        <el-header class="header">Header</el-header>
+        <el-header class="header bg_f">
+          <span class="f20 fwb">技术中心管理系统</span>
+          <el-dropdown class="">
+            <el-button type="primary" plain size="mini">hello<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="1" >修改信息</el-dropdown-item>
+              <el-dropdown-item divided command="2">修改密码</el-dropdown-item>
+              <el-dropdown-item divided command="3">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-header>
         <el-main class="main">
           <p>Main</p>
           <router-view />
         </el-main>
-        <el-footer class="footer">Footer</el-footer>
+        <el-footer class="footer"></el-footer>
       </el-container>
     </el-container>
   </div>
@@ -51,12 +61,25 @@ export default {
 <style lang="scss">
   @import "./style/index.scss";
   @import "./style/common.scss";
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  /*margin-top: 60px;*/
-}
+
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    min-width:1280px;
+    overflow:auto;
+  }
+
+  .el-aside > ul {
+    background: url('./assets/logo.png') no-repeat  center 10px;
+    background-size: auto 40px;
+  }
+
+  .footer {
+    height: 30px !important;
+    background: #fff url("./assets/footer.png") no-repeat center;
+    background-size: auto 20px;
+  }
 </style>
