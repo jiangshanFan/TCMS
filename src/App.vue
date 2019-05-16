@@ -1,66 +1,79 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-aside width="200px">
-        <el-menu
-          default-active="2" class="el-menu-vertical-demo"
-          background-color="#082B50" text-color="#fff" active-text-color="#2C8CF0">
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>导航一</span>
-            </template>
-            <el-menu-item-group>
-              <template slot="title">分组一</template>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-        </el-menu>
-      </el-aside>
-      <el-container>
-        <el-header class="header bg_f">
-          <span class="f20 fwb">技术中心管理系统</span>
-          <el-dropdown class="">
-            <el-button type="primary" plain size="mini">hello<i class="el-icon-arrow-down el-icon--right"></i></el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="1" >修改信息</el-dropdown-item>
-              <el-dropdown-item divided command="2">修改密码</el-dropdown-item>
-              <el-dropdown-item divided command="3">退出</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-header>
-        <el-main class="main">
-          <p>Main</p>
-          <router-view />
-        </el-main>
-        <el-footer class="footer"></el-footer>
-      </el-container>
-    </el-container>
+    <transition name="slide-fade">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
+/* eslint-disable */
+import store from './vuex/index'
+
 export default {
   name: 'App',
+  created() {
+    // 在页面加载时读取sessionStorage里的状态信息
+    if (localStorage.getItem("store") ) {
+      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(localStorage.getItem("store"))));
+    }
+
+    //在页面刷新时将vuex里的信息保存到sessionStorage里
+    window.addEventListener("beforeunload",()=>{
+      function replacer(key, value) {
+        // Filtering out properties
+        if (key === 'Auth') {
+          return undefined;
+        }
+        return value;
+      }
+      console.log(this.$store.state);
+      localStorage.setItem("store", JSON.stringify(this.$store.state, replacer));  // replacer delete Auth
+    });
+
+    // this.$store.commit('Auth/CLEAR_PERMISSION');
+    // if(localStorage.getItem('token') && !this.$store.state.Auth.permissionList) {
+    //
+    // }
+    if(!this.$store.state.Auth.permissionList) {
+      this.$store.dispatch('Auth/FETCH_PERMISSION'); //刷新界面就请求权限数据
+    }
+
+    console.log(this.$router.options)
+  },
+
+  mounted() {
+    let path = localStorage.getItem('currentUrl');
+    if(localStorage.getItem('token') === '' || localStorage.getItem('token') === null || localStorage.getItem('token') === undefined){
+      this.$router.push('/login');
+    }
+    else {
+      this.$router.push(path);
+    }
+  },
+
+  beforeUpdate() {
+    window.localStorage.setItem('currentUrl',this.$route.path);
+  },
+
+  watch: { //通过路由的更新可以直接赋值
+    $route: function(to, from , next) {
+      console.log(this.$route);
+    },
+  },
+
   data () {
     return {
 
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss">
   @import "./style/index.scss";
   @import "./style/common.scss";
+
 
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -70,16 +83,5 @@ export default {
     color: #2c3e50;
     min-width:1280px;
     overflow:auto;
-  }
-
-  .el-aside > ul {
-    background: url('./assets/logo.png') no-repeat  center 10px;
-    background-size: auto 40px;
-  }
-
-  .footer {
-    height: 30px !important;
-    background: #fff url("./assets/footer.png") no-repeat center;
-    background-size: auto 20px;
   }
 </style>

@@ -1,26 +1,42 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+/* eslint-disable */
 import Vue from 'vue'
 import App from './App'
 import store from './vuex/index'
-import router from './router'
+import router from './router/index'
 import ElementUI from 'element-ui'
 import '../theme/index.css'
 
-Vue.use(ElementUI)
-Vue.use(store)
-Vue.use(router)
+Vue.use(ElementUI);
+Vue.use(store);
+Vue.use(router);
 
-Vue.config.devtools = true
-Vue.config.productionTip = false
+Vue.config.devtools = true;
+Vue.config.productionTip = false;
 
-/* eslint-disable */
 const vm = new Vue({
   el: '#app',
   router,
   store,
   render: h => h(App),
 });
+
+Vue.prototype.$goto = function(path) {
+  this.$router.push(path);
+};
+
+/**
+ * 序号序列化
+ * @param {number} index
+ * @param {number} cur
+ * @param {number} size
+ * @returns {*}
+ */
+Vue.prototype.$indexS = function(index, cur, size) {  //序号--序列化方法
+  let add = (cur - 1) * size + 1;
+  return index + add;
+};
 
 /*-- 日期和时间戳转换 --*/
 function add0(m){return m<10?'0'+m:m }
@@ -36,6 +52,37 @@ Vue.prototype.$format = function format(shijianchuo)
   return y+'-'+add0(m)+'-'+add0(d); //+' '+add0(h)+':'+add0(mm)+':'+add0(s)
 };
 
-// console.log('%c打印VM：','color:red;font-size:30px;',vm);
+router.beforeEach((to, from, next) => {
+  if (!localStorage.getItem('token')) {
+    if (to.matched.length > 0 && !to.matched.some(record => record.meta.requiresAuth)) {
+      next()
+    } else {
+      next({ path: '/login' })
+    }
+  } else {
+    // if (!vm.$store.state.Auth.permissionList) {
+    //   vm.$store.dispatch('Auth/FETCH_PERMISSION').then(() => {
+    //     next({ path: to.path })
+    //   })
+    // } else {
+    //   if (to.path !== '/login') {
+    //     next()
+    //   } else {
+    //     next(from.fullPath)
+    //   }
+    // }
+
+    if (to.path !== '/login') {
+      next()
+    } else {
+      next(from.fullPath)
+    }
+  }
+});
+
+router.afterEach((to, from) => {
+  // vm.$store.commit('Auth/SET_CURRENT_MENU', to.name)
+  console.log(vm.$store.state);
+});
 
 export default vm;

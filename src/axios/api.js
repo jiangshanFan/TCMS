@@ -1,3 +1,4 @@
+/* eslint-disable */
 /** api-doc*/
 import $ajax from './request'
 import vm from '../main.js'
@@ -10,5 +11,8 @@ import vm from '../main.js'
  * @param {ObjectConstructor} data
  * @fjs
  * */
-//根据查询条件获取用户列表
-export const login = data => {return $ajax({url: '/api/login', method: 'post', data: data,})};
+//登录
+export const login = data => {return $ajax({url: '/static/login.json', method: 'get', params: data,})};
+
+//权限
+export const auth = data => {return $ajax({url: '/static/auth.json', method: 'get', params: data,})};

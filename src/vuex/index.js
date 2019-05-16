@@ -1,6 +1,8 @@
 /* eslint-disable */
 import Vue from 'vue'
 import Vuex from 'vuex'
+import modules from './modules'
+
 Vue.use(Vuex);
 
 const state = {   //要设置的全局访问的state对象     //要设置的初始属性值
@@ -10,18 +12,20 @@ const state = {   //要设置的全局访问的state对象     //要设置的初
   isLogin: '',
   userLoginVO: {},
 
+  /* 面包屑导航列表 */
+  // crumbList: []  ****************************************** ERROR: convert converting circular structure to JSON; use JSON.stringify(this.$store.state)
 
 };
 
 
 const getters = {   //实时监听state值的变化(最新状态)
   //承载变化的 token 的值
-  token(state) {return state.token},
+  token: (state) => {return state.token},
   //承载变化的 userLoginVO 的值
-  userLoginVO(state) {return state.userLoginVO},
+  userLoginVO: (state) => {return state.userLoginVO},
 
   //承载变化的 username 的值
-  username(state) {return state.username},
+  username: (state) => {return state.username},
   //承载变化的 isLogin 的值
   isLogin(state) {return state.isLogin},
 
@@ -38,8 +42,6 @@ const mutations = {//自定义改变state初始值的方法，这里面的参数
   username(state,item) {state.username = item;},
   //改变 isLogin
   isLogin(state,item) {state.isLogin = item;},
-  //改变 feedback_detailInfo
-
 };
 
 
@@ -54,6 +56,8 @@ const actions = {//同上注释，item 为要变化的形参
   //异步触发改变 isLogin
   isLogin(context,item){context.commit('isLogin',item)},
 
+
+
 };
 
 
@@ -61,6 +65,7 @@ const store = new Vuex.Store({
   state,
   getters,
   mutations,
-  actions
+  actions,
+  modules
 });
 export default store;

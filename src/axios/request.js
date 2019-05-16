@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from "axios";
 import Qs from "qs";  /** 需要进行引入才可以使用 */
 import { Message } from 'element-ui';

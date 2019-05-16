@@ -1,4 +1,5 @@
 $browser-default-font-size: 16px !default;
+$project-color: #2C8CF0;
 $--text-align: left;
 
 @function pxToRem ($px) { //$px为需要转换的字号
@@ -14,27 +15,114 @@ html,body {
   background-color: #f5f5f5;
   #app{
     height: 100%;
-    > .el-container {
+    #index {
       height: 100%;
-      .el-aside {
-        > ul {
-          height: 100%;
-          padding: pxToRem(60px) 0 0 0;
-          box-sizing:border-box;
-          text-align: $--text-align;
-          border-right: none !important;
-        }
-      }
       > .el-container {
-        .header {
-          height: 60px !important;
-          box-sizing: border-box;
-          position:relative;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+        height: 100%;
+        .el-aside {
+          > ul {
+            height: 100%;
+            padding: pxToRem(60px) 0 0 0;
+            box-sizing:border-box;
+            text-align: $--text-align;
+            border-right: none !important;
+          }
+        }
+        > .el-container {
+          .header {
+            height: 100px !important;
+            box-sizing: border-box;
+            position:relative;
+            padding: 0 !important;
+            .header_head {
+              height: 60px;
+              padding: 0 20px;
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              &:after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                border-bottom: 1px solid #eee;
+                left: 0;
+                bottom: 0;
+              }
+            }
+          }
         }
       }
     }
   }
 }
+
+.el-breadcrumb {
+  margin-left: 80px;
+  &:before {
+    content: '当前位置：';
+    position: absolute;
+    left: 20px;
+  }
+}
+
+
+/* breadcrumb */
+.el-breadcrumb {
+  .el-breadcrumb__item {
+    //> span {
+    //  color: #727782 !important;
+    //  font-weight: normal !important;
+    //}
+  }
+  .is-last-link {
+    > span {
+      color: $project-color !important;
+    }
+  }
+}
+
+
+
+/* menu */
+$menus: project_knowleadge, ;
+@each $menu in $menus {
+  .icon-#{$menu} {
+    background: url("/static/images/#{$menu}.png") center left no-repeat;  // 在scss中必须写入static中，在 .vue 文件中可以写入 assets中
+    background-size: 16px 16px;
+    padding-left: 30px;
+  }
+}
+
+
+.el-submenu__title {
+  font-weight: bold;
+}
+
+
+.el-menu-item {
+  padding-left: 50px !important;
+  color: #C3CBD6 !important;
+  font-size: 12px;
+  &.is-active {
+    color: #2C8CF0 !important;
+    background: url("/static/images/menu_selected.png") no-repeat center right;
+    background-size: auto 20px;
+  }
+}
+
+
+
+.el-submenu.is-active.is-opened {
+  & > div {
+    background-color: #2C8CF0 !important;
+  }
+  & {
+    ul {
+      li {
+        background-color: #1A4878 !important;
+      }
+    }
+  }
+}
+
