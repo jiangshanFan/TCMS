@@ -1,22 +1,25 @@
 <template>
-  <div class="patentStatics posr">
+  <div class="newPatent posr">
+    <!--面包屑-->
     <breadcrumbList :breadcrumb-list="breadcrumb" @showDefault="showDefault"></breadcrumbList>
+    <AddOrEdit></AddOrEdit>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import { Message, MessageBox, Loading } from 'element-ui';
-/** 导入api.js */
-import { getDisclosurePaperList, deleteDisclosurePaper, } from '../../axios/api.js'
-import breadcrumbList from '../../components/breadcrumbList'
+  import { Message, MessageBox, Loading } from 'element-ui';
+  import breadcrumbList from '../../components/breadcrumbList'
+  import PatentAddOrEdit from '../../components/PatentAddOrEdit'
+
   export default {
-    name: "patentStatics",
+    name: "newPatent",
     components: {
       'breadcrumbList': breadcrumbList,
+      'AddOrEdit': PatentAddOrEdit,
     },
     created() {
-
+      this.$store.dispatch('knowledge_patentFollow', {});
     },
     mounted() {
 
@@ -33,10 +36,10 @@ import breadcrumbList from '../../components/breadcrumbList'
         // breadcrumb
         breadcrumb: [
           { id: 'patent', name: '知识产权管理', path: '/patent',},
-          { id: 'patentStatics', name: '专利统计', path: '/patent/patentStatics', thing: 'showDefault'},
-        ],
+          { id: 'newPatent', name: '新增专利', path: '/patent/newPatent', thing: 'showDefault'},
+        ]
       }
-    }
+    },
   }
 </script>
 

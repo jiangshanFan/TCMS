@@ -15,6 +15,7 @@ html,body {
   background-color: #f5f5f5;
   #app{
     height: 100%;
+    font-size: 13px;
     #index {
       height: 100%;
       > .el-container {
@@ -30,7 +31,7 @@ html,body {
         }
         > .el-container {
           .header {
-            height: 100px !important;
+            height: 60px !important;
             box-sizing: border-box;
             position:relative;
             padding: 0 !important;
@@ -45,10 +46,21 @@ html,body {
                 content: '';
                 position: absolute;
                 width: 100%;
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid #ddd;
                 left: 0;
                 bottom: 0;
               }
+            }
+          }
+          .el-main {
+            width: 100%;
+            overflow: hidden;
+            padding: 0 20px 20px 20px;
+            > div {
+              height: 100%;
+              padding: 0;
+              box-sizing: border-box;
+              overflow: auto;
             }
           }
         }
@@ -58,11 +70,11 @@ html,body {
 }
 
 .el-breadcrumb {
-  margin-left: 80px;
+  padding-left: 80px;
   &:before {
     content: '当前位置：';
     position: absolute;
-    left: 20px;
+    left: 0;
   }
 }
 
@@ -85,7 +97,7 @@ html,body {
 
 
 /* menu */
-$menus: project_knowleadge, ;
+$menus: project_knowledge, ;
 @each $menu in $menus {
   .icon-#{$menu} {
     background: url("/static/images/#{$menu}.png") center left no-repeat;  // 在scss中必须写入static中，在 .vue 文件中可以写入 assets中

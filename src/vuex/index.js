@@ -15,6 +15,12 @@ const state = {   //要设置的全局访问的state对象     //要设置的初
   /* 面包屑导航列表 */
   // crumbList: []  ****************************************** ERROR: convert converting circular structure to JSON; use JSON.stringify(this.$store.state)
 
+  /*  知识产权管理 */
+  // 交底书管理跳转新增或者编辑传参
+  knowledge_submission: {},
+  // 专利跟踪表跳转新增或者编辑传参
+  knowledge_patentFollow: {},
+
 };
 
 
@@ -23,11 +29,16 @@ const getters = {   //实时监听state值的变化(最新状态)
   token: (state) => {return state.token},
   //承载变化的 userLoginVO 的值
   userLoginVO: (state) => {return state.userLoginVO},
-
   //承载变化的 username 的值
   username: (state) => {return state.username},
   //承载变化的 isLogin 的值
   isLogin(state) {return state.isLogin},
+
+  /* 知识产权管理 */
+  // 交底书管理
+  knowledge_submission: (state) => {return state.knowledge_submission},
+  // 专利跟踪表
+  knowledge_patentFollow: (state) => {return state.knowledge_patentFollow},
 
 };
 
@@ -42,6 +53,13 @@ const mutations = {//自定义改变state初始值的方法，这里面的参数
   username(state,item) {state.username = item;},
   //改变 isLogin
   isLogin(state,item) {state.isLogin = item;},
+
+  /* 知识产权管理 */
+  // 交底书管理
+  knowledge_submission(state, item) {state.knowledge_submission = item},
+  // 专利跟踪表
+  knowledge_patentFollow(state, item) {state.knowledge_patentFollow = item},
+
 };
 
 
@@ -56,7 +74,12 @@ const actions = {//同上注释，item 为要变化的形参
   //异步触发改变 isLogin
   isLogin(context,item){context.commit('isLogin',item)},
 
+  /* 知识产权管理 */
+  // 交底书管理
+  knowledge_submission(context, item) {context.commit('knowledge_submission', item)},
 
+  // 专利跟踪表
+  knowledge_patentFollow(context, item) {context.commit('knowledge_patentFollow', item)},
 
 };
 

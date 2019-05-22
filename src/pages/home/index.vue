@@ -27,21 +27,12 @@
           </div>
 
           <!--面包屑-->
-          <el-breadcrumb class="lh40 bg_f5 pl20" separator="/">
-            <transition-group name="breadcrumb">
-              <!-- 防止面包屑导航出现 首页/首页， v-if="route.name!='home'" -->
-              <el-breadcrumb-item v-for="(route,i) in crumbList" :key="route.name"
-                  :to="{path:route.path}" v-if="route.name!=''" :class="{'is-last-link':i==crumbList.length-1}">
-                {{route.meta.name}}
-              </el-breadcrumb-item>
-            </transition-group>
-          </el-breadcrumb>
         </el-header>
 
         <!--  main content -->
-        <el-main class="main">
+        <el-main class="main" :style="{maxHeight: mh, height: mh,}">
           <transition name="slide-fade">
-            <router-view></router-view>
+            <router-view class="bg_f"></router-view>
           </transition>
         </el-main>
 
@@ -55,6 +46,7 @@
 <script>
 /* eslint-disable */
 import sidNav from '../../components/sideNav'
+import { mh } from '../../utils/common'
 
   export default {
     name: "index",
@@ -62,7 +54,7 @@ import sidNav from '../../components/sideNav'
       'side-nav': sidNav, //添加 name 属性才能够调用 <side-nav></side-nave>
     },
     created() {
-
+      this.mh = mh(60, 30);
     },
     mounted() {
       this.crumbList = this.$route.matched.slice(1);
@@ -77,6 +69,8 @@ import sidNav from '../../components/sideNav'
     data() {
       return {
         crumbList: [],
+      //  main height
+        mh: ''
       }
     },
   }
@@ -95,5 +89,14 @@ import sidNav from '../../components/sideNav'
     height: 30px !important;
     background: #fff url("../../assets/footer.png") no-repeat center;
     background-size: auto 20px;
+    position: relative;
+    &:before {
+      content:'';
+      position: absolute;
+      width: 100%;
+      border-top: 1px solid #ddd;
+      top: 0;
+      left: 0;
+    }
   }
 </style>

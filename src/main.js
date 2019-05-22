@@ -60,18 +60,6 @@ router.beforeEach((to, from, next) => {
       next({ path: '/login' })
     }
   } else {
-    // if (!vm.$store.state.Auth.permissionList) {
-    //   vm.$store.dispatch('Auth/FETCH_PERMISSION').then(() => {
-    //     next({ path: to.path })
-    //   })
-    // } else {
-    //   if (to.path !== '/login') {
-    //     next()
-    //   } else {
-    //     next(from.fullPath)
-    //   }
-    // }
-
     if (to.path !== '/login') {
       next()
     } else {
@@ -81,8 +69,8 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to, from) => {
+  console.log(to.matched)
   // vm.$store.commit('Auth/SET_CURRENT_MENU', to.name)
-  console.log(vm.$store.state);
 });
 
 export default vm;

@@ -7,7 +7,7 @@
           <span>{{v.meta.name}}</span>
         </template>
         <!--<el-menu-item-group v-if="v.children && v.children.length > 0">-->
-          <sideNav :menuList="v.children"></sideNav>
+          <sideNav :menuList="v.children"></sideNav>  <!-- 循环本身，组件中引用自身 -->
         <!--</el-menu-item-group>-->
       </el-submenu>
       <el-menu-item :key="v.name" :index="v.name" @click="gotoRoute(v.name)" v-else>

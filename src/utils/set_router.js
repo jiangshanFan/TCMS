@@ -10,7 +10,10 @@ export function recursionRouter(userRouter = [], allRouter = []) {
   let realRoutes = [];
   allRouter.forEach((v, i) => {
     userRouter.forEach((item, index) => {
-      if (item.name === v.meta.name) {
+      if (item.name === v.meta.name) {  // get button auth
+        if (item.button) {
+          v.meta.button = item.button;
+        }
         if (item.children && item.children.length > 0) {
           v.children = recursionRouter(item.children, v.children)
         }
