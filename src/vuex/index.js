@@ -20,6 +20,8 @@ const state = {   //要设置的全局访问的state对象     //要设置的初
   knowledge_submission: {},
   // 专利跟踪表跳转新增或者编辑传参
   knowledge_patentFollow: {},
+  // 技术论文跳转新增或者编辑传参
+  knowledge_techArticle: {},
 
 };
 
@@ -39,6 +41,9 @@ const getters = {   //实时监听state值的变化(最新状态)
   knowledge_submission: (state) => {return state.knowledge_submission},
   // 专利跟踪表
   knowledge_patentFollow: (state) => {return state.knowledge_patentFollow},
+
+  // 技术论文
+  knowledge_techArticle: (state) => {return state.knowledge_techArticle},
 
 };
 
@@ -60,6 +65,9 @@ const mutations = {//自定义改变state初始值的方法，这里面的参数
   // 专利跟踪表
   knowledge_patentFollow(state, item) {state.knowledge_patentFollow = item},
 
+  // 技术论文
+  knowledge_techArticle(state, item) {state.knowledge_techArticle = item},
+
 };
 
 
@@ -80,6 +88,9 @@ const actions = {//同上注释，item 为要变化的形参
 
   // 专利跟踪表
   knowledge_patentFollow(context, item) {context.commit('knowledge_patentFollow', item)},
+
+  // 技术论文
+  knowledge_techArticle(context, item) {context.commit('knowledge_techArticle', item)},
 
 };
 

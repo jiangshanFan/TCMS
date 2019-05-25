@@ -13,6 +13,11 @@ const patentRenewManage = () => import('../pages/knowledge/patentRenewManage');
 
 const patentEnd = () => import('../pages/knowledge/patentEnd');
 
+const newTechArticle = () => import('../pages/knowledge/newTechArticle');
+const techArticle = () => import('../pages/knowledge/techArticle');
+
+const knowledgeDocument = () => import('../pages/knowledge/knowledgeDocument');
+
 /* 所有的路由 */
 const allRoutes = [
   {
@@ -86,6 +91,34 @@ const allRoutes = [
           name: '已终止专利'
         },
       },
+
+      {
+        path: 'newTechArticle',
+        component: newTechArticle,
+        name: 'newTechArticle',
+        meta: {
+          name: '新增技术论文'
+        },
+      },
+
+      {
+        path: 'techArticle',
+        component: techArticle,
+        name: 'techArticle',
+        meta: {
+          name: '技术论文'
+        },
+      },
+
+      {
+        path: 'knowledgeDocument',
+        component: knowledgeDocument,
+        name: 'knowledgeDocument',
+        meta: {
+          name: '知识产权文件存档'
+        },
+      },
+
     ]
   },
 ];

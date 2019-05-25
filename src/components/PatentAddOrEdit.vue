@@ -214,7 +214,7 @@ export default {
           }
           if (res.status === 1) {
             if (this.choose === 1) {
-              this.$emit('ifChange');
+              this.$emit('ifChange','edit');
             } else {
               this.$router.push({path: '/patent/patentFollow'});
             }

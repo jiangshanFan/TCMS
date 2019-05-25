@@ -58,6 +58,12 @@ $width: 100% !default;
 /*下划线_*/
 .underline{text-decoration: underline !important;}
 
+/*单行省略号...*/
+.out{overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
+/*多行省略号*/
+.out_double{display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;
+}
+
 
 
 /* 可以设置不同的进入和离开动画 */

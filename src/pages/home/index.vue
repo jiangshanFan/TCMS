@@ -45,13 +45,13 @@
 
 <script>
 /* eslint-disable */
-import sidNav from '../../components/sideNav'
+import sideNav from '../../components/sideNav'
 import { mh } from '../../utils/common'
 
   export default {
     name: "index",
     components: {
-      'side-nav': sidNav, //添加 name 属性才能够调用 <side-nav></side-nave>
+      'side-nav': sideNav, //添加 name 属性才能够调用 <side-nav></side-nave>
     },
     created() {
       this.mh = mh(60, 30);

@@ -101,7 +101,7 @@
 
           <el-table-column fixed="right" label="操作" width="200" align="center">
             <template slot-scope="scope">
-              <el-button @click="edit(scope.row)" type="text" class="underline" align="center">填写续费信息</el-button>
+              <el-button @click="edit(scope.row)" type="text" class="underline" align="center" v-if="scope.row.renewStatus === 1">填写续费信息</el-button>
               <el-button @click="details(scope.row)" type="text" class="underline" align="center">缴费详情</el-button>
             </template>
           </el-table-column>
@@ -286,13 +286,24 @@
       },
 
       // 点击确定按钮新增续费信息
-      async add(form) {
-        let res = await insertRenewInfo({...form});
-        if (res.status === 1) {
-          Message({showClose: true, type: 'success', message: '新增续费信息成功'});
-          this.renewEditVisible = false;
-          this.getList();
-        }
+      add(form) {
+        this.$confirm(`此操作将新增续费信息,请确认信息无误, 是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          let res = await insertRenewInfo({...form});
+          if (res.status === 1) {
+            Message({showClose: true, type: 'success', message: '新增续费信息成功'});
+            this.renewEditVisible = false;
+            this.getList();
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消提交'
+          });
+        });
       },
 
       // 导出Excel
