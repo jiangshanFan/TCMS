@@ -12,7 +12,9 @@ import vm from '../main.js'
  * @author fjs
  * */
 //登录
-export const login = data => {return $ajax({url: '/static/login.json', method: 'get', params: data,})};
+export const login = data => {return $ajax({url: '/api/login', method: 'post', data: data,})};
+//登出
+export const loginOut = data => {return $ajax({url: '/api/login/loginOut', method: 'post', data: data,})};
 
 //权限
 export const auth = data => {return $ajax({url: '/static/auth.json', method: 'get', params: data,})};
@@ -79,3 +81,17 @@ export const getFileEnclosureInformation = data => {return $ajax({url: '/api/fil
 export const removeFileEnclosureInformation = data => {return $ajax({url: '/api/fileManageInformation/fileManage/removeFileEnclosureInformation', method: 'get', params: data,})};
 //知识产权文件存档--添加附件  --------no use
 export const addUploadManyFile = data => {return $ajax({url: '/api/fileManageInformation/fileManage/addUploadManyFile', method: 'post', data: data, meta: 1,})};
+//知识产权文件存档--修改文件夹名称
+export const replaceFileManageFolder = data => {return $ajax({url: '/api/fileManageInformation/fileManage/replaceFileManageFolder', method: 'post', data: data,})};
+
+
+//知识产权统计--知识产权统计根据年份统计
+export const queryDisclosurePatentStatisticsTotalByYear = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryDisclosurePatentStatisticsTotalByYear', method: 'get', params: data,})};
+//知识产权统计--交底详情
+export const queryDisclosurePaperDetailsByYear = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryDisclosurePaperDetailsByYear', method: 'get', params: data,})};
+//知识产权统计--专利申报详情
+export const queryPatentDetailsByYear = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryPatentDetailsByYear', method: 'get', params: data, })};
+//知识产权统计--已授权专利申报详情
+export const queryPatentDetailsByYearAndAuthorized = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryPatentDetailsByYearAndAuthorized', method: 'get', params: data,})};
+//知识产权统计--知识产权统计所有
+export const queryProjectInformation = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryProjectInformation', method: 'get', params: data,})};

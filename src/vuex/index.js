@@ -8,8 +8,7 @@ Vue.use(Vuex);
 const state = {   //要设置的全局访问的state对象     //要设置的初始属性值
   //login获取token
   token: '',
-  username: '',
-  isLogin: '',
+  accountName: '',
   userLoginVO: {},
 
   /* 面包屑导航列表 */
@@ -31,8 +30,8 @@ const getters = {   //实时监听state值的变化(最新状态)
   token: (state) => {return state.token},
   //承载变化的 userLoginVO 的值
   userLoginVO: (state) => {return state.userLoginVO},
-  //承载变化的 username 的值
-  username: (state) => {return state.username},
+  //承载变化的 accountName 的值
+  accountName: (state) => {return state.accountName},
   //承载变化的 isLogin 的值
   isLogin(state) {return state.isLogin},
 
@@ -54,8 +53,8 @@ const mutations = {//自定义改变state初始值的方法，这里面的参数
   //改变 userLoginVO
   userLoginVO(state,item) {state.userLoginVO = item;},
 
-  //改变 username
-  username(state,item) {state.username = item;},
+  //改变 accountName
+  accountName(state,item) {state.accountName = item;},
   //改变 isLogin
   isLogin(state,item) {state.isLogin = item;},
 
@@ -77,8 +76,8 @@ const actions = {//同上注释，item 为要变化的形参
   //异步触发改变 userLoginVO
   userLoginVO(context,item){context.commit('userLoginVO',item)},
 
-  //异步触发改变 username
-  username(context,item){context.commit('username',item)},
+  //异步触发改变 accountName
+  accountName(context,item){context.commit('accountName',item)},
   //异步触发改变 isLogin
   isLogin(context,item){context.commit('isLogin',item)},
 

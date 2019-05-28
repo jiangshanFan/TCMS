@@ -16,12 +16,12 @@
           <div class="header_head bg_f">
             <span class="f20 fwb">技术中心管理系统</span>
 
-            <el-dropdown class="">
-              <el-button type="primary" plain size="mini">hello<i class="el-icon-arrow-down el-icon--right"></i></el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="1" >修改信息</el-dropdown-item>
-                <el-dropdown-item divided command="2">修改密码</el-dropdown-item>
-                <el-dropdown-item divided command="3">退出</el-dropdown-item>
+            <el-dropdown @command="handleCommand">
+              <el-button type="primary" plain>{{this.$store.getters.accountName}}<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+              <el-dropdown-menu slot="dropdown" style="font-size:12px;min-width:100px;">
+                <el-dropdown-item command="1" style="font-size:10px;cursor:pointer;">修改信息</el-dropdown-item>
+                <el-dropdown-item divided command="2" style="font-size:10px;cursor:pointer;">修改密码</el-dropdown-item>
+                <el-dropdown-item divided command="3" style="font-size:10px;cursor:pointer;">退出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -45,6 +45,7 @@
 
 <script>
 /* eslint-disable */
+import { loginOut, } from '../../axios/api'
 import sideNav from '../../components/sideNav'
 import { mh } from '../../utils/common'
 
@@ -59,12 +60,30 @@ import { mh } from '../../utils/common'
     mounted() {
       this.crumbList = this.$route.matched.slice(1);
     },
+    methods: {
+      //点击下拉菜单对应的菜单指令事件
+      handleCommand(command) {
+        if(command === '3') {
+          this.clearStorage();
+        }
+      },
+
+      //点击退出，清空localStorage，并跳转登录页
+      async clearStorage() {
+        let res = await loginOut();
+        if (res.status === 1) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('accountName');
+          localStorage.removeItem('userLoginVO');
+          this.$router.push('/login');
+        }
+      },
+    },
     watch: { //通过路由的更新可以直接赋值
       $route: function(to, from , next) {
         this.crumbList = this.$route.matched.slice(1);
       },
     },
-
 
     data() {
       return {

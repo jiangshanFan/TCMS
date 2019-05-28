@@ -49,7 +49,16 @@ Vue.prototype.$format = function format(shijianchuo)
   var h = time.getHours();
   var mm = time.getMinutes();
   var s = time.getSeconds();
-  return y+'-'+add0(m)+'-'+add0(d); //+' '+add0(h)+':'+add0(mm)+':'+add0(s)
+  return {
+    y: y,
+    m: m,
+    d: d,
+    h: h,
+    mm: mm,
+    s: s,
+    dates: y+'-'+add0(m)+'-'+add0(d),
+    all: y+'-'+add0(m)+'-'+add0(d)+' '+h+mm+s,
+  }; //+' '+add0(h)+':'+add0(mm)+':'+add0(s)
 };
 
 router.beforeEach((to, from, next) => {

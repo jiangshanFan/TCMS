@@ -20,12 +20,26 @@
       <!-- content -->
       <el-container>
         <el-aside width="200px">
-          <el-tree :data="tree" :props="defaultProps" :highlight-current="highlight" :check-on-click-node="true" node-key="fileName" :default-expanded-keys="['知识产权文档管理']" @node-click="handleNodeClick">
+          <el-tree
+            node-key="fileName"
+            accordion
+            @node-click="handleNodeClick"
+            :data="tree"
+            :props="defaultProps"
+            :auto-expand-parent="false"
+            :highlight-current="highlight"
+            :check-on-click-node="true"
+            :default-expanded-keys="defaultKeys">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span class="out fl" :class="{node_span : !data.status}" :title="node.label">{{ node.label }}</span>
-              <span class="fl" v-if="data.filePath.split('/')[1] === '其他'">
-                <el-button class="ml20" type="text" size="mini" @click="() => append(node, data)" v-if="data.status">新增</el-button>
-                <el-button type="text" size="mini" @click="() => remove(node, data)" v-else>删除</el-button>
+              <span class="fl posr" v-if="data.filePath.split('/')[1] === '其他' || (data.fileName === '其他' && data.filePath.split('/').length === 1)">
+                <!--<el-button class="add ml20" type="text" size="mini" @click="() => append(node, data)" v-if="data.status"></el-button>-->
+                <!--<el-button class="delete" type="text" size="mini" @click="() => remove(node, data)" v-else>删除</el-button>-->
+                <span class="add" @click.stop.prevent="() => append(node, data)" v-if="data.status"></span>
+                <span v-else>
+                  <span class="delete" @click.stop.prevent="() => remove(node, data)"></span>
+                  <span class="edit" @click.stop.prevent="() => change(node, data)"></span>
+                </span>
               </span>
             </span>
           </el-tree>
@@ -46,6 +60,7 @@
                 :on-error="handleError"
                 :on-change="handleChange"
                 :data="uploadData"
+                :headers="headers"
                 :file-list="fileList"
                 :multiple="true"
                 :auto-upload="false">
@@ -61,7 +76,14 @@
             </div>
 
             <!-- 表格数据 -->
-            <el-table :data="table.content" stripe border style="width: 100%;margin-top:10px;" header-cell-class-name="header_cell table_header_shadow" tooltip-effect="light">
+            <el-table
+              :data="table.content"
+              stripe
+              border
+              size="small"
+              style="width: 100%;margin-top:10px;"
+              header-cell-class-name="header_cell table_header_shadow"
+              tooltip-effect="light">
 
               <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
@@ -95,7 +117,14 @@
           <div class="mt20" v-if="show1">
             <span>所有文件夹中附件名称为“{{search.value1}}”的文件如下所示：</span>
             <!-- 表格数据 -->
-            <el-table :data="table1.content" stripe border style="width: 100%;margin-top:10px;" header-cell-class-name="header_cell table_header_shadow" tooltip-effect="light">
+            <el-table
+              :data="table.content"
+              stripe
+              border
+              size="small"
+              style="width: 100%;margin-top:10px;"
+              header-cell-class-name="header_cell table_header_shadow"
+              tooltip-effect="light">
 
               <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
@@ -135,7 +164,7 @@
 /* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
-  import { getFileManageInformation, removeFileManageFolder, saveFileManageFolder, getFileEnclosureInformationList, removeFileEnclosureInformation, getFileEnclosureInformation } from '../../axios/api.js'
+  import { getFileManageInformation, removeFileManageFolder, saveFileManageFolder, getFileEnclosureInformationList, removeFileEnclosureInformation, getFileEnclosureInformation, replaceFileManageFolder } from '../../axios/api.js'
   import breadcrumbList from '../../components/breadcrumbList'
 
   export default {
@@ -173,14 +202,15 @@
       async handleNodeClick(data) {
         console.log(data);
         this.highlight = true;
-        if (data.filePath.split('/').length > 2) {
+        if (data.filePath.split('/').length > 1) {
           this.show = true;
           this.show1 = false;
           this.currentPage = 1;
           this.folderId = data.id;
           this.uploadData.folderId = data.id;
-          this.uploadData.path = data.filePath;
+          // this.uploadData.path = data.filePath;
           this.fileStatus = false;
+          this.fileList = [];
           this.successFiles = [];
           this.errorFiles = [];
           this.getTableList();
@@ -199,6 +229,7 @@
           if (res.status === 1) {
             this.$message({type: 'success', message: '新增文件夹: ' + value + '成功！'});
             this.getTreeList();
+            this.defaultKeys = ['知识产权文档管理', '其他'];
           }
 
         }).catch(() => {
@@ -216,6 +247,7 @@
           let res = await removeFileManageFolder({id: data.id});
           if(res.status === 1) {
             this.getTreeList();
+            this.defaultKeys = ['知识产权文档管理', '其他'];
             Message({showClose: true, type: 'success', message: '删除成功！'});
           }
         }).catch(() => {
@@ -223,17 +255,40 @@
         });
       },
 
+      // change folder name
+      change(node, data) {
+        this.$prompt('请输入文件夹名称', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+          // inputErrorMessage: '邮箱格式不正确'
+        }).then( async ({ value }) => {
+          let res = await replaceFileManageFolder({id: data.id, foldName: value,});
+          if (res.status === 1) {
+            this.$message({type: 'success', message: '修改文件夹名称为:“ ' + value + '”成功！'});
+            this.getTreeList();
+            this.defaultKeys = ['知识产权文档管理', '其他'];
+          }
+
+        }).catch(() => {
+          this.$message({type: 'info', message: '取消输入'});
+        });
+      },
+
       // add new files
       submitUpload() {
+        // console.log(e.dataTransfer.files);
         this.$refs.upload.submit();
         if (this.fileList.length) {
           this.fileStatus = true;
         }
+
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handleSuccess(response, file, fileList) {
+        this.getTableList();
         console.log(response, file, fileList);
         // let index = fileList.indexOf(file);
         // if(index>-1){  // clear fileList after upload
@@ -310,6 +365,7 @@
       // search
       async Search() {
         this.currentPage =1;
+        this.defaultKeys = ['知识文档管理'];
         this.getTable1List();
       },
 
@@ -337,6 +393,7 @@
           children: 'fileManages',
           label: 'fileName'
         },
+        defaultKeys: ['知识产权文档管理'],
         // if highlight
         highlight: true,
 
@@ -345,11 +402,14 @@
 
         // upload files
         fileList: [],
-        uploadData: {path: '', folderId: '',},
+        uploadData: {path: 'knowledgeDocument', folderId: '',},
         maxLimit: 6,
         successFiles: [],
         errorFiles: [],
         fileStatus: false,
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
 
         // select options
         options: {},
@@ -420,6 +480,66 @@
     .node_span {
       width: 100px;
       display:block;
+    }
+    .add {
+      position: relative;
+      margin-left: 30px;
+      line-height: 26px;
+      display:block;
+      cursor: pointer;
+      &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 3px;
+        background: url(/static/images/knowledge_add.png) no-repeat;
+        background-size: 20px 20px;
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+    }
+    span > .delete {
+      position: relative;
+      line-height: 26px;
+      display:block;
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+      float: left;
+      &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 7px;
+        background: url(/static/images/knowledge_delete.png) no-repeat;
+        background-size: 12px 12px;
+        width: 12px;
+        height: 12px;
+        display: block;
+        cursor: pointer;
+      }
+    }
+    span > .edit {
+      position: relative;
+      margin-left: 5px;
+      line-height: 26px;
+      display:block;
+      width: 16px;
+      height: 16px;
+      float: left;
+      &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 7px;
+        background: url(/static/images/knowledge_edit.png) no-repeat;
+        background-size: 12px 12px;
+        width: 12px;
+        height: 12px;
+        display: block;
+        cursor: pointer;
+      }
     }
   }
 

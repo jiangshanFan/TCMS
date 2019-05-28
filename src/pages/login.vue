@@ -25,16 +25,30 @@
     name: "login",
     methods: {
       async login() {
-        try {
-          let res = await login();
-          let token = res.data.token;
-          // this.$store.dispatch('token', token);
-          // console.log(this.$store.state);
-          localStorage.setItem('token', token);
-          this.$router.replace('/');
-        }
-        catch (e) {
-          console.log(e)
+        if(this.accountName !== '' && this.pwd !== '') {
+          let params = {
+            accountName: this.account,
+            pwd: this.password,
+          };
+          try {
+            let res = await login(params);
+            if(res.status === 1) {
+              localStorage.setItem('token',res.msg.authorization);
+              localStorage.setItem('accountName',res.msg.userLoginVO.userName);
+              localStorage.setItem('userLoginVO',JSON.stringify(res.msg.userLoginVO));
+
+              this.$store.dispatch('token', localStorage.getItem('token'));
+              this.$store.dispatch('accountName', localStorage.getItem('accountName'));
+              this.$store.dispatch('userLoginVO', JSON.parse(localStorage.getItem('userLoginVO')));
+              this.$router.replace('/');
+            }
+          }catch (e) {
+            console.log(e)
+          }
+        } else if(this.accountName) {
+          this.$message({showClose: true, type: 'warning', message: '请输入用户名'});
+        } else {
+          this.$message({showClose: true, type: 'warning', message: '请输入密码'});
         }
       }
     },
