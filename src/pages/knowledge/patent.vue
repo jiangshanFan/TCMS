@@ -1,6 +1,8 @@
 <template>
   <div id="patent">
-    <router-view></router-view>
+    <transition name="slide-fade">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 

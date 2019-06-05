@@ -18,6 +18,15 @@ const techArticle = () => import('../pages/knowledge/techArticle');
 
 const knowledgeDocument = () => import('../pages/knowledge/knowledgeDocument');
 
+/* 权限管理 */
+const user = () => import('../pages/user/user');
+const userRole = () => import('../pages/user/userRole');
+const userName = () => import('../pages/user/userName');
+const newUserRole = () => import('../pages/user/newUserRole');
+const newUserName = () => import('../pages/user/newUserName');
+
+
+
 /* 所有的路由 */
 const allRoutes = [
   {
@@ -34,7 +43,11 @@ const allRoutes = [
         component: patentStatics,
         name: 'patentStatics',
         meta: {
-          name: '知识产权统计'
+          name: '知识产权统计',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         }
       },
 
@@ -43,7 +56,11 @@ const allRoutes = [
         component: newSubmission,
         name: 'newSubmission',
         meta: {
-          name: '新增交底书'
+          name: '新增交底书',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         },
       },
 
@@ -52,7 +69,11 @@ const allRoutes = [
         component: Submission,
         name: 'Submission',
         meta: {
-          name: '交底书列表'
+          name: '交底书列表',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         },
       },
 
@@ -61,7 +82,11 @@ const allRoutes = [
         component: newPatent,
         name: 'newPatent',
         meta: {
-          name: '新增专利'
+          name: '新增专利',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         },
       },
 
@@ -70,7 +95,11 @@ const allRoutes = [
         component: patentFollow,
         name: 'patentFollow',
         meta: {
-          name: '专利跟踪表'
+          name: '专利跟踪表',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         },
       },
 
@@ -79,7 +108,11 @@ const allRoutes = [
         component: patentRenewManage,
         name: 'patentRenewManage',
         meta: {
-          name: '专利续费管理'
+          name: '专利续费管理',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         },
       },
 
@@ -88,7 +121,11 @@ const allRoutes = [
         component: patentEnd,
         name: 'patentEnd',
         meta: {
-          name: '已终止专利'
+          name: '已终止专利',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         },
       },
 
@@ -97,7 +134,11 @@ const allRoutes = [
         component: newTechArticle,
         name: 'newTechArticle',
         meta: {
-          name: '新增技术论文'
+          name: '新增技术论文',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         },
       },
 
@@ -106,7 +147,11 @@ const allRoutes = [
         component: techArticle,
         name: 'techArticle',
         meta: {
-          name: '技术论文'
+          name: '技术论文列表',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         },
       },
 
@@ -115,8 +160,76 @@ const allRoutes = [
         component: knowledgeDocument,
         name: 'knowledgeDocument',
         meta: {
-          name: '知识产权文件存档'
+          name: '知识产权文件存档',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
         },
+      },
+
+    ]
+  },
+
+  {
+    path: '/user',
+    component: user,
+    name: 'user',
+    meta: {
+      name: '权限管理',
+      icon: 'icon-project_auth'
+    },
+    children: [
+      {
+        path: 'userRole',
+        component: userRole,
+        name: 'userRole',
+        meta: {
+          name: '角色管理',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        },
+      },
+      {
+        path: 'newUserRole',
+        component: newUserRole,
+        name: 'newUserRole',
+        meta: {
+          name: '新增角色',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        }
+      },
+      {
+        path: 'userName',
+        component: userName,
+        name: 'userName',
+        meta: {
+          name: '账户管理',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        },
+        button: {
+
+        }
+      },
+      {
+        path: 'newUserName',
+        component: newUserName,
+        name: 'newUserName',
+        meta: {
+          name: '新增账户',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        }
       },
 
     ]

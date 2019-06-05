@@ -83,8 +83,8 @@
 
           <el-table-column fixed="right" label="操作" width="100" align="center">
             <template slot-scope="scope">
-              <el-button @click="addOrEdit(scope.row)" type="text" class="underline" align="center">编辑</el-button>
-              <el-button @click="deletes(scope.row)" type="text" class="underline" align="center">删除</el-button>
+              <el-button @click="addOrEdit(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('编辑')">编辑</el-button>
+              <el-button @click="deletes(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

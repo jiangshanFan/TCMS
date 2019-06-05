@@ -45,7 +45,6 @@
                              type="datetimerange"
                              align="right"
                              format="yyyy-MM-dd"
-                             value-format="yyyy-MM-dd"
                              range-separator="-"
                              start-placeholder="开始日期"
                              end-placeholder="结束日期"
@@ -61,7 +60,6 @@
                              type="datetimerange"
                              align="right"
                              format="yyyy-MM-dd"
-                             value-format="yyyy-MM-dd"
                              range-separator="-"
                              start-placeholder="开始日期"
                              end-placeholder="结束日期"
@@ -280,6 +278,7 @@ import PatentAddOrEdit from '../../components/PatentAddOrEdit'
           { prop: 'type', label: '专利类型', change: ['','实用','发明','外观','软件著作权',]},
           { prop: 'paperName', label: '交底书名称', parent:'disclosurePaperDTO'},
           { prop: 'paperCode', label: '交底书编号', parent:'disclosurePaperDTO'},
+          { prop: 'officialAcceptanceTime', label: '官方受理时间',},
           { prop: 'status', label: '专利状态', change: ['','待官方受理','初审中','实审中','待缴费','已撤回','已驳回','已放弃','已授权','变更中','已失效']},
           { prop: 'whetherChange', label: '是否有变更', change: ['不变更','变更',]},
           { prop: 'authorizationCost', label: '授权缴费',},

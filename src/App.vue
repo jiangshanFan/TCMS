@@ -2,6 +2,7 @@
   <div id="app">
     <transition name="slide-fade">
       <router-view></router-view>
+      <!--<router-view v-if="!$store.getters.isLogin"></router-view>-->
     </transition>
   </div>
 </template>
@@ -9,9 +10,20 @@
 <script>
 /* eslint-disable */
 import store from './vuex/index'
+import login from '../src/pages/login'
+import index from '../src/pages/home/index'
 
 export default {
   name: 'App',
+  components: {
+    default: index,
+    'login': login,
+  },
+  provide () {
+    return {
+      reload: this.reload,
+    }
+  },
   created() {
     // 在页面加载时读取sessionStorage里的状态信息
     if (localStorage.getItem("store") ) {
@@ -22,7 +34,7 @@ export default {
     window.addEventListener("beforeunload",()=>{
       function replacer(key, value) {
         // Filtering out properties
-        if (key === 'Auth') {
+        if (key === 'Auth' || key === 'userLoginVO') {
           return undefined;
         }
         return value;
@@ -32,12 +44,12 @@ export default {
     });
 
     // this.$store.commit('Auth/CLEAR_PERMISSION');
-    // if(localStorage.getItem('token') && !this.$store.state.Auth.permissionList) {
-    //
-    // }
-    if(!this.$store.state.Auth.permissionList) {
+    if(localStorage.getItem('token') && !this.$store.state.Auth.permissionList) {
       this.$store.dispatch('Auth/FETCH_PERMISSION'); //刷新界面就请求权限数据
     }
+    // if(!this.$store.state.Auth.permissionList) {
+    //   this.$store.dispatch('Auth/FETCH_PERMISSION'); //刷新界面就请求权限数据
+    // }
 
     console.log(this.$router.options)
   },
@@ -59,6 +71,17 @@ export default {
   watch: { //通过路由的更新可以直接赋值
     $route: function(to, from , next) {
       console.log(this.$route);
+    },
+  },
+
+  methods: {
+    //刷新子路由
+    reload () {
+      window.location.reload();
+      // this.$store.dispatch('isLogin', false);
+      // this.$nextTick(function () {
+      //   this.$store.dispatch('isLogin', true);
+      // });
     },
   },
 

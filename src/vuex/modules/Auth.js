@@ -1,9 +1,9 @@
 /* eslint-disable */
-import { auth, } from '../../axios/api'
 import router, {DynamicRoutes, } from '../../router/index'
 import { recursionRouter, setDefaultRoute } from '../../utils/set_router'
 import allRoutes from '../../router/all-router'
 import none from '../../pages/none'
+import store from '../../vuex/index'
 
 export default {
   namespaced: true,
@@ -32,17 +32,22 @@ export default {
   },
   actions: {
     async FETCH_PERMISSION({ commit, state }) {
-      let res = await auth();
-      let permissionList = res.data;
+      let res = JSON.parse(localStorage.getItem('userLoginVO'));
+      let permissionList;
+      if (res) {
+        permissionList = res.permissionListVOList;
+      }
 
       /*  根据权限筛选出我们设置好的路由并加入到path=''的children */
+      // Routes can not be used to JSON methods!
+
       let routes = recursionRouter(permissionList, allRoutes); // 权限路由
       let MainContainer = DynamicRoutes.find(v => v.path === '/');
-      let children = MainContainer.children;
-      children.push(...routes);
+      MainContainer.children = [];  // 必须重置，否则累加路由
+      MainContainer.children.push(...routes);
 
       /* 生成左侧导航菜单 */
-      commit('SET_MENU', children);
+      commit('SET_MENU', MainContainer.children);
 
       /*
           为所有有children的菜单路由设置第一个children为默认路由
@@ -56,15 +61,16 @@ export default {
 
       let arrRoutes = [];
       arrRoutes[0] = MainContainer;
-      setDefaultRoute(arrRoutes);
 
       arrRoutes[1] = {
         path: '*',
         component: none,
-      }
+      };
 
       /*  初始路由 */
       let initialRoutes = router.options.routes;
+
+      setDefaultRoute([...initialRoutes, ...arrRoutes]);  // all routes
 
       /*  动态添加路由 */
       router.addRoutes(arrRoutes);

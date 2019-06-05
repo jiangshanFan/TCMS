@@ -194,6 +194,9 @@ export default {
     let info = this.$store.getters.knowledge_patentFollow;
     if (Object.keys(info).length) {
       this.basicInfo = Object.assign({}, info);
+      if (!this.basicInfo.disclosurePaperDTO) {
+        this.basicInfo.disclosurePaperDTO = {};
+      }
       this.choose = 1;
     } else {
       this.choose = 0;

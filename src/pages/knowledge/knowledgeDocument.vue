@@ -5,7 +5,7 @@
 
     <div class="knowledgeDocuments pl20 pr20">
       <!--  search -->
-      <div class="section-search mb20 mt20">
+      <div class="section-search mb20 mt20" v-if="$route.meta.button.buttons.includes('搜索')">
         <el-row>
           <el-col :span="12">
             <span class="c6">附件名称：</span>
@@ -21,7 +21,7 @@
       <el-container>
         <el-aside width="200px">
           <el-tree
-            node-key="fileName"
+            node-key="id"
             accordion
             @node-click="handleNodeClick"
             :data="tree"
@@ -70,7 +70,7 @@
               </el-upload>
               <!-- show error files -->
               <div class="fileStatus" v-if="fileStatus">
-                <!--<ul v-if="successFiles.length">上传成功的文件：<li class="ml20" v-for="(val, i) in successFiles" :key="i">{{val}}</li></ul>-->
+                <ul v-if="successFiles.length">上传成功的文件：<li class="ml20" v-for="(val, i) in successFiles" :key="i">{{val}}</li></ul>
                 <ul v-if="errorFiles.length">上传失败的文件：<li class="ml20" v-for="(val, i) in errorFiles" :key="i">{{val}}</li></ul>
               </div>
             </div>
@@ -99,8 +99,8 @@
 
               <el-table-column fixed="right" label="操作" width="100" align="center">
                 <template slot-scope="scope">
-                  <el-button @click="downloads(scope.row)" type="text" class="underline" align="center">下载</el-button>
-                  <el-button @click="deletes(scope.row)" type="text" class="underline" align="center">删除</el-button>
+                  <el-button @click="downloads(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('下载')">下载</el-button>
+                  <el-button @click="deletes(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -119,6 +119,7 @@
             <!-- 表格数据 -->
             <el-table
               :data="table.content"
+              v-loading="loading"
               stripe
               border
               size="small"
@@ -179,6 +180,7 @@
     methods: {
       // get dataList of table
       async getTableList() {
+        this.loading = true;
         let params = {
           page: this.currentPage,
           size: this.size,
@@ -188,6 +190,7 @@
         let res = await getFileEnclosureInformationList(params);
         if(res.status === 1) {
           this.table = res.msg;
+          this.loading = false;
         }
       },
 
@@ -225,13 +228,16 @@
           // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
           // inputErrorMessage: '邮箱格式不正确'
         }).then( async ({ value }) => {
-          let res = await saveFileManageFolder({id: data.id, foldName: value,});
-          if (res.status === 1) {
-            this.$message({type: 'success', message: '新增文件夹: ' + value + '成功！'});
-            this.getTreeList();
-            this.defaultKeys = ['知识产权文档管理', '其他'];
+          if (value) {
+            let res = await saveFileManageFolder({id: data.id, foldName: value,});
+            if (res.status === 1) {
+              this.$message({type: 'success', message: '新增文件夹: ' + value + '成功！'});
+              this.getTreeList();
+              this.defaultKeys = ['知识产权文档管理', '其他'];
+            }
+          } else {
+            Message({showClose: true, type: 'warning', message: '文件夹名称不能为空！'})
           }
-
         }).catch(() => {
           this.$message({type: 'info', message: '取消输入'});
         });
@@ -290,11 +296,11 @@
       handleSuccess(response, file, fileList) {
         this.getTableList();
         console.log(response, file, fileList);
-        // let index = fileList.indexOf(file);
-        // if(index>-1){  // clear fileList after upload
-        //   console.log(this.fileList);
-        //   return fileList.splice(index,1)
-        // }
+        let index = fileList.indexOf(file);
+        if(index>-1){  // clear fileList after upload
+          console.log(this.fileList);
+          return fileList.splice(index,1)
+        }
       },
       handleError(err, file, fileList) {
         console.log(err, file, fileList);
@@ -381,6 +387,8 @@
 
     data() {
       return {
+        loading: true,
+
         // search
         search: {
           value1: '',
@@ -393,7 +401,7 @@
           children: 'fileManages',
           label: 'fileName'
         },
-        defaultKeys: ['知识产权文档管理'],
+        defaultKeys: [1],
         // if highlight
         highlight: true,
 

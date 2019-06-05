@@ -10,17 +10,24 @@ const state = {   //要设置的全局访问的state对象     //要设置的初
   token: '',
   accountName: '',
   userLoginVO: {},
+  isLogin: false,
 
   /* 面包屑导航列表 */
   // crumbList: []  ****************************************** ERROR: convert converting circular structure to JSON; use JSON.stringify(this.$store.state)
 
-  /*  知识产权管理 */
+  /* 知识产权管理 */
   // 交底书管理跳转新增或者编辑传参
   knowledge_submission: {},
   // 专利跟踪表跳转新增或者编辑传参
   knowledge_patentFollow: {},
   // 技术论文跳转新增或者编辑传参
   knowledge_techArticle: {},
+
+  /* 权限管理 */
+  // 角色管理跳转新增或者编辑传参
+  auth_userRole: {},
+  // 账户管理跳转新增或者编辑传参
+  auth_userName: {},
 
 };
 
@@ -40,9 +47,14 @@ const getters = {   //实时监听state值的变化(最新状态)
   knowledge_submission: (state) => {return state.knowledge_submission},
   // 专利跟踪表
   knowledge_patentFollow: (state) => {return state.knowledge_patentFollow},
-
   // 技术论文
   knowledge_techArticle: (state) => {return state.knowledge_techArticle},
+
+  /* 权限管理 */
+  // 角色管理
+  auth_userRole: (state) => {return state.auth_userRole},
+  // 账户管理
+  auth_userName: (state) => {return state.auth_userName},
 
 };
 
@@ -63,9 +75,14 @@ const mutations = {//自定义改变state初始值的方法，这里面的参数
   knowledge_submission(state, item) {state.knowledge_submission = item},
   // 专利跟踪表
   knowledge_patentFollow(state, item) {state.knowledge_patentFollow = item},
-
   // 技术论文
   knowledge_techArticle(state, item) {state.knowledge_techArticle = item},
+
+  /* 权限管理 */
+  // 角色管理
+  auth_userRole(state, item) {state.auth_userRole = item},
+  // 账户管理
+  auth_userName(state, item) {state.auth_userName = item},
 
 };
 
@@ -78,18 +95,22 @@ const actions = {//同上注释，item 为要变化的形参
 
   //异步触发改变 accountName
   accountName(context,item){context.commit('accountName',item)},
-  //异步触发改变 isLogin
+  //异步触发改变 allRoutes
   isLogin(context,item){context.commit('isLogin',item)},
 
   /* 知识产权管理 */
   // 交底书管理
   knowledge_submission(context, item) {context.commit('knowledge_submission', item)},
-
   // 专利跟踪表
   knowledge_patentFollow(context, item) {context.commit('knowledge_patentFollow', item)},
-
   // 技术论文
   knowledge_techArticle(context, item) {context.commit('knowledge_techArticle', item)},
+
+  /* 权限管理 */
+  // 角色管理
+  auth_userRole(context, item) {context.commit('auth_userRole', item)},
+  // 账户管理
+  auth_userName(context, item) {context.commit('auth_userName', item)},
 
 };
 

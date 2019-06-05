@@ -16,8 +16,39 @@ export const login = data => {return $ajax({url: '/api/login', method: 'post', d
 //登出
 export const loginOut = data => {return $ajax({url: '/api/login/loginOut', method: 'post', data: data,})};
 
-//权限
+
+/**
+ * @name authority -------------- 权限管理
+ * @param {ObjectConstructor} data
+ * @author fjs
+ * */
+//路由列表
 export const auth = data => {return $ajax({url: '/static/auth.json', method: 'get', params: data,})};
+//获取角色列表
+export const getRoleList = data => {return $ajax({url: '/api/role/getRoleList', method: 'get', params: data,})};
+//获取系统权限列表
+export const getPermissionList = data => {return $ajax({url: '/api/role/getPermissionList', method: 'get', params: data,})};
+//根据角色id获取权限列表
+export const getPermissionListById = data => {return $ajax({url: '/api/role/getPermissionListById', method: 'get', params: data,})};
+//删除角色
+export const deleteRole = data => {return $ajax({url: '/api/role/deleteRole', method: 'post', data: data,})};
+//添加角色
+export const insertRole = data => {return $ajax({url: '/api/role/insertRole', method: 'post', data: data, meta: 1, })};
+//角色更新
+export const updateRole = data => {return $ajax({url: '/api/role/updateRole', method: 'post', data: data, meta: 1, })};
+
+
+//获取账户列表
+export const getUserList = data => {return $ajax({url: '/api/user/getUserList', method: 'get', params: data,})};
+//删除账户
+export const deleteUser = data => {return $ajax({url: '/api/user/deleteUser', method: 'post', data: data,})};
+//密码重置
+export const resetPwd = data => {return $ajax({url: '/api/user/resetPwd', method: 'post', data: data,})};
+//添加账户
+export const insertUser = data => {return $ajax({url: '/api/user/insertUser', method: 'post', data: data, meta: 1, })};
+//账户更新
+export const updateUser = data => {return $ajax({url: '/api/user/updateUser', method: 'post', data: data, meta: 1, })};
+
 
 /**
  * @name knowledge_disclosurePaper -------------- 知识产权管理
