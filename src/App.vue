@@ -24,8 +24,9 @@ export default {
       reload: this.reload,
     }
   },
+
   created() {
-    // 在页面加载时读取sessionStorage里的状态信息
+    // 在页面加载时读取 localStorage 里的状态信息 ---------------------- 可能考虑使用 sessionStorage 会更好，尤其是在token会失效的情况下
     if (localStorage.getItem("store") ) {
       this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(localStorage.getItem("store"))));
     }

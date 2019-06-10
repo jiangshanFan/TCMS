@@ -81,7 +81,7 @@
       <!-- content -->
       <div class="mt20">
         <!-- 导出 -->
-        <el-button type="primary" @click="exportExcel">专利续费表导出Excel</el-button>
+        <el-button type="primary" @click="exportExcel" v-if="$route.meta.button.buttons.includes('专利续费表导出Excel')">专利续费表导出Excel</el-button>
         <!-- 表格数据 -->
         <el-table
           :data="table.content"
@@ -106,8 +106,8 @@
 
           <el-table-column fixed="right" label="操作" width="200" align="center">
             <template slot-scope="scope">
-              <el-button @click="edit(scope.row)" type="text" class="underline" align="center" v-if="scope.row.renewStatus === 1">填写续费信息</el-button>
-              <el-button @click="details(scope.row)" type="text" class="underline" align="center">缴费详情</el-button>
+              <el-button @click="edit(scope.row)" type="text" class="underline" align="center" v-if="scope.row.renewStatus === 1 && $route.meta.button.buttons.includes('填写续费信息')">填写续费信息</el-button>
+              <el-button @click="details(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('缴费记录')">缴费记录</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -193,7 +193,7 @@
         </div>
       </el-dialog>
       <!-- renewList-->
-      <el-dialog title="填写续费信息" :visible.sync="renewListVisible" center custom-class="dialogStyle" @close="cancelAdd">
+      <el-dialog title="缴费记录" :visible.sync="renewListVisible" center custom-class="dialogStyle" @close="cancelAdd">
         <el-table class="mb20" :data="renewList" max-height="300" size="small" border style="width: 100%;" header-cell-class-name="header_cell">
           <el-table-column type="index" width="100" label="序号"></el-table-column>
           <el-table-column prop="oaOddSubmitTime" label="OA单提交时间" width="180"></el-table-column>

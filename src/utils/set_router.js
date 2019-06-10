@@ -35,7 +35,7 @@ function getButtons(obj, v, level=3) {
  */
 export function recursionRouter(userRouter = [], allRouters = []) {
   let realRoutes = [];
-  let allRouter = _clone(allRouters)
+  let allRouter = _clone(allRouters);
   allRouter.forEach((v, i) => {
     userRouter.forEach((item, index) => {
       if (item.name === v.meta.name) {  // get button auth

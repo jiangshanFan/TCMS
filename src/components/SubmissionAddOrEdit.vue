@@ -165,7 +165,7 @@ import { insertDisclosurePaper, updateDisclosurePaper, } from '../axios/api.js'
         status: [
           { id: 1, label: '项目启动'},
           { id: 2, label: '交底完成'},
-          { id: 3, label: '以委托代理'},
+          { id: 3, label: '已委托代理'},
           { id: 4, label: '委托终止'},
           { id: 5, label: '确认代理'},
           { id: 6, label: '缴费中'},

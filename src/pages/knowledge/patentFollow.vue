@@ -100,8 +100,8 @@
 
           <el-table-column fixed="right" label="操作" width="100" align="center">
             <template slot-scope="scope">
-              <el-button @click="edit(scope.row)" type="text" class="underline" align="center">编辑</el-button>
-              <el-button @click="deletes(scope.row)" type="text" class="underline" align="center">删除</el-button>
+              <el-button @click="edit(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('编辑')">编辑</el-button>
+              <el-button @click="deletes(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -248,7 +248,7 @@ import PatentAddOrEdit from '../../components/PatentAddOrEdit'
           ],
           value3: [
             { label: '全部', id: 0,},
-            { label: '待官方受理', id: 1,},
+            { label: '已受理', id: 1,},
             { label: '初审中', id: 2,},
             { label: '实审中', id: 3,},
             { label: '待缴费', id: 4,},
@@ -258,6 +258,7 @@ import PatentAddOrEdit from '../../components/PatentAddOrEdit'
             { label: '已授权', id: 8,},
             { label: '变更中', id: 9,},
             { label: '已失效', id: 10,},
+            { label: '已转让', id: 11,},
           ],
           value4: [
             { label: '全部', id: 0,},

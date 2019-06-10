@@ -23,6 +23,13 @@
 
   export default {
     name: "login",
+    created() {
+      localStorage.clear();  //
+      // console.log(localStorage);
+    },
+    mounted() {
+      this.$store.commit('Auth/CLEAR_PERMISSION');  // avoid losing the efficacy of token, goto the page of login.vue, but the token still resist
+    },
     methods: {
       async login() {
         if(this.accountName !== '' && this.pwd !== '') {
@@ -42,7 +49,7 @@
               this.$store.dispatch('userLoginVO', JSON.parse(localStorage.getItem('userLoginVO')));
 
               if(!this.$store.state.Auth.permissionList) {
-                this.$store.dispatch('Auth/FETCH_PERMISSION').then(() => {
+                this.$store.dispatch('Auth/FETCH_PERMISSION').then(() => {  // 此处的then写法在旧版IE不支持
                   this.$store.dispatch('isLogin', true);
                   this.$router.replace('/');
                 }); //刷新界面就请求权限数据

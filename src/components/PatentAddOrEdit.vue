@@ -36,13 +36,18 @@
 
        <el-col :span="6">
          <el-form-item label="交底书名称：" prop="disclosurePaperDTO.paperName">
-           <el-input style="width:100%;" v-model="basicInfo.disclosurePaperDTO.paperName" clearable maxlength="64"></el-input>
+           <el-select v-model="basicInfo.disclosurePaperDTO.paperName" maxlength="64" filterable remote reserve-keyword placeholder="请输入交底书名称"
+                      :remote-method="searchPaperNames"
+                      :loading="loading"
+                      @change="selectPaperNames">
+             <el-option v-for="item in listDown" :key="item.paperCode" :label="item.paperName" :value="item.id"></el-option>
+           </el-select>
          </el-form-item>
        </el-col>
 
        <el-col :span="6">
          <el-form-item label="交底书编码：" prop="disclosurePaperDTO.paperCode">
-           <el-input style="width:100%;" v-model="basicInfo.disclosurePaperDTO.paperCode" clearable maxlength="64"></el-input>
+           <span>{{basicInfo.disclosurePaperDTO.paperCode}}</span>
          </el-form-item>
        </el-col>
 
@@ -187,7 +192,7 @@
 /* eslint-disable */
 import { Message, MessageBox, Loading } from 'element-ui';
 /** 导入api.js */
-import { insertPatent, updatePatent, } from '../axios/api.js'
+import { insertPatent, updatePatent, checkPatentApplyNum, getDisclosurePaperListByPaperName, } from '../axios/api.js'
 export default {
   name: "PatentAddOrEdit",
   created() {
@@ -209,33 +214,92 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          let res;
-          if (this.choose === 0) {
-            res = await insertPatent(this.basicInfo);
-          } else {
-            res = await updatePatent(this.basicInfo);
+          let ifValid = true;
+          if (this.basicInfo.status !== 9 && !this.basicInfo.officialAcceptanceTime) {
+            ifValid = false;
           }
-          if (res.status === 1) {
-            if (this.choose === 1) {
-              this.$emit('ifChange','edit');
+          if (ifValid) {
+            let res;
+            if (this.choose === 0) {
+              res = await insertPatent(this.basicInfo);
             } else {
-              this.$router.push({path: '/patent/patentFollow'});
+              res = await updatePatent(this.basicInfo);
             }
+            if (res.status === 1) {
+              if (this.choose === 1) {
+                this.$emit('ifChange','edit');
+              } else {
+                this.$router.push({path: '/patent/patentFollow'});
+              }
 
-            Message({showClose: true, type: 'success', message: '新增或更新专利成功！'})
+              Message({showClose: true, type: 'success', message: '新增或更新专利成功！'});
+            }
+          } else {
+            Message({showClose: true, type: 'warning', message: '请填写“官方受理时间！'});
           }
         } else {
           console.log('error submit!!');
-          Message({showClose: true, type: 'error', message: '请仔细核对信息，确认无误再点击确定提交！'})
+          Message({showClose: true, type: 'error', message: '请仔细核对信息，确认无误再点击确定提交！'});
           return false;
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    }
+    },
+
+    // 根据条件查询客户下拉列表
+    searchPaperNames(query) {
+      let self = this;
+      if (query !== '') {
+        self.loading = true;
+        setTimeout(async () => {
+          self.loading = false;
+          self.listDown = (await getDisclosurePaperListByPaperName({paperName	: query})).msg;
+        }, 200);
+      } else {
+        self.listDown = [];
+      }
+    },
+
+    // 根据选择的交底书名称显示交底书编码
+    selectPaperNames(val) {
+      this.listDown.forEach(item => {
+        if (item.id === val) {
+          this.basicInfo.disclosurePaperDTO.paperCode = item.paperCode;
+        }
+      })
+    },
   },
   data() {
+    let self = this;
+    let validatePatentApplyNum = async (rule, value, callback) => {
+      if(!value) {
+        value = '';
+        callback(new Error('专利申请号不能为空！'));
+      } else {
+        let valid = false;
+        let params = {
+          patentAppleNum: this.basicInfo.patentApplyNum,
+        };
+        if (self.choose) {
+          params.id = this.basicInfo.id;
+        }
+        if (self.basicInfo.patentApplyNum) {
+          let res = await checkPatentApplyNum(params);
+          valid =  res.status === 1;
+        } else {
+          valid = false;
+        }
+
+        if (!valid) {
+          callback(new Error('专利申请号重复！'));
+        } else {
+          callback();
+        }
+      }
+    };
+
     return {
       // all info
       basicInfo: {
@@ -249,7 +313,7 @@ export default {
 
       options: {
         status: [
-          { label: '待官方受理', id: 1,},
+          { label: '已受理', id: 1,},
           { label: '初审中', id: 2,},
           { label: '实审中', id: 3,},
           { label: '待缴费', id: 4,},
@@ -259,6 +323,7 @@ export default {
           { label: '已授权', id: 8,},
           { label: '变更中', id: 9,},
           { label: '已失效', id: 10,},
+          { label: '已转让', id: 11,},
         ],
         type: [
           { label: '全部', id: 0,},
@@ -290,10 +355,15 @@ export default {
         ],
       },
 
+      loading: false, //下拉列表请求后提示加载中
+      listDown: [],
 
       rules: {
         patentName: [
           { required: true, message: '专利名称不能为空', trigger: ['blur','change'] },
+        ],
+        patentApplyNum: [
+          { required: true, validator: validatePatentApplyNum, trigger: 'blur'},
         ],
         firstInventor : [
           { required: true, message: '第一发明人不能为空', trigger: ['blur','change'] },

@@ -99,16 +99,16 @@ $ajax.interceptors.response.use(
       // return response.data;
     } else if(response.data.status === -1) {
       //返回 -1 清除token信息并跳转到登录页面
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      localStorage.removeItem('isLogin');
-      vm.$store.dispatch('getNewIsLogin', localStorage.getItem('isLogin'));
+      // localStorage.removeItem('token');
+      // localStorage.removeItem('username');
+      // localStorage.removeItem('isLogin');
       // if(vm.$router.currentRoute.path !== '/login') {
       //   vm.$router.push({
       //     path: 'login',
       //     query: {redirect: vm.$router.currentRoute.fullPath}
       //   });
       // }
+      localStorage.clear();
       vm.$router.push('/login');
       console.log('未登录');
       // Message({showClose: true, type: 'warning', message: response.data.msg});

@@ -125,7 +125,7 @@ import sideNav from '../../components/sideNav'
           // localStorage.removeItem('userLoginVO');
           localStorage.clear();  /* only clear all info, the routes will be right, or not go to the method of set_router.js */
           this.$store.commit('Auth/CLEAR_PERMISSION');
-          // this.$store.commit('Auth/CLEAR_MENU');
+
           // this.$router.push('/login');
 
           this.reload();  // it doesn't have duplicate keys of route, but have a little delay. OR it has duplicate keys of route and it also can open the page of noneAuth.

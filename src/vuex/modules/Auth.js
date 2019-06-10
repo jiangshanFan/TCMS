@@ -36,6 +36,8 @@ export default {
       let permissionList;
       if (res) {
         permissionList = res.permissionListVOList;
+      } else {
+        permissionList = [];
       }
 
       /*  根据权限筛选出我们设置好的路由并加入到path=''的children */

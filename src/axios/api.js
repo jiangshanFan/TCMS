@@ -8,7 +8,6 @@ import vm from '../main.js'
 
 /**
  * @name login -------------- 登录
- * @param {ObjectConstructor} data
  * @author fjs
  * */
 //登录
@@ -63,16 +62,20 @@ export const deleteDisclosurePaper = data => {return $ajax({url: '/api/paper/del
 export const insertDisclosurePaper = data => {return $ajax({url: '/api/paper/insertDisclosurePaper', method: 'post', data: data, meta: 1,})};
 //交底书管理--更新
 export const updateDisclosurePaper = data => {return $ajax({url: '/api/paper/updateDisclosurePaper', method: 'post', data: data, meta: 1,})};
+//交底书管理--根据交底书名称获取交底书列表
+export const getDisclosurePaperListByPaperName = data => {return $ajax({url: '/api/paper/getDisclosurePaperListByPaperName', method: 'get', params: data,})};
 
 
 //专利相关--专利跟踪表
 export const getPatentList = data => {return $ajax({url: '/api/patent/getPatentList', method: 'get', params: data,})};
+//专利相关--专利申请号验证
+export const checkPatentApplyNum = data => {return $ajax({url: '/api/patent/checkPatentApplyNum', method: 'get', params: data,})};
 //专利相关--新增专利
 export const insertPatent = data => {return $ajax({url: '/api/patent/insertPatent', method: 'post', data: data, meta: 1,})};
 //专利相关--更新专利
 export const updatePatent = data => {return $ajax({url: '/api/patent/updatePatent', method: 'post', data: data, meta: 1,})};
 //专利相关--删除专利
-export const deletePatent = data => {return $ajax({url: '/api/patent/deletePatent', method: 'post', data: data, meta: 1,})};
+export const deletePatent = data => {return $ajax({url: '/api/patent/deletePatent', method: 'post', data: data,})};
 
 
 //专利相关--专利续费管理

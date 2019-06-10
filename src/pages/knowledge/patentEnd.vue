@@ -220,16 +220,12 @@
           ],
           value4: [
             { label: '全部', id: 0,},
-            { label: '待官方受理', id: 1,},
-            { label: '初审中', id: 2,},
-            { label: '实审中', id: 3,},
-            { label: '待缴费', id: 4,},
+
             { label: '已撤回', id: 5,},
             { label: '已驳回', id: 6,},
             { label: '已放弃', id: 7,},
-            { label: '已授权', id: 8,},
-            { label: '变更中', id: 9,},
             { label: '已失效', id: 10,},
+            { label: '已转让', id: 11,},
           ],
         },
 
