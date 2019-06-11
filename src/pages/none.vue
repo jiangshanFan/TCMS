@@ -1,6 +1,6 @@
 <template>
   <div id="none">
-    <h1>404</h1>
+
   </div>
 </template>
 
@@ -11,6 +11,11 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  #none {
+    width: 100%;
+    height: 100%;
+    background: #fff url("../assets/none.png") no-repeat center 0;
+    background-size: cover;
+  }
 </style>

@@ -43,6 +43,8 @@ export const getUserList = data => {return $ajax({url: '/api/user/getUserList', 
 export const deleteUser = data => {return $ajax({url: '/api/user/deleteUser', method: 'post', data: data,})};
 //密码重置
 export const resetPwd = data => {return $ajax({url: '/api/user/resetPwd', method: 'post', data: data,})};
+//密码修改
+export const changePwd = data => {return $ajax({url: '/api/user/changePwd', method: 'post', data: data,})};
 //添加账户
 export const insertUser = data => {return $ajax({url: '/api/user/insertUser', method: 'post', data: data, meta: 1, })};
 //账户更新
@@ -50,7 +52,7 @@ export const updateUser = data => {return $ajax({url: '/api/user/updateUser', me
 
 
 /**
- * @name knowledge_disclosurePaper -------------- 知识产权管理
+ * @name knowledge -------------- 知识产权管理
  * @param {ObjectConstructor} data
  * @author fjs
  * */
@@ -127,5 +129,19 @@ export const queryDisclosurePaperDetailsByYear = data => {return $ajax({url: '/a
 export const queryPatentDetailsByYear = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryPatentDetailsByYear', method: 'get', params: data, })};
 //知识产权统计--已授权专利申报详情
 export const queryPatentDetailsByYearAndAuthorized = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryPatentDetailsByYearAndAuthorized', method: 'get', params: data,})};
-//知识产权统计--知识产权统计所有
-export const queryProjectInformation = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryProjectInformation', method: 'get', params: data,})};
+
+
+/**
+ * @name project -------------- 项目管理
+ * @author fjs
+ * */
+//项目列表
+export const getProjectProjectInformation = data => {return $ajax({url: '/api/createProject/project/getProjectProjectInformation', method: 'get', params: data,})};
+//项目列表--删除
+export const removeProjectInformation = data => {return $ajax({url: '/api/createProject/project/removeProjectInformation', method: 'get', params: data,})};
+//项目列表--导出Excel
+export const downloadProjectList = (data, arg) => {return $ajax({url: '/api/createProject/export/downloadProjectList', method: 'get', params: data, responseType: 'blob', args: arg,})};
+//项目列表--新增
+export const addProjectInformation = data => {return $ajax({url: '/api/createProject/project/addProjectInformation', method: 'post', data: data, meta: 1,})};
+//项目列表--编辑
+export const editProjectInformation = data => {return $ajax({url: '/api/createProject/project/editProjectInformation', method: 'post', data: data, meta: 1,})};

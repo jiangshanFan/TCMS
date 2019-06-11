@@ -6,7 +6,7 @@
 
       <el-row :gutter="10" class="spec">
         <el-col :span="6">
-          <el-form-item label="专利名称：" prop="dissertationName">
+          <el-form-item label="论文名称：" prop="dissertationName">
             <el-input style="width:100%;" v-model="basicInfo.dissertationName" clearable maxlength="64"></el-input>
           </el-form-item>
         </el-col>
@@ -62,8 +62,8 @@
         </el-form-item>
       </el-col>
 
-      <el-col class="tc" :span="24">
-        <el-form-item>
+      <el-col class="tc mt20" :span="24">
+        <el-form-item label-width="0">
           <el-button type="primary" @click="submitForm('TechArticleAddOrEdit')">确定</el-button>
           <el-button type="plain" @click="resetForm('TechArticleAddOrEdit')">重置</el-button>
         </el-form-item>

@@ -26,8 +26,10 @@ $width: 100% !default;
 .bg_f{background-color: #fff !important;}
 .bg_f5{background-color: #f5f5f5 !important;}
 
-/*隐藏盒子*/
+/*盒子*/
 .disn{display:none !important;}
+.dis{display:block !important;}
+.disib{display:inline-block !important;}
 
 /*边框*/
 .border_solid_bottom_c{border-bottom:1px solid #ccc;}
@@ -64,6 +66,12 @@ $width: 100% !default;
 .out_double{display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;
 }
 
+/*阴影*/
+.boxShadow {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 8px 0px;
+  padding: 10px 20px;
+  line-height: 30px;
+}
 
 
 /* 可以设置不同的进入和离开动画 */

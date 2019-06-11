@@ -120,7 +120,7 @@ html,body {
 
 
 /* menu */
-$menus: project_knowledge, project_auth;
+$menus: project_new, project_knowledge, project_auth;
 @each $menu in $menus {
   .icon-#{$menu} {
     background: url("/static/images/#{$menu}.png") center left no-repeat;  // 在scss中必须写入static中，在 .vue 文件中可以写入 assets中

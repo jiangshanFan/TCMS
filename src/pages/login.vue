@@ -1,18 +1,22 @@
 <template>
-  <div id="login">
-    <h2 class="title">简易登录页</h2>
-    <div class="login">
-      <div class="login--account">
-        <span>账号：</span>
-        <input type="text"  placeholder="随便输" name="account" v-model.trim="accountName"/>
+  <div id="login" class="tc posr">
+    <div class="login posa boxShadow">
+      <h2 class="title">技术中心管理系统</h2>
+      <span class="f12">欢迎登录!</span>
+
+      <div class="login_info">
+
+        <el-input placeholder="请输入用户名" v-model.trim="accountName" size="small" clearable>
+          <i slot="prefix" class="el-input__icon icon_user"></i>
+        </el-input>
+
+        <el-input type="password" placeholder="请输入用户名" v-model.trim="pwd" size="small" clearable>
+          <i slot="prefix" class="el-input__icon icon_pwd"></i>
+        </el-input>
+
+        <el-button type="primary" size="small" style="width: 100%;" @click="login">登录</el-button>
       </div>
-      <div class="login--password">
-        <span>密码：</span>
-        <input type="password"  placeholder="随便输" name="password" v-model.trim="pwd" @keyup.enter="login"/>
-      </div>
-      <p class="login--btn">
-        <button id="loginBtn" @click="login">登录</button>
-      </p>
+
     </div>
   </div>
 </template>
@@ -73,6 +77,50 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  #login {
+    height: 100%;
+    background: url("../assets/login_bg.png") no-repeat center 0;
+    background-size: cover;
+    .login {
+      width: 800px;
+      height: 460px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 80px 40px 80px 400px;
+      box-sizing: border-box;
+      border-radius: 5px;
+      background: #fff url("../assets/login_dialog_bg.png") no-repeat 40px center;
+      background-size: 360px;
+      .title {
+        margin: 0 !important;
+      }
+      .login_info {
+        height: 250px;
+        padding: 0 60px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        .icon_user {
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          margin-top: 6px;
+          background: url("../assets/login_user.png") no-repeat center 0em;
+          background-size: cover;
+        }
+        .icon_pwd {
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          margin-top: 6px;
+          background: url("../assets/login_pwd.png") no-repeat center 0em;
+          background-size: cover;
+        }
+      }
+    }
+  }
 </style>

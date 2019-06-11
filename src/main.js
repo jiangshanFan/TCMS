@@ -38,6 +38,17 @@ Vue.prototype.$indexS = function(index, cur, size) {  //序号--序列化方法
   return index + add;
 };
 
+
+/**
+ * 序号序列化
+ * @param {string} url
+ * @returns {*}
+ */
+Vue.prototype.$exportExcel = function(url) {  // 下载导出Excel
+  window.open(url);
+};
+
+
 /*-- 日期和时间戳转换 --*/
 function add0(m){return m<10?'0'+m:m }
 Vue.prototype.$format = function format(shijianchuo)

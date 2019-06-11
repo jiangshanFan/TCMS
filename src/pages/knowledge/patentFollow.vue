@@ -294,7 +294,7 @@ import PatentAddOrEdit from '../../components/PatentAddOrEdit'
         ],
 
         currentPage: 1,
-        size: 3,
+        size: 10,
 
         show: false,
 

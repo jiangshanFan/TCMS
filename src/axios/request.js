@@ -59,8 +59,8 @@ $ajax.interceptors.response.use(
       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
       let filename = '';
       if(response.config.method === 'get') {
-        if(response.config.url === '/api/project/export/projectRateExport' && response.config.args.projectName) {
-          filename = `项目总进度计划表${response.config.args.projectName}(${response.config.params.projectNo}).xlsx`;
+        if(response.config.url === '/api/createProject/export/downloadProjectList') {
+          filename = `项目列表(${vm.$format(new Date().getTime()).dates}).xlsx`;
         }
       }else{
 
@@ -109,7 +109,8 @@ $ajax.interceptors.response.use(
       //   });
       // }
       localStorage.clear();
-      vm.$router.push('/login');
+      // vm.$router.push('/login');
+      window.location.reload();
       console.log('未登录');
       // Message({showClose: true, type: 'warning', message: response.data.msg});
         // 返回错误信息 return response.data;

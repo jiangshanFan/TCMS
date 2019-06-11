@@ -26,9 +26,102 @@ const newUserRole = () => import('../pages/user/newUserRole');
 const newUserName = () => import('../pages/user/newUserName');
 
 
+/* 项目管理 */
+const project = () => import('../pages/project/project');
+const projectList = () => import('../pages/project/projectList');
+const newProject = () => import('../pages/project/newProject');
+const projectProgress = () => import('../pages/project/projectProgress');
+const projectMembers = () => import('../pages/project/projectMembers');
+const projectEvaluate = () => import('../pages/project/projectEvaluate');
+const projectDocument = () => import('../pages/project/projectDocument');
+
 
 /* 所有的路由 */
 const allRoutes = [
+  {
+    path: '/project',
+    component: project,
+    name: 'project',
+    meta: {
+      name: '项目管理',
+      icon: 'icon-project_new'
+    },
+    children: [
+      {
+        path: 'projectList',
+        component: projectList,
+        name: 'projectList',
+        meta: {
+          name: '项目列表',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        },
+      },
+      {
+        path: 'newProject',
+        component: newProject,
+        name: 'newProject',
+        meta: {
+          name: '新增项目',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        }
+      },
+      {
+        path: 'projectProgress',
+        component: projectProgress,
+        name: 'projectProgress',
+        meta: {
+          name: '项目进度管理',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        },
+      },
+      {
+        path: 'projectMembers',
+        component: projectMembers,
+        name: 'projectMembers',
+        meta: {
+          name: '项目成员管理',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        }
+      },
+      {
+        path: 'projectEvaluate',
+        component: projectEvaluate,
+        name: 'projectEvaluate',
+        meta: {
+          name: '项目考评管理',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        }
+      },
+      {
+        path: 'projectDocument',
+        component: projectDocument,
+        name: 'projectDocument',
+        meta: {
+          name: '项目文档管理',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        }
+      },
+    ]
+  },
+
   {
     path: '/patent',
     component: patent,

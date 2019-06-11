@@ -29,6 +29,9 @@ const state = {   //要设置的全局访问的state对象     //要设置的初
   // 账户管理跳转新增或者编辑传参
   auth_userName: {},
 
+  /* 项目管理 */
+  // 项目列表跳转新增或编辑传参
+  project_list: {},
 };
 
 
@@ -55,6 +58,10 @@ const getters = {   //实时监听state值的变化(最新状态)
   auth_userRole: (state) => {return state.auth_userRole},
   // 账户管理
   auth_userName: (state) => {return state.auth_userName},
+
+  /* 项目管理 */
+  // 项目列表
+  project_list: (state) => {return state.project_list},
 
 };
 
@@ -84,6 +91,10 @@ const mutations = {//自定义改变state初始值的方法，这里面的参数
   // 账户管理
   auth_userName(state, item) {state.auth_userName = item},
 
+  /* 项目管理 */
+  // 项目列表
+  project_list(state, item) {state.project_list = item},
+
 };
 
 
@@ -111,6 +122,10 @@ const actions = {//同上注释，item 为要变化的形参
   auth_userRole(context, item) {context.commit('auth_userRole', item)},
   // 账户管理
   auth_userName(context, item) {context.commit('auth_userName', item)},
+
+  /* 项目管理 */
+  // 项目列表
+  project_list(context, item) {context.commit('project_list', item)},
 
 };
 

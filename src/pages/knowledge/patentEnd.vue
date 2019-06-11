@@ -253,7 +253,7 @@
         ],
 
         currentPage: 1,
-        size: 3,
+        size: 10,
 
         // 详情内容等必须通过当前页面才能访问的内容
         show: false,

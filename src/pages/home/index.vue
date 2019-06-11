@@ -69,7 +69,7 @@
 
 <script>
 /* eslint-disable */
-import { loginOut, } from '../../axios/api'
+import { loginOut, changePwd,} from '../../axios/api'
 import { mh } from '../../utils/common'
 import sideNav from '../../components/sideNav'
 
@@ -99,13 +99,13 @@ import sideNav from '../../components/sideNav'
       changeInfo(form) {
         this.$refs.ruleForm.validate(async (valid) => {
           if (valid) {
-            // let res = await changePwd({oldPassword: form.oldPassword, newPassword: form.newPassword,});
-            // this.dialogFormVisible = false;
-            // if (res.status === 1) {
-            //   Message({showClose: true, type: 'success', message: '修改密码成功，请重新登录以验证密码！'});
-            //   this.$refs.ruleForm.resetFields();
-            //   this.clearStorage();
-            // }
+            let res = await changePwd({oldPassword: form.oldPassword, newPassword: form.newPassword,});
+            this.dialogFormVisible = false;
+            if (res.status === 1) {
+              this.$message({showClose: true, type: 'success', message: '修改密码成功，请重新登录以验证密码！'});
+              this.$refs.ruleForm.resetFields();
+              this.clearStorage();
+            }
             console.log('校验成功！')
           }
         })

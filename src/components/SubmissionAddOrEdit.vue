@@ -94,8 +94,8 @@
         </el-form-item>
       </el-col>
 
-      <el-col class="tc" :span="24">
-        <el-form-item>
+      <el-col class="tc mt20" :span="24">
+        <el-form-item label-width="0">
           <el-button type="primary" @click="submitForm('SubmissionAddOrEdit')">确定</el-button>
           <el-button type="plain" @click="resetForm('SubmissionAddOrEdit')">重置</el-button>
         </el-form-item>
