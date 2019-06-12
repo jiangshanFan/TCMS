@@ -11,7 +11,6 @@
           </el-form-item>
         </el-col>
 
-
         <el-col :span="6">
           <el-form-item label="项目负责人：" prop="empName">
             <el-input style="width:100%;" v-model="basicInfo.empName" clearable maxlength="12"></el-input>

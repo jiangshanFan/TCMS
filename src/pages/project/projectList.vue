@@ -5,7 +5,7 @@
 
     <AddOrEdit v-if="show" @ifChange="showDefault"></AddOrEdit>
 
-    <div class="userRoles pl20 pr20" v-else>
+    <div class="projectLists pl20 pr20" v-else>
       <!--  search -->
       <div class="section-search mb20 mt20">
         <el-row>
@@ -88,7 +88,7 @@
 
           <el-table-column fixed="right" label="操作" width="120" align="center">
             <template slot-scope="scope">
-              <span v-if="scope.row.id !== 1">
+              <span>
                 <el-button class="underline f12" @click="edits(scope.row)" type="text" align="center" v-if="$route.meta.button.buttons.includes('编辑')">编辑</el-button>
                 <el-button class="underline f12" @click="deletes(scope.row)" type="text" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
               </span>
@@ -216,7 +216,7 @@
     data() {
       return {
         // table
-        table: [],
+        table: {},
         currentPage: 1,
         size: 10,
 

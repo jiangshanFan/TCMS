@@ -32,6 +32,11 @@ const state = {   //要设置的全局访问的state对象     //要设置的初
   /* 项目管理 */
   // 项目列表跳转新增或编辑传参
   project_list: {},
+  // 项目进度表跳转新增或编辑传参
+  project_progress: {},
+  // 项目考评表跳转新增或编辑传参
+  project_evaluate: {},
+
 };
 
 
@@ -62,6 +67,10 @@ const getters = {   //实时监听state值的变化(最新状态)
   /* 项目管理 */
   // 项目列表
   project_list: (state) => {return state.project_list},
+  // 项目进度表
+  project_progress: (state) => {return state.project_progress},
+  // 项目考评表
+  project_evaluate: (state) => {return state.project_evaluate},
 
 };
 
@@ -94,6 +103,10 @@ const mutations = {//自定义改变state初始值的方法，这里面的参数
   /* 项目管理 */
   // 项目列表
   project_list(state, item) {state.project_list = item},
+  // 项目进度表
+  project_progress(state, item) {state.project_progress = item},
+  // 项目考评表
+  project_evaluate(state, item) {state.project_evaluate = item},
 
 };
 
@@ -126,6 +139,10 @@ const actions = {//同上注释，item 为要变化的形参
   /* 项目管理 */
   // 项目列表
   project_list(context, item) {context.commit('project_list', item)},
+  // 项目进度表
+  project_progress(context, item) {context.commit('project_progress', item)},
+  // 项目考评表
+  project_evaluate(context, item) {context.commit('project_evaluate', item)},
 
 };
 

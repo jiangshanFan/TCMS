@@ -109,7 +109,7 @@
         header: [
           { prop: 'roleName', label: '角色名称',},
           { prop: 'des', label: '角色描述',},
-          { prop: 'userNames', label: '用户列表',},
+          { prop: 'userNames', label: '用户列表', width: 'unset', },
           { prop: 'status', label: '状态', change: ['关闭', '启用']},
         ],
 

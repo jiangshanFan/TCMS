@@ -1,7 +1,7 @@
 /* eslint-disable */
 /** api-doc*/
 import $ajax from './request'
-import vm from '../main.js'
+// import vm from '../main.js'
 
 //--此处根据method方法改变：method === 'post'? data : params;
 // console.log($ajax)
@@ -145,3 +145,37 @@ export const downloadProjectList = (data, arg) => {return $ajax({url: '/api/crea
 export const addProjectInformation = data => {return $ajax({url: '/api/createProject/project/addProjectInformation', method: 'post', data: data, meta: 1,})};
 //项目列表--编辑
 export const editProjectInformation = data => {return $ajax({url: '/api/createProject/project/editProjectInformation', method: 'post', data: data, meta: 1,})};
+
+
+//获取所有项目名称
+export const queryProjectProjectName = data => {return $ajax({url: '/api/createProject/project/queryProjectProjectName', method: 'get', params: data,})};
+//获取负责人信息
+export const getEmployeesInfoList = data => {return $ajax({url: '/api/projectMember/emp/getEmployeesInfoList', method: 'get', params: data,})};
+
+
+//项目进度管理
+export const getProjectProgressManagement = data => {return $ajax({url: '/api/projectProgressManagement/projectProgress/getProjectProgressManagement', method: 'get', params: data,})};
+//项目进度管理--删除
+export const removeProjectProgressManagement = data => {return $ajax({url: '/api/projectProgressManagement/projectProgress/removeProjectProgressManagement', method: 'post', data: data,})};
+//项目进度管理--导出Excel
+export const downloadProjectProgress = (data, arg) => {return $ajax({url: '/api/projectProgressManagement/export/downloadProjectProgress', method: 'get', params: data, responseType: 'blob', args: arg,})};
+//项目进度管理--新增
+export const saveProjectProgressManagement = data => {return $ajax({url: '/api/projectProgressManagement/projectProgress/saveProjectProgressManagement', method: 'post', data: data, meta: 1,})};
+//项目进度管理--编辑
+export const revampProjectProgressManagement = data => {return $ajax({url: '/api/projectProgressManagement/projectProgress/revampProjectProgressManagement', method: 'post', data: data, meta: 1,})};
+
+
+//项目成员管理
+export const getProjectMember = data => {return $ajax({url: '/api/projectMember/projectMemberInformation/getProjectMember', method: 'get', params: data,})};
+//项目成员管理--删除
+export const removeProjectMember = data => {return $ajax({url: '/api/projectMember/projectMemberInformation/removeProjectMember', method: 'post', data: data,})};
+//项目成员管理--导出Excel
+export const downloadProjectMember = (data, arg) => {return $ajax({url: '/api/projectMember/export/downloadProjectMember', method: 'get', params: data, responseType: 'blob', args: arg,})};
+//项目成员管理--新增
+export const saveProjectMember = data => {return $ajax({url: '/api/projectMember/projectMemberInformation/saveProjectMember', method: 'post', data: data, meta: 1,})};
+
+
+//项目考评管理
+export const getProjectMemberCheckScore = data => {return $ajax({url: '/api/projectMember/projectMemberInformation/getProjectMemberCheckScore', method: 'get', params: data,})};
+//项目考评管理--编辑
+export const revampProjectMember = data => {return $ajax({url: '/api/projectMember/projectMemberInformation/revampProjectMember', method: 'post', data: data, meta: 1,})};

@@ -62,6 +62,12 @@ $ajax.interceptors.response.use(
         if(response.config.url === '/api/createProject/export/downloadProjectList') {
           filename = `项目列表(${vm.$format(new Date().getTime()).dates}).xlsx`;
         }
+        if(response.config.url === '/api/projectProgressManagement/export/downloadProjectProgress') {
+          filename = `项目进度表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        }
+        if(response.config.url === '/api/projectMember/export/downloadProjectMember') {
+          filename = `项目人员表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        }
       }else{
 
       }
