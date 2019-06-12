@@ -21,6 +21,7 @@
       <el-container>
         <el-aside width="200px">
           <el-tree
+            ref="tree"
             node-key="id"
             accordion
             @node-click="handleNodeClick"
@@ -176,6 +177,9 @@
     async created() {
       this.getTreeList();
     },
+    mounted() {
+
+    },
 
     methods: {
       // get dataList of table
@@ -199,6 +203,15 @@
         let res = await getFileManageInformation();
         if (res.status === 1) {
           this.tree = res.msg;
+          let defaultData = this.tree[0].fileManages[0].fileManages[0];
+
+          this.defaultKeys = [1, this.tree[0].fileManages[0].id];
+
+          setTimeout(() => {
+            this.$refs.tree.setCurrentKey(defaultData.id);
+          },300);
+
+          this.handleNodeClick(defaultData);
         }
       },
 
@@ -233,7 +246,7 @@
             if (res.status === 1) {
               this.$message({type: 'success', message: '新增文件夹: ' + value + '成功！'});
               this.getTreeList();
-              this.defaultKeys = ['知识产权文档管理', '其他'];
+              this.defaultKeys = [1, 9];
             }
           } else {
             Message({showClose: true, type: 'warning', message: '文件夹名称不能为空！'})
@@ -253,7 +266,7 @@
           let res = await removeFileManageFolder({id: data.id});
           if(res.status === 1) {
             this.getTreeList();
-            this.defaultKeys = ['知识产权文档管理', '其他'];
+            this.defaultKeys = [1, 9];
             Message({showClose: true, type: 'success', message: '删除成功！'});
           }
         }).catch(() => {
@@ -263,7 +276,7 @@
 
       // change folder name
       change(node, data) {
-        this.$prompt('请输入文件夹名称', '提示', {
+        this.$prompt(`当前文件夹名称为“${node.label}”,请在下方框中输入新的名称：`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
@@ -273,7 +286,10 @@
           if (res.status === 1) {
             this.$message({type: 'success', message: '修改文件夹名称为:“ ' + value + '”成功！'});
             this.getTreeList();
-            this.defaultKeys = ['知识产权文档管理', '其他'];
+            this.defaultKeys = [1,];
+            if (node.parent) {
+              this.defaultKeys.push(node.parent.key)
+            }
           }
 
         }).catch(() => {
@@ -353,6 +369,7 @@
         if (this.search.value1) {
           this.show = false;
           this.show1 = true;
+          this.loading = true;
           let params = {
             page: this.currentPage,
             size: this.size,
@@ -362,6 +379,7 @@
           if (res.status === 1) {
             this.highlight = false;
             this.table1 = res.msg;
+            this.loading = false;
           }
         } else {
           Message({showClose: true, type: 'warning', message: '请先输入附件名称！'})
@@ -371,7 +389,7 @@
       // search
       async Search() {
         this.currentPage =1;
-        this.defaultKeys = ['知识文档管理'];
+        this.defaultKeys = [1];
         this.getTable1List();
       },
 
@@ -440,7 +458,7 @@
         ],
 
         currentPage: 1,
-        size: 3,
+        size: 10,
 
         // 是否显示table
         show: false,

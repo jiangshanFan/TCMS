@@ -103,6 +103,7 @@ export const editDissertationInformation = data => {return $ajax({url: '/api/dis
 //技术论文--技术论文新增
 export const addDissertationInformation = data => {return $ajax({url: '/api/dissertationInformation/dissertation/addDissertationInformation', method: 'post', data: data, meta: 1,})};
 
+
 //知识产权文件存档--树形菜单
 export const getFileManageInformation = data => {return $ajax({url: '/api/fileManageInformation/fileManage/getFileManageInformation', method: 'get', params: data,})};
 //知识产权文件存档--根据文件夹的id删除文件夹及文件夹下面的所有文件
@@ -123,6 +124,8 @@ export const replaceFileManageFolder = data => {return $ajax({url: '/api/fileMan
 
 //知识产权统计--知识产权统计根据年份统计
 export const queryDisclosurePatentStatisticsTotalByYear = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryDisclosurePatentStatisticsTotalByYear', method: 'get', params: data,})};
+//知识产权统计--交底详情
+export const queryProjectInformation = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryProjectInformation', method: 'get', params: data,})};
 //知识产权统计--交底详情
 export const queryDisclosurePaperDetailsByYear = data => {return $ajax({url: '/api/intellectualPropertyStatistics/propertyStatistics/queryDisclosurePaperDetailsByYear', method: 'get', params: data,})};
 //知识产权统计--专利申报详情
@@ -179,3 +182,21 @@ export const saveProjectMember = data => {return $ajax({url: '/api/projectMember
 export const getProjectMemberCheckScore = data => {return $ajax({url: '/api/projectMember/projectMemberInformation/getProjectMemberCheckScore', method: 'get', params: data,})};
 //项目考评管理--编辑
 export const revampProjectMember = data => {return $ajax({url: '/api/projectMember/projectMemberInformation/revampProjectMember', method: 'post', data: data, meta: 1,})};
+
+
+//项目文档管理--树形菜单
+export const getFileManageInformationProject = data => {return $ajax({url: '/api/projectFileManageInformation/projectFileManage/getFileManageInformation', method: 'get', params: data,})};
+//项目文档管理--根据文件夹的id删除文件夹及文件夹下面的所有文件
+export const removeFileManageFolderProject = data => {return $ajax({url: '/api/projectFileManageInformation/projectFileManage/removeFileManageFolder', method: 'get', params: data,})};
+//项目文档管理--新增文件夹
+export const saveFileManageFolderProject = data => {return $ajax({url: '/api/projectFileManageInformation/projectFileManage/saveFileManageFolder', method: 'post', data: data, })};
+//项目文档管理--根据文件夹id获取该文件夹下面的文件
+export const getFileEnclosureInformationListProject = data => {return $ajax({url: '/api/projectFileManageInformation/projectFileManage/getFileEnclosureInformationList', method: 'get', params: data,})};
+//项目文档管理--搜索
+export const getFileEnclosureInformationProject = data => {return $ajax({url: '/api/projectFileManageInformation/projectFileManage/getFileEnclosureInformation', method: 'get', params: data,})};
+//项目文档管理--删除上传的文件
+export const removeFileEnclosureInformationProject = data => {return $ajax({url: '/api/projectFileManageInformation/projectFileManage/removeFileEnclosureInformation', method: 'get', params: data,})};
+//项目文档管理--添加附件  --------no use
+export const addUploadManyFileProject = data => {return $ajax({url: '/api/projectFileManageInformation/projectFileManage/addUploadManyFile', method: 'post', data: data, meta: 1,})};
+//项目文档管理--修改文件夹名称
+export const editeFileManageFolder = data => {return $ajax({url: '/api/projectFileManageInformation/projectFileManage/editeFileManageFolder', method: 'post', data: data,})};

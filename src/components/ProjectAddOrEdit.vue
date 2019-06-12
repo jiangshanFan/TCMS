@@ -13,7 +13,20 @@
 
         <el-col :span="6">
           <el-form-item label="项目负责人：" prop="empName">
-            <el-input style="width:100%;" v-model="basicInfo.empName" clearable maxlength="12"></el-input>
+            <el-select v-model="basicInfo.empName" filterable remote reserve-keyword placeholder="请输入责任人名称进行查询"
+                       :remote-method="searchNames"
+                       :loading="loading"
+                       style="width:100%"
+                       @visible-change="val => {let self = this;if(!val) self.listDown=[];}">
+              <el-option v-for="item in listDown" :key="item.empNo" :label="item.name" :value="item.empNo">
+                <span class="fl">{{ item.name }}</span>
+                <span class="fr select_color f12 ml20 disib">
+                      <b class="cc">性别：</b><b>{{ item.sex }}</b>
+                      <b class="cc">部门：</b><b>{{item.dept}}</b>
+                      <b class="cc">职位：</b><b>{{item.position}}</b>
+                    </span>
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
 
@@ -99,7 +112,7 @@
 /* eslint-disable */
 import { Message, MessageBox, Loading } from 'element-ui';
 /** 导入api.js */
-import { addProjectInformation, editProjectInformation, } from '../axios/api.js'
+import { addProjectInformation, editProjectInformation, getEmployeesInfoList, } from '../axios/api.js'
   export default {
     name: "ProjectAddOrEdit",
     created() {
@@ -146,12 +159,31 @@ import { addProjectInformation, editProjectInformation, } from '../axios/api.js'
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
-      }
+      },
+      // 根据条件查询客户下拉列表
+      searchNames(query) {
+        let self = this;
+        self.listDown = [];
+        if (query) {
+          self.loading = true;
+          setTimeout(async () => {
+            let res = await getEmployeesInfoList({name: query});
+            if (res.status === 1) {
+              self.listDown = res.msg;
+              self.loading = false;
+            }
+          }, 200);
+        } else {
+          self.listDown = [];
+        }
+      },
     },
     data() {
       return {
         // all info
         basicInfo: {},
+        loading: false, //下拉列表请求后提示加载中
+        listDown: [],
 
         options: {
           status: [

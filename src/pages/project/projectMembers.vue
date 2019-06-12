@@ -64,7 +64,6 @@
           <el-button type="primary" size="mini" @click="addNewMember()">新增项目成员</el-button>
         </div>
 
-
         <!-- 表格数据 -->
         <el-table
           :data="table.content"
@@ -104,7 +103,7 @@
 </template>
 
 <script>
-  /* eslint-disable */
+/* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
   import { getProjectMember, removeProjectMember, downloadProjectMember, queryProjectProjectName, getEmployeesInfoList, saveProjectMember, } from '../../axios/api.js'

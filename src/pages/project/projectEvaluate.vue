@@ -79,7 +79,7 @@
 </template>
 
 <script>
-  /* eslint-disable */
+/* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
   import { getProjectMemberCheckScore, revampProjectMember, queryProjectProjectName, } from '../../axios/api.js'
