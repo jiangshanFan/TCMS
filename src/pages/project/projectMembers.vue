@@ -213,7 +213,7 @@
       // add new member
       async addNewMember() {
         if (this.newMember) {
-          let res = await saveProjectMember({projectMember: {...this.newMember, projectId: this.search.value1}});
+          let res = await saveProjectMember({...this.newMember, projectId: this.search.value1});
           if (res.status === 1) {
             this.getList();
             Message({showClose: true, type: 'success', message: '新增项目成员成功！'});

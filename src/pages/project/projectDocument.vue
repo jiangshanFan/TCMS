@@ -5,7 +5,7 @@
 
     <div class="projectDocuments pl20 pr20">
       <!--  search -->
-      <div class="section-search mb20 mt20" v-if="$route.meta.button.buttons.includes('搜索')">
+      <div class="section-search mb20 mt20">
         <el-row>
           <el-col :span="12">
             <span class="c6">附件名称：</span>
@@ -21,6 +21,7 @@
       <el-container>
         <el-aside class="pr20" style="max-width:300px;width: auto;">
           <el-tree
+            ref="tree"
             node-key="id"
             accordion
             @node-click="handleNodeClick"
@@ -33,9 +34,9 @@
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span class="out fl" :class="{node_span : !data.status}" :title="node.label">{{ node.label }}</span>
               <span class="fl posr" v-if="(data.filePath.split('/').length === 1 && data.fileName !== '技术中心') || data.filePath.split('/').length > 1">
-                <span class="add" @click.stop.prevent="() => append(node, data)" v-if="data.status"></span>
+                <span class="add" @click.stop.prevent="() => append(node, data)" v-if="data.filePath.split('/').length === 1 && data.fileName !== '技术中心'"></span>
                 <span v-else>
-                  <span class="delete" @click.stop.prevent="() => remove(node, data)"></span>
+                  <span class="delete" @click.stop.prevent="() => remove(node, data)" v-if="!data.status"></span>
                   <span class="edit" @click.stop.prevent="() => change(node, data)"></span>
                 </span>
               </span>
@@ -86,7 +87,7 @@
               <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
               <!-- circle -->
-              <el-table-column :fixed="h.fixed" v-for="(h,i) in header" :key="h.prop" :label="h.label" :width="i !== header.length-1 ? h.label.length*25 : ''"  align="center" show-overflow-tooltip>
+              <el-table-column :fixed="h.fixed" v-for="h in header" :key="h.prop" :label="h.label" :width="h.width !== 'unset' ? h.label.length*50 : ''"  align="center" show-overflow-tooltip>
                 <template slot-scope="scope">
                   <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
                   <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
@@ -97,8 +98,8 @@
 
               <el-table-column fixed="right" label="操作" width="100" align="center">
                 <template slot-scope="scope">
-                  <el-button @click="downloads(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('下载')">下载</el-button>
-                  <el-button @click="deletes(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
+                  <el-button @click="downloads(scope.row)" type="text" class="underline" align="center">下载</el-button>
+                  <el-button @click="deletes(scope.row)" type="text" class="underline" align="center">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -116,7 +117,7 @@
             <span>所有文件夹中附件名称为“{{search.value1}}”的文件如下所示：</span>
             <!-- 表格数据 -->
             <el-table
-              :data="table.content"
+              :data="table1.content"
               v-loading="loading"
               stripe
               border
@@ -128,7 +129,7 @@
               <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
               <!-- circle -->
-              <el-table-column :fixed="h.fixed" v-for="h in header1" :key="h.prop" :label="h.label" :width="h.width !=='unset' ? h.label.length*25 : ''"  align="center" show-overflow-tooltip>
+              <el-table-column :fixed="h.fixed" v-for="h in header1" :key="h.prop" :label="h.label" :width="h.width !== 'unset' ? h.label.length*50 : ''"  align="center" show-overflow-tooltip>
                 <template slot-scope="scope">
                   <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
                   <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
@@ -172,7 +173,7 @@
       'breadcrumbList': breadcrumbList,
     },
     async created() {
-      this.getTreeList();
+      this.getTreeList(0);
     },
 
     methods: {
@@ -193,15 +194,28 @@
       },
 
       // get treeList
-      async getTreeList() {
+      async getTreeList(val = 1) {
         let res = await getFileManageInformationProject();
         if (res.status === 1) {
           this.tree = res.msg;
+          if (val === 0) {
+            let defaultData = this.tree[0].fileManages[0].fileManages[0];
+
+            this.defaultKeys = [1, this.tree[0].fileManages[0].id];
+
+            setTimeout(() => {
+              this.$refs.tree.setCurrentKey(defaultData.id);
+            },500);
+
+            this.handleNodeClick(defaultData);
+          }
         }
       },
 
       async handleNodeClick(data) {
-        console.log(data);
+        this.table = [];
+        this.search.value1 = '';
+        // console.log(data);
         this.highlight = true;
         if (data.filePath.split('/').length > 1) {
           this.show = true;
@@ -252,7 +266,7 @@
           let res = await removeFileManageFolderProject({id: data.id});
           if(res.status === 1) {
             this.getTreeList();
-            this.defaultKeys = [1,];
+            this.defaultKeys = [1];
             if (node.parent) {
               this.defaultKeys.push(node.parent.key)
             }
@@ -372,8 +386,10 @@
 
       // search
       async Search() {
+        this.$refs.tree.setCurrentKey();
         this.currentPage =1;
-        this.defaultKeys = ['技术中心'];
+        this.defaultKeys = [1];
+        this.search.name = this.search.value1;
         this.getTable1List();
       },
 

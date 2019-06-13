@@ -5,7 +5,7 @@
 
     <div class="knowledgeDocuments pl20 pr20">
       <!--  search -->
-      <div class="section-search mb20 mt20" v-if="$route.meta.button.buttons.includes('搜索')">
+      <div class="section-search mb20 mt20">
         <el-row>
           <el-col :span="12">
             <span class="c6">附件名称：</span>
@@ -82,6 +82,7 @@
               stripe
               border
               size="small"
+              v-loading="loading"
               style="width: 100%;margin-top:10px;"
               header-cell-class-name="header_cell table_header_shadow"
               tooltip-effect="light">
@@ -89,7 +90,7 @@
               <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
               <!-- circle -->
-              <el-table-column :fixed="h.fixed" v-for="(h,i) in header" :key="h.prop" :label="h.label" :width="i !== header.length-1 ? h.label.length*25 : ''"  align="center" show-overflow-tooltip>
+              <el-table-column :fixed="h.fixed" v-for="h in header" :key="h.prop" :label="h.label" :width="h.width !== 'unset' ? h.label.length*50 : ''"  align="center" show-overflow-tooltip>
                 <template slot-scope="scope">
                   <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
                   <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
@@ -100,26 +101,26 @@
 
               <el-table-column fixed="right" label="操作" width="100" align="center">
                 <template slot-scope="scope">
-                  <el-button @click="downloads(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('下载')">下载</el-button>
-                  <el-button @click="deletes(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
+                  <el-button @click="downloads(scope.row)" type="text" class="underline" align="center">下载</el-button>
+                  <el-button @click="deletes(scope.row)" type="text" class="underline" align="center">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
             <!-- 分页 -->
             <div class="pagination fr ovw-h mt20">
-              <el-pagination @current-change="handleCurrentChange"
-                             :current-page="currentPage" :page-size="size"
-                             layout="total, prev, pager, next"
-                             :total="table.totalCount" v-if="table.totalCount">
-              </el-pagination>
-            </div>
+                  <el-pagination @current-change="handleCurrentChange"
+                                 :current-page="currentPage" :page-size="size"
+                                 layout="total, prev, pager, next"
+                                 :total="table.totalCount" v-if="table.totalCount">
+                  </el-pagination>
+                </div>
           </div>
 
           <div class="mt20" v-if="show1">
-            <span>所有文件夹中附件名称为“{{search.value1}}”的文件如下所示：</span>
+            <span>所有文件夹中附件名称为“{{search.name}}”的文件如下所示：</span>
             <!-- 表格数据 -->
             <el-table
-              :data="table.content"
+              :data="table1.content"
               v-loading="loading"
               stripe
               border
@@ -131,7 +132,7 @@
               <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
               <!-- circle -->
-              <el-table-column :fixed="h.fixed" v-for="h in header1" :key="h.prop" :label="h.label" :width="h.width !=='unset' ? h.label.length*25 : ''"  align="center" show-overflow-tooltip>
+              <el-table-column :fixed="h.fixed" v-for="h in header1" :key="h.prop" :label="h.label" :width="h.width !=='unset' ? h.label.length*50 : ''"  align="center" show-overflow-tooltip>
                 <template slot-scope="scope">
                   <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
                   <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
@@ -175,7 +176,7 @@
       'breadcrumbList': breadcrumbList,
     },
     async created() {
-      this.getTreeList();
+      this.getTreeList(0);
     },
     mounted() {
 
@@ -199,24 +200,27 @@
       },
 
       // get treeList
-      async getTreeList() {
+      async getTreeList(val = 1) {
         let res = await getFileManageInformation();
         if (res.status === 1) {
           this.tree = res.msg;
-          let defaultData = this.tree[0].fileManages[0].fileManages[0];
+          if (val === 0) {
+            let defaultData = this.tree[0].fileManages[0].fileManages[0];
 
-          this.defaultKeys = [1, this.tree[0].fileManages[0].id];
+            this.defaultKeys = [1, this.tree[0].fileManages[0].id];
 
-          setTimeout(() => {
-            this.$refs.tree.setCurrentKey(defaultData.id);
-          },300);
+            setTimeout(() => {
+              this.$refs.tree.setCurrentKey(defaultData.id);
+            },300);
 
-          this.handleNodeClick(defaultData);
+            this.handleNodeClick(defaultData);
+          }
         }
       },
 
       async handleNodeClick(data) {
-        console.log(data);
+        this.table = [];
+        this.search.value1 = '';
         this.highlight = true;
         if (data.filePath.split('/').length > 1) {
           this.show = true;
@@ -388,8 +392,10 @@
 
       // search
       async Search() {
+        this.$refs.tree.setCurrentKey();
         this.currentPage =1;
         this.defaultKeys = [1];
+        this.search.name = this.search.value1;
         this.getTable1List();
       },
 
