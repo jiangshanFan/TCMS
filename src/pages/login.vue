@@ -98,10 +98,10 @@
         margin: 0 !important;
       }
       .login_info {
-        height: 250px;
+        height: 210px;
         padding: 0 60px;
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-around;
         align-items: center;
         flex-direction: column;
         .icon_user {

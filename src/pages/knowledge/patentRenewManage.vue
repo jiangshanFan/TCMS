@@ -90,6 +90,7 @@
           size="small"
           style="width: 100%;margin-top:10px;"
           header-cell-class-name="header_cell table_header_shadow"
+          :row-class-name="tableRowClassName"
           tooltip-effect="light">
 
           <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
@@ -357,6 +358,14 @@
         this.renewListVisible = false;
       },
 
+      // 待续费状态变色处理
+      tableRowClassName({row, rowIndex}) {
+        if (row.renewStatus === 1) {
+          // return 'warning-row';
+        }
+        return '';
+      },
+
       // show default module
       showDefault(val) {
         if (val) {
@@ -413,9 +422,9 @@
         table: {},
 
         header: [
-          { prop: 'patentCode', label: '专利编码',},
+          { prop: 'patentApplyNum', label: '专利号',},
           { prop: 'patentName', label: '专利名称',},
-          { prop: 'renewCount', label: '已续费次数',},
+          { prop: 'renewCount', label: '已续费年限',},
           { prop: 'type', label: '专利类型', change: ['','实用','发明','外观','软件著作权',]},
           { prop: 'officialAcceptanceTime', label: '官方受理时间',},
           { prop: 'realAuthorizeTime', label: '授权日期',},
@@ -457,6 +466,8 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+  .el-table .warning-row {
+    background: yellow;
+  }
 </style>
