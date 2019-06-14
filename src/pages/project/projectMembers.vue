@@ -19,7 +19,7 @@
           <div class="fl mr20 mb20">
             <span>状态：</span>
             <el-select v-model="search.value2" placeholder="请选择" size="mini" style="width:calc(100% - 100px);">
-              <el-option v-for="item in options.status" :key="item.id" :label="item.label" :value="item.id"></el-option>
+              <el-option v-for="item in options.status" :key="item.id" :label="item.label" :value="item.label"></el-option>
             </el-select>
           </div>
 
@@ -137,13 +137,13 @@
         };
         if(this.search.value1) {
           params.projectId = this.search.value1;
-          if(this.search.value2) {
+          if(this.search.value2 !== 'all') {
             params.type = this.search.value2;
           }
           if(this.search.value3) {
             params.name = this.search.value3;
           }
-          if(this.search.value4) {
+          if(this.search.value4 !== -1) {
             params.whetherInspection = this.search.value4;
           }
 
@@ -265,21 +265,21 @@
         // search
         search: {
           value1: '',
-          value2: 0,
-          value4: 0,
+          value2: 'all',
+          value4: -1,
         },
         options: {
           projectName: [],
           status: [
             { id: 0, label: 'all'},
-            { id: 1, label: '在职人员'},
-            { id: 2, label: '临时工'},
-            { id: 3, label: '离职人员'},
+            { id: 1, label: '正式人员'},
+            { id: 2, label: '试用人员'},
+            { id: 3, label: '调转人员'},
           ],
           evaluate: [
-            { id: 0, label: 'all'},
+            { id: -1, label: 'all'},
             { id: 1, label: '是'},
-            { id: 2, label: '否'},
+            { id: 0, label: '否'},
           ],
         },
 

@@ -19,6 +19,7 @@
                            :remote-method="searchNames"
                            :loading="loading"
                            style="width:100%"
+                           @change="basicInfo.empNo = basicInfo.name"
                            @visible-change="val => {let self = this;if(!val) self.listDown=[];}">
                   <el-option v-for="item in listDown" :key="item.empNo" :label="item.name" :value="item.empNo">
                     <span class="fl">{{ item.name }}</span>
