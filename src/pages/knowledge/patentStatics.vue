@@ -148,7 +148,7 @@ import PatentStaticsDetail from '../../components/PatentStaticsDetail'
     methods: {
       // year count
       async getYearCount() {
-        let res = await queryDisclosurePatentStatisticsTotalByYear({yearDate: this.year});
+        let res = await queryDisclosurePatentStatisticsTotalByYear({yearDate: this.$format(new Date(this.year).getTime()).y});
         if (res.status === 1) {
           this.countYear = res.msg;
         }
