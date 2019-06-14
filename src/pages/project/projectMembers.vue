@@ -77,12 +77,11 @@
           <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
           <!-- circle -->
-          <column :header="header"></column>
+          <column :header="header" @changeStatus="changeWhetherInspection"></column>
 
-          <el-table-column fixed="right" label="操作" width="120" align="center">
+          <el-table-column fixed="right" label="操作" width="60" align="center">
             <template slot-scope="scope">
               <span>
-                <el-button class="underline f12" @click="edits(scope.row)" type="text" align="center" v-if="$route.meta.button.buttons.includes('编辑')">编辑</el-button>
                 <el-button class="underline f12" @click="deletes(scope.row)" type="text" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
               </span>
             </template>
@@ -106,7 +105,7 @@
 /* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
-  import { getProjectMember, removeProjectMember, downloadProjectMember, queryProjectProjectName, getEmployeesInfoList, saveProjectMember, } from '../../axios/api.js'
+  import { getProjectMember, removeProjectMember, revampProjectMember, downloadProjectMember, queryProjectProjectName, getEmployeesInfoList, saveProjectMember, } from '../../axios/api.js'
   import column from '../../components/tableColumn'
   import breadcrumbList from '../../components/breadcrumbList'
   import ProjectAddOrEdit from '../../components/ProjectAddOrEdit'
@@ -223,6 +222,16 @@
         }
       },
 
+      // change whetherInspection
+      async changeWhetherInspection(obj) {
+        let res = await revampProjectMember(obj);
+        console.log(obj);
+        if (res.status === 1) {
+          this.getList();
+          Message({showClose: true, type: 'success', message: '修改考评成功！'});
+        }
+      },
+
       // show default module
       showDefault(val) {
         if (val) {
@@ -255,7 +264,7 @@
           { prop: 'school', label: '毕业学校',},
           { prop: 'type', label: '状态', eachWidth: 40,},
           { prop: 'unitTime', label: '入职时间',},
-          { prop: 'whetherInspection', label: '是否考评', change: ['否', '是']},
+          { prop: 'whetherInspection', label: '是否考评', select: [ { id: 0, label: '否'}, { id: 1, label: '是'},]},
           { prop: 'dept', label: '部门', eachWidth: 40,},
           { prop: 'mobile', label: '联系电话',},
           { prop: 'mail', label: '邮箱', width:'unset', },

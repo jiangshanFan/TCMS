@@ -82,7 +82,7 @@
 /* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
-  import { getProjectMemberCheckScore, revampProjectMember, queryProjectProjectName, } from '../../axios/api.js'
+  import { getProjectMemberCheckScore, queryProjectProjectName, } from '../../axios/api.js'
   import column from '../../components/tableColumn'
   import breadcrumbList from '../../components/breadcrumbList'
   import ProjectEvaluateAddOrEdit from '../../components/ProjectEvaluateAddOrEdit'
