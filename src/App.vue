@@ -59,10 +59,16 @@ export default {
     let path = localStorage.getItem('currentUrl');
     if(localStorage.getItem('token') === '' || localStorage.getItem('token') === null || localStorage.getItem('token') === undefined){
       this.$router.push('/login');
-    }
-    else {
+    } else {
       this.$router.push(path);
     }
+
+
+    // else if (path) {  // sessionStorage 时初始化不会产生URL，因为URL时update产生的
+    //   this.$router.push(path);
+    // } else {
+    //   this.$router.push('/');
+    // }
   },
 
   beforeUpdate() {
