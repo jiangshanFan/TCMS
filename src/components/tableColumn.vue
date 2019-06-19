@@ -11,7 +11,6 @@
         :width="h.width !=='unset' ?h.eachWidth? h.label.length*h.eachWidth: h.label.length*25 : ''"
         align="center"
         show-overflow-tooltip>
-
         <!--
           the method of using:
             one： 'change', type: Array, is suitable for the different status(['','nice'])
