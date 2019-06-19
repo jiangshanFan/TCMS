@@ -12,6 +12,15 @@
         align="center"
         show-overflow-tooltip>
 
+        <!--
+          the method of using:
+            one： 'change', type: Array, is suitable for the different status(['','nice'])
+            two: 'parent', type: String, is suitable for the prop in an object(parent.prop)
+            three: 'multiProp', type: Array, is suitable for the several prop in the same node and divide by '、'(['',''])
+            four: 'division', type: Number, is suitable for the division between different number
+            five: 'select', type: Array, is suitable for the selection of different option([ { id: 0, label: '否'}, { id: 1, label: '是'},])
+            six: 'children', type: Array, is suitable for the multistage header([{ prop: 'janTotal', label: '数量', eachWidth: 48, sortable: true, }, { prop: 'janMoney', label: '费用', division: 100, eachWidth: 48, sortable: true, },])
+        -->
         <template slot-scope="scope">
           <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
           <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
@@ -31,7 +40,7 @@
 </template>
 
 <script>
-/* eslint-disable */
+  /* eslint-disable */
   export default {
     name: "tableColumn",
     methods: {
