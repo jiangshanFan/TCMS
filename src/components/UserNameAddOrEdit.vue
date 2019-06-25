@@ -54,7 +54,7 @@
   /** 导入api.js */
   import { insertUser, updateUser, getRoleList, } from '../axios/api.js'
   export default {
-    name: "UserRoleAddOrEdit",
+    name: "UserNameAddOrEdit",
     async created() {
       this.form = Object.assign({},this.$store.getters.auth_userName);
       if (!this.form.status) {
