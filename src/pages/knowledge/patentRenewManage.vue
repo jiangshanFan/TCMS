@@ -81,7 +81,7 @@
       <!-- content -->
       <div class="mt20">
         <!-- 导出 -->
-        <el-button type="primary" @click="exportExcel" v-if="$route.meta.button.buttons.includes('专利续费表导出Excel')">专利续费表导出Excel</el-button>
+        <el-button type="primary" @click="exportExcel" v-if="$route.meta.button.buttons.includes('导出Excel')">导出Excel</el-button>
         <!-- 表格数据 -->
         <el-table
           :data="table.content"
@@ -96,7 +96,7 @@
           <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
           <!-- circle -->
-          <el-table-column :fixed="h.fixed" v-for="(h,i) in header" :key="h.prop" :label="h.label" :width="i !== header.length-1 ? h.label.length*25 : ''"  align="center" show-overflow-tooltip>
+          <el-table-column :fixed="h.fixed" v-for="h in header" :key="h.prop" :label="h.label" :width="h.width !=='unset' ?(h.eachWidth? h.label.length*h.eachWidth: h.label.length*25) : ''"  align="center" show-overflow-tooltip>
             <template slot-scope="scope">
               <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
               <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
@@ -115,8 +115,10 @@
         <!-- 分页 -->
         <div class="pagination fr ovw-h mt20">
           <el-pagination @current-change="handleCurrentChange"
+                         @size-change="handleSizeChange"
                          :current-page="currentPage" :page-size="size"
-                         layout="total, prev, pager, next"
+                         :page-sizes="[5, 10, 15, 20,50]"
+                         layout="total, sizes, prev, pager, next"
                          :total="table.totalCount" v-if="table.totalCount">
           </el-pagination>
         </div>
@@ -276,6 +278,11 @@
         this.getList();
       },
 
+      handleSizeChange(val) {
+        this.size = val;
+        this.getList();
+      },
+
       // 点击填写编辑按钮打开弹框
       edit(row) {
         this.renewEditVisible = true;
@@ -422,7 +429,7 @@
         table: {},
 
         header: [
-          { prop: 'patentApplyNum', label: '专利号',},
+          { prop: 'patentApplyNum', label: '专利申请号', eachWidth: 40},
           { prop: 'patentName', label: '专利名称',},
           { prop: 'renewCount', label: '已续费年限',},
           { prop: 'type', label: '专利类型', change: ['','实用','发明','外观','软件著作权',]},
@@ -459,7 +466,7 @@
         // breadcrumb
         breadcrumb: [
           { id: 'patent', name: '知识产权管理', path: '/patent',},
-          { id: 'patentRenewManage', name: '专利跟踪表', path: '/patent/patentRenewManage',},
+          { id: 'patentRenewManage', name: '专利续费管理', path: '/patent/patentRenewManage',},
         ]
       }
     },

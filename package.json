@@ -17,7 +17,7 @@
     "@antv/g2": "^3.4.5",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
-    "element-ui": "2.4.11",
+    "element-ui": "2.11.0",
     "es6-promise": "4.2.5",
     "lodash.clonedeep": "^4.5.0",
     "lodash.difference": "^4.5.0",

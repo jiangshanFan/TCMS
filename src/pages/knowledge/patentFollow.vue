@@ -108,8 +108,10 @@
         <!-- 分页 -->
         <div class="pagination fr ovw-h mt20">
           <el-pagination @current-change="handleCurrentChange"
+                         @size-change="handleSizeChange"
                          :current-page="currentPage" :page-size="size"
-                         layout="total, prev, pager, next"
+                         :page-sizes="[5, 10, 15, 20,50]"
+                         layout="total, sizes, prev, pager, next"
                          :total="table.totalCount" v-if="table.totalCount">
           </el-pagination>
         </div>
@@ -184,6 +186,11 @@ import PatentAddOrEdit from '../../components/PatentAddOrEdit'
 
       handleCurrentChange(val) {
         this.currentPage = val;
+        this.getList();
+      },
+
+      handleSizeChange(val) {
+        this.size = val;
         this.getList();
       },
 
@@ -280,7 +287,7 @@ import PatentAddOrEdit from '../../components/PatentAddOrEdit'
           { prop: 'paperName', label: '交底书名称', parent:'disclosurePaperDTO'},
           { prop: 'paperCode', label: '交底书编号', parent:'disclosurePaperDTO'},
           { prop: 'officialAcceptanceTime', label: '官方受理时间',},
-          { prop: 'status', label: '专利状态', change: ['','待官方受理','初审中','实审中','待缴费','已撤回','已驳回','已放弃','已授权','变更中','已失效']},
+          { prop: 'status', label: '专利状态', change: ['','已受理','初审中','实审中','待缴费','已撤回','已驳回','已放弃','已授权','变更中','已失效']},
           { prop: 'whetherChange', label: '是否有变更', change: ['不变更','变更',]},
           { prop: 'authorizationCost', label: '授权缴费',},
           { prop: 'authorizationOaOddNum', label: '授权费OA单号',},

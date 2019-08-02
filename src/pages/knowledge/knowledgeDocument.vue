@@ -108,12 +108,14 @@
             </el-table>
             <!-- 分页 -->
             <div class="pagination fr ovw-h mt20">
-                  <el-pagination @current-change="handleCurrentChange"
-                                 :current-page="currentPage" :page-size="size"
-                                 layout="total, prev, pager, next"
-                                 :total="table.totalCount" v-if="table.totalCount">
-                  </el-pagination>
-                </div>
+              <el-pagination @current-change="handleCurrentChange"
+                             @size-change="handleSizeChange"
+                             :current-page="currentPage" :page-size="size"
+                             :page-sizes="[5, 10, 15, 20,50]"
+                             layout="total, sizes, prev, pager, next"
+                             :total="table.totalCount" v-if="table.totalCount">
+              </el-pagination>
+            </div>
           </div>
 
           <div class="mt20" v-if="show1">
@@ -151,9 +153,11 @@
             <!-- 分页 -->
             <div class="pagination fr ovw-h mt20">
               <el-pagination @current-change="handleCurrentChange"
+                             @size-change="handleSizeChange"
                              :current-page="currentPage" :page-size="size"
-                             layout="total, prev, pager, next"
-                             :total="table1.totalCount" v-if="table1.totalCount">
+                             :page-sizes="[5, 10, 15, 20,50]"
+                             layout="total, sizes, prev, pager, next"
+                             :total="table.totalCount" v-if="table.totalCount">
               </el-pagination>
             </div>
           </div>
@@ -341,6 +345,15 @@
 
       handleCurrentChange(val) {
         this.currentPage = val;
+        if (this.show) {
+          this.getTableList();
+        } else {
+          this.getTable1List();
+        }
+      },
+
+      handleSizeChange(val) {
+        this.size = val;
         if (this.show) {
           this.getTableList();
         } else {

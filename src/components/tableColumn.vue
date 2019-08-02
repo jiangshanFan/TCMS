@@ -8,7 +8,8 @@
         :label="h.label"
         :prop="h.prop"
         :sortable= "h.sortable"
-        :width="h.width !=='unset' ?h.eachWidth? h.label.length*h.eachWidth: h.label.length*25 : ''"
+        :min-width="h.minWidth"
+        :width="h.width !=='unset' ?(h.eachWidth? h.label.length*h.eachWidth: h.label.length*25) : ''"
         align="center"
         show-overflow-tooltip>
         <!--

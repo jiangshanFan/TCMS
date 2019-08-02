@@ -118,8 +118,10 @@
         <!-- 分页 -->
         <div class="pagination fr ovw-h mt20">
           <el-pagination @current-change="handleCurrentChange"
+                         @size-change="handleSizeChange"
                          :current-page="currentPage" :page-size="size"
-                         layout="total, prev, pager, next"
+                         :page-sizes="[5, 10, 15, 20,50]"
+                         layout="total, sizes, prev, pager, next"
                          :total="table.totalCount" v-if="table.totalCount">
           </el-pagination>
         </div>
@@ -197,6 +199,11 @@ import breadcrumbList from '../../components/breadcrumbList'
         this.getList();
       },
 
+      handleSizeChange(val) {
+        this.size = val;
+        this.getList();
+      },
+
       deletes(row) {
         this.$confirm(`此操作将删除"${row.paperName}", 是否继续?`, '提示', {
           confirmButtonText: '确定',
@@ -271,7 +278,7 @@ import breadcrumbList from '../../components/breadcrumbList'
           { prop: 'planTime', label: '计划完成时间',},
           { prop: 'realTime', label: '实际完成时间',},
           { prop: 'agentHandleTime', label: '代理受理时间',},
-          { prop: 'status', label: '交底书状态', change: ['','项目启动','交底完成','以委托代理','委托终止','确认代理','缴费中','代理完成']},
+          { prop: 'status', label: '交底书状态', change: ['','项目启动','交底完成','已委托代理','委托终止','确认代理','缴费中','代理完成']},
           { prop: 'agentCost', label: '代理费',},
           { prop: 'officialFee', label: '官费',},
           { prop: 'oaOddNum', label: 'OA单号',},

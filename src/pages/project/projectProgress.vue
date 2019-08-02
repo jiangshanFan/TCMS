@@ -64,8 +64,10 @@
         <!-- 分页 -->
         <div class="pagination fr ovw-h mt20">
           <el-pagination @current-change="handleCurrentChange"
+                         @size-change="handleSizeChange"
                          :current-page="currentPage" :page-size="size"
-                         layout="total, prev, pager, next"
+                         :page-sizes="[5, 10, 15, 20,50]"
+                         layout="total, sizes, prev, pager, next"
                          :total="table.totalCount" v-if="table.totalCount">
           </el-pagination>
         </div>
@@ -132,6 +134,11 @@
 
       handleCurrentChange(val) {
         this.currentPage = val;
+        this.getList();
+      },
+
+      handleSizeChange(val) {
+        this.size = val;
         this.getList();
       },
 
