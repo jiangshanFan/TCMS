@@ -1,20 +1,20 @@
 <template>
   <div id="login" class="tc posr">
     <div class="login posa boxShadow">
-      <h2 class="title">技术中心管理系统</h2>
+      <h1 class="title">技术中心管理系统</h1>
       <span class="f12">欢迎登录!</span>
 
       <div class="login_info">
 
-        <el-input placeholder="请输入用户名" v-model.trim="accountName" size="small" clearable>
+        <el-input placeholder="请输入用户名" v-model.trim="accountName" size="medium" clearable>
           <i slot="prefix" class="el-input__icon icon_user"></i>
         </el-input>
 
-        <el-input type="password" placeholder="请输入密码" v-model.trim="pwd" size="small" clearable show-password>
+        <el-input type="password" placeholder="请输入密码" v-model.trim="pwd" size="medium" clearable show-password>
           <i slot="prefix" class="el-input__icon icon_pwd"></i>
         </el-input>
 
-        <el-button type="primary" size="small" style="width: 100%;" @click="login">登录</el-button>
+        <el-button type="primary" size="medium" style="width: 100%;" @click="login">登录</el-button>
       </div>
 
     </div>
@@ -92,8 +92,17 @@
       padding: 80px 40px 80px 400px;
       box-sizing: border-box;
       border-radius: 5px;
-      background: #fff url("../assets/login_dialog_bg.png") no-repeat 40px center;
-      background-size: 360px;
+      background: #fff url("../assets/login_dialog_bg.png") no-repeat 10px center;
+      background-size: 380px 281px;
+      &:before {
+        content: '';
+        width: 137px;
+        height: 38px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: url("../assets/logo.png") no-repeat;
+      }
       .title {
         margin: 0 !important;
       }

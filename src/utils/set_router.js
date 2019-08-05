@@ -23,7 +23,7 @@ function getButtons(obj, v, level=3) {
       }
     })
   }
-  console.log(v);
+  // console.log(v);
   return v;
 }
 

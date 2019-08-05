@@ -1,8 +1,8 @@
 <template>
-  <div id="index">
+  <div id="index" class="ovwh">
     <el-container>
       <!--  menu module -->
-      <el-aside width="200px">
+      <el-aside width="200px" style="overflow-x: hidden; overflow-y: auto;">
         <el-menu
           class="el-menu-vertical-demo menu"
           :default-active="$route.name"
@@ -14,20 +14,24 @@
         </el-menu>
       </el-aside>
 
-      <el-container>
+      <el-container class="ovwh">
         <!--  header module -->
         <el-header class="header">
           <div class="header_head bg_f">
-            <span class="f20 fwb">技术中心管理系统</span>
+            <el-col :span="6">
+              <span class="f20 fwb">技术中心管理系统</span>
+            </el-col>
 
-            <el-dropdown @command="handleCommand">
-              <el-button type="primary" plain>{{this.$store.getters.accountName}}<i class="el-icon-arrow-down el-icon--right"></i></el-button>
-              <el-dropdown-menu slot="dropdown" style="font-size:12px;min-width:100px;">
-                <!--<el-dropdown-item command="1" style="font-size:10px;cursor:pointer;">修改信息</el-dropdown-item>-->
-                <el-dropdown-item command="2" style="font-size:10px;cursor:pointer;">修改密码</el-dropdown-item>
-                <el-dropdown-item divided command="3" style="font-size:10px;cursor:pointer;">退出</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+            <el-col :span="18" class="ovwh">
+              <el-dropdown @command="handleCommand" class="fr">
+                <el-button type="primary" plain>{{this.$store.getters.accountName}}<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+                <el-dropdown-menu slot="dropdown" style="font-size:12px;min-width:100px;">
+                  <!--<el-dropdown-item command="1" style="font-size:10px;cursor:pointer;">修改信息</el-dropdown-item>-->
+                  <el-dropdown-item command="2" style="font-size:10px;cursor:pointer;">修改密码</el-dropdown-item>
+                  <el-dropdown-item divided command="3" style="font-size:10px;cursor:pointer;">退出</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </el-col>
           </div>
 
           <!--面包屑-->

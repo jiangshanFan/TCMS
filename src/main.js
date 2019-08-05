@@ -89,7 +89,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to, from) => {
-  console.log(to.matched)
+  // console.log(to.matched)
   // vm.$store.commit('Auth/SET_CURRENT_MENU', to.name)
 });
 
