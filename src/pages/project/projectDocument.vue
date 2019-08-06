@@ -447,7 +447,7 @@
         errorFiles: [],
         fileStatus: false,
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: sessionStorage.getItem('token'),
         },
 
         // select options

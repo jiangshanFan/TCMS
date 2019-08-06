@@ -32,7 +32,7 @@ export default {
   },
   actions: {
     async FETCH_PERMISSION({ commit, state }) {
-      let res = JSON.parse(localStorage.getItem('userLoginVO'));
+      let res = JSON.parse(sessionStorage.getItem('userLoginVO'));
       let permissionList;
       if (res) {
         permissionList = res.permissionListVOList;

@@ -26,9 +26,9 @@ export default {
   },
 
   created() {
-    // 在页面加载时读取 localStorage 里的状态信息 ---------------------- 可能考虑使用 sessionStorage 会更好，尤其是在token会失效的情况下
-    if (localStorage.getItem("store") ) {
-      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(localStorage.getItem("store"))));
+    // 在页面加载时读取 sessionStorage 里的状态信息 ---------------------- 可能考虑使用 sessionStorage 会更好，尤其是在token会失效的情况下
+    if (sessionStorage.getItem("store") ) {
+      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem("store"))));
     }
 
     //在页面刷新时将vuex里的信息保存到sessionStorage里
@@ -41,11 +41,11 @@ export default {
         return value;
       }
       console.log(this.$store.state);
-      localStorage.setItem("store", JSON.stringify(this.$store.state, replacer));  // replacer delete Auth
+      sessionStorage.setItem("store", JSON.stringify(this.$store.state, replacer));  // replacer delete Auth
     });
 
     // this.$store.commit('Auth/CLEAR_PERMISSION');
-    if(localStorage.getItem('token') && !this.$store.state.Auth.permissionList) {
+    if(sessionStorage.getItem('token') && !this.$store.state.Auth.permissionList) {
       this.$store.dispatch('Auth/FETCH_PERMISSION'); //刷新界面就请求权限数据
     }
     // if(!this.$store.state.Auth.permissionList) {
@@ -56,8 +56,8 @@ export default {
   },
 
   mounted() {
-    let path = localStorage.getItem('currentUrl');
-    if(localStorage.getItem('token') === '' || localStorage.getItem('token') === null || localStorage.getItem('token') === undefined){
+    let path = sessionStorage.getItem('currentUrl');
+    if(sessionStorage.getItem('token') === '' || sessionStorage.getItem('token') === null || sessionStorage.getItem('token') === undefined){
       this.$router.push('/login');
     } else {
       this.$router.push(path);
@@ -72,7 +72,7 @@ export default {
   },
 
   beforeUpdate() {
-    window.localStorage.setItem('currentUrl',this.$route.path);
+    window.sessionStorage.setItem('currentUrl',this.$route.path);
   },
 
   watch: { //通过路由的更新可以直接赋值

@@ -124,10 +124,10 @@ import sideNav from '../../components/sideNav'
       async clearStorage() {
         let res = await loginOut();
         if (res.status === 1) {
-          // localStorage.removeItem('token');
-          // localStorage.removeItem('accountName');
-          // localStorage.removeItem('userLoginVO');
-          localStorage.clear();  /* only clear all info, the routes will be right, or not go to the method of set_router.js */
+          // sessionStorage.removeItem('token');
+          // sessionStorage.removeItem('accountName');
+          // sessionStorage.removeItem('userLoginVO');
+          sessionStorage.clear();  /* only clear all info, the routes will be right, or not go to the method of set_router.js */
           this.$store.commit('Auth/CLEAR_PERMISSION');
 
           // this.$router.push('/login');

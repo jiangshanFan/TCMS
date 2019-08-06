@@ -73,7 +73,7 @@ Vue.prototype.$format = function format(shijianchuo)
 };
 
 router.beforeEach((to, from, next) => {
-  if (!localStorage.getItem('token')) {
+  if (!sessionStorage.getItem('token')) {
     if (to.matched.length > 0 && !to.matched.some(record => record.meta.requiresAuth)) {
       next()
     } else {

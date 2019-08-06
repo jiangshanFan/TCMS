@@ -14,8 +14,8 @@ const $ajax = axios.create({
 $ajax.interceptors.request.use(config => {
   // 在发送请求之前做些什么
   // 判断是否存在token，如果存在将每个页面header都添加token
-  if (localStorage.getItem('token')) {
-    config.headers.common['Authorization'] = localStorage.getItem('token');
+  if (sessionStorage.getItem('token')) {
+    config.headers.common['Authorization'] = sessionStorage.getItem('token');
   }
   //若需要可以设置请求时加载动画，需要导入import {Loading} from 'element-ui'
   // this.$loading({lock: true, text: 'Loading', spinner: 'el-icon-loading', background: 'rgba(0, 0, 0, 0.7)'});
@@ -105,16 +105,16 @@ $ajax.interceptors.response.use(
       // return response.data;
     } else if(response.data.status === -1) {
       //返回 -1 清除token信息并跳转到登录页面
-      // localStorage.removeItem('token');
-      // localStorage.removeItem('username');
-      // localStorage.removeItem('isLogin');
+      // sessionStorage.removeItem('token');
+      // sessionStorage.removeItem('username');
+      // sessionStorage.removeItem('isLogin');
       // if(vm.$router.currentRoute.path !== '/login') {
       //   vm.$router.push({
       //     path: 'login',
       //     query: {redirect: vm.$router.currentRoute.fullPath}
       //   });
       // }
-      localStorage.clear();
+      sessionStorage.clear();
       // vm.$router.push('/login');
       window.location.reload();
       console.log('未登录');
@@ -132,7 +132,7 @@ $ajax.interceptors.response.use(
       switch (error.response.status) {
         case -1:
           //返回 -1 清除token信息并跳转到登录页面
-          localStorage.removeItem('token');
+          sessionStorage.removeItem('token');
           // vm.$router.replace({
           //   path: 'login',
           //   query: {redirect: router.currentRoute.fullPath}
