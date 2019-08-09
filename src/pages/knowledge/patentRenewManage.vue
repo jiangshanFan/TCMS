@@ -300,12 +300,14 @@
 
       // 点击确定按钮新增续费信息
       add(form) {
+        let pid = form.id;
+        delete form.id;  // =========================== 删除对象的某个属性
         this.$confirm(`此操作将新增续费信息,请确认信息无误, 是否继续?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await insertRenewInfo({...form});
+          let res = await insertRenewInfo({...form, pid: pid});
           if (res.status === 1) {
             Message({showClose: true, type: 'success', message: '新增续费信息成功'});
             this.renewEditVisible = false;
