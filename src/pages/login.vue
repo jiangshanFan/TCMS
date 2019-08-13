@@ -45,8 +45,10 @@
             let res = await login(params);
             if(res.status === 1) {
               sessionStorage.setItem('token',res.msg.authorization);
+              // localStorage.setItem('token',res.msg.authorization);
               sessionStorage.setItem('accountName',res.msg.userLoginVO.userName);
               sessionStorage.setItem('userLoginVO',JSON.stringify(res.msg.userLoginVO));
+              // localStorage.setItem('userLoginVO',JSON.stringify(res.msg.userLoginVO));
 
               this.$store.dispatch('token', sessionStorage.getItem('token'));
               this.$store.dispatch('accountName', sessionStorage.getItem('accountName'));

@@ -37,7 +37,7 @@
                 <span class="add" @click.stop.prevent="() => append(node, data)" v-if="data.filePath.split('/').length === 1 && data.fileName !== '技术中心'"></span>
                 <span v-else>
                   <span class="delete" @click.stop.prevent="() => remove(node, data)" v-if="!data.status"></span>
-                  <span class="edit" @click.stop.prevent="() => change(node, data)"></span>
+                  <span class="edit" @click.stop.prevent="() => change(node, data)" v-if="!data.status"></span>
                 </span>
               </span>
             </span>

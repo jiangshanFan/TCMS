@@ -24,7 +24,7 @@
 
             <el-col :span="18" class="ovwh">
               <el-dropdown @command="handleCommand" class="fr">
-                <el-button type="primary" plain>{{this.$store.getters.accountName}}<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+                <el-button type="primary" plain>{{$store.getters.accountName}}<i class="el-icon-arrow-down el-icon--right"></i></el-button>
                 <el-dropdown-menu slot="dropdown" style="font-size:12px;min-width:100px;">
                   <!--<el-dropdown-item command="1" style="font-size:10px;cursor:pointer;">修改信息</el-dropdown-item>-->
                   <el-dropdown-item command="2" style="font-size:10px;cursor:pointer;">修改密码</el-dropdown-item>
@@ -84,6 +84,7 @@ import sideNav from '../../components/sideNav'
       'side-nav': sideNav, //添加 name 属性才能够调用 <side-nav></side-nave>
     },
     created() {
+      // this.$store.dispatch('accountName',JSON.parse(localStorage.getItem('userLoginVO')).userName);
       this.mh = mh(60, 30);
     },
     mounted() {
@@ -127,6 +128,7 @@ import sideNav from '../../components/sideNav'
           // sessionStorage.removeItem('token');
           // sessionStorage.removeItem('accountName');
           // sessionStorage.removeItem('userLoginVO');
+          localStorage.clear();
           sessionStorage.clear();  /* only clear all info, the routes will be right, or not go to the method of set_router.js */
           this.$store.commit('Auth/CLEAR_PERMISSION');
 

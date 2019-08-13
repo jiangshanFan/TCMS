@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* 知识产权管理 */
-const patent = () => import('../pages/knowledge/patent');
+import patent from '../pages/knowledge/patent';
 const patentStatics = () => import('../pages/knowledge/patentStatics');
 
 const newSubmission = () => import('../pages/knowledge/newSubmission');
@@ -19,7 +19,7 @@ const techArticle = () => import('../pages/knowledge/techArticle');
 const knowledgeDocument = () => import('../pages/knowledge/knowledgeDocument');
 
 /* 权限管理 */
-const user = () => import('../pages/user/user');
+import user from '../pages/user/user';
 const userRole = () => import('../pages/user/userRole');
 const userName = () => import('../pages/user/userName');
 const newUserRole = () => import('../pages/user/newUserRole');
@@ -27,7 +27,7 @@ const newUserName = () => import('../pages/user/newUserName');
 
 
 /* 项目管理 */
-const project = () => import('../pages/project/project');
+import project from '../pages/project/project';
 const projectList = () => import('../pages/project/projectList');
 const newProject = () => import('../pages/project/newProject');
 const projectProgress = () => import('../pages/project/projectProgress');

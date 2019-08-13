@@ -25,6 +25,18 @@ export default {
     }
   },
 
+  /*
+  beforeCreate() {  // autoLogin
+    let userInfo = localStorage.getItem('userLoginVO');
+    if (userInfo) {
+      sessionStorage.setItem('userLoginVO',userInfo);
+      sessionStorage.setItem('token', localStorage.getItem('token'));
+    } else {
+      sessionStorage.setItem('token', '');
+    }
+  },
+  */
+
   created() {
     // 在页面加载时读取 sessionStorage 里的状态信息 ---------------------- 可能考虑使用 sessionStorage 会更好，尤其是在token会失效的情况下
     if (sessionStorage.getItem("store") ) {
@@ -59,16 +71,19 @@ export default {
     let path = sessionStorage.getItem('currentUrl');
     if(sessionStorage.getItem('token') === '' || sessionStorage.getItem('token') === null || sessionStorage.getItem('token') === undefined){
       this.$router.push('/login');
-    } else {
+    } else if (path) {
       this.$router.push(path);
+    } else {
+      this.$router.push("/");
     }
-
-
-    // else if (path) {  // sessionStorage 时初始化不会产生URL，因为URL时update产生的
-    //   this.$router.push(path);
-    // } else {
-    //   this.$router.push('/');
-    // }
+    /*else {
+      if(!this.$store.state.Auth.permissionList) {
+        this.$store.dispatch('Auth/FETCH_PERMISSION').then(() => {  // 此处的then写法在旧版IE不支持
+          this.$store.dispatch('isLogin', true);
+          this.$router.replace('/');
+        }); //刷新界面就请求权限数据
+      }
+    }*/
   },
 
   beforeUpdate() {
