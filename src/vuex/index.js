@@ -37,6 +37,13 @@ const state = {   //要设置的全局访问的state对象     //要设置的初
   // 项目考评表跳转新增或编辑传参
   project_evaluate: {},
 
+  /* 经费预算 */
+  // 项目经费预算管理跳转编辑
+  costProject_edit: {},
+
+  /* 材料管理 */
+  // 详情
+  materialList_edit: {},
 };
 
 
@@ -71,6 +78,14 @@ const getters = {   //实时监听state值的变化(最新状态)
   project_progress: (state) => {return state.project_progress},
   // 项目考评表
   project_evaluate: (state) => {return state.project_evaluate},
+
+  /* 经费预算 */
+  // 单个项目经费管理
+  costProject_edit: (state) => {return state.costProject_edit},
+
+  /* 材料管理 */
+  // 详情
+  materialList_edit: (state) => {return state.materialList_edit},
 
 };
 
@@ -108,6 +123,14 @@ const mutations = {//自定义改变state初始值的方法，这里面的参数
   // 项目考评表
   project_evaluate(state, item) {state.project_evaluate = item},
 
+  /* 经费预算 */
+  // 单个项目经费预算管理
+  costProject_edit(state, item) {state.costProject_edit = item},
+
+  /* 材料管理 */
+  // 详情
+  materialList_edit(state, item) {state.materialList_edit = item},
+
 };
 
 
@@ -143,6 +166,14 @@ const actions = {//同上注释，item 为要变化的形参
   project_progress(context, item) {context.commit('project_progress', item)},
   // 项目考评表
   project_evaluate(context, item) {context.commit('project_evaluate', item)},
+
+  /* 经费预算 */
+  // 单个项目经费预算管理
+  costProject_edit(context, item) {context.commit('costProject_edit', item)},
+
+  /* 材料管理 */
+  // 详情
+  materialList_edit(context, item) {context.commit('materialList_edit', item)},
 
 };
 

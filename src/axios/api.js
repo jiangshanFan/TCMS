@@ -184,7 +184,7 @@ export const getProjectMemberCheckScore = data => {return $ajax({url: process.en
 export const revampProjectMember = data => {return $ajax({url: process.env.API_HOST + '/projectMember/projectMemberInformation/revampProjectMember', method: 'post', data: data, meta: 1,})};
 
 
-//项目文档管理--树形菜单
+/*项目文档管理--树形菜单*/
 export const getFileManageInformationProject = data => {return $ajax({url: process.env.API_HOST + '/projectFileManageInformation/projectFileManage/getFileManageInformation', method: 'get', params: data,})};
 //项目文档管理--根据文件夹的id删除文件夹及文件夹下面的所有文件
 export const removeFileManageFolderProject = data => {return $ajax({url: process.env.API_HOST + '/projectFileManageInformation/projectFileManage/removeFileManageFolder', method: 'get', params: data,})};
@@ -200,3 +200,69 @@ export const removeFileEnclosureInformationProject = data => {return $ajax({url:
 export const addUploadManyFileProject = data => {return $ajax({url: process.env.API_HOST + '/projectFileManageInformation/projectFileManage/addUploadManyFile', method: 'post', data: data, meta: 1,})};
 //项目文档管理--修改文件夹名称
 export const editeFileManageFolder = data => {return $ajax({url: process.env.API_HOST + '/projectFileManageInformation/projectFileManage/editeFileManageFolder', method: 'post', data: data,})};
+
+
+/**
+ * @name cost -------------- 经费预算
+ * @author fjs
+ * @param data
+ * */
+// 经费预算统计列表
+export const getProjectCostList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getProjectCostList', method: 'get', params: data,})};
+// 单个项目经费预算管理
+export const getProjectFundList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getProjectFundList', method: 'get', params: data,})};
+// 新增经费类别
+export const addProjectFundInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/addProjectFundInformation', method: 'post', data: data, meta: 1,})};
+// 预算设置
+export const editProjectFundInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/editProjectFundInformation', method: 'post', data: data, meta: 1,})};
+// 单个项目经费预算管理--删除
+export const removeProjectFundInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/removeProjectFundInformation', method: 'post', data: data,})};
+
+// 设备列表
+export const getEquipmentOutlayInformationList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getEquipmentOutlayInformationList', method: 'get', params: data,})};
+// 设备新增
+export const addEquipmentOutlayInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/addEquipmentOutlayInformation', method: 'post', data: data, meta: 1,})};
+// 设备编辑
+export const editEquipmentOutlayInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/editEquipmentOutlayInformation', method: 'post', data: data, meta: 1,})};
+// 设备--删除
+export const removeEquipmentOutlayInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/removeEquipmentOutlayInformation', method: 'post', data: data,})};
+// 设备名称查询
+export const getEquipmentInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getEquipmentInformation', method: 'get', params: data,})};
+
+// 材料列表
+export const getMaterialCostList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getMaterialCostList', method: 'get', params: data,})};
+// 材料新增
+export const addMaterialCostInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/addMaterialCostInformation', method: 'post', data: data, meta: 1,})};
+// 材料编辑
+export const editMaterialCostInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/editMaterialCostInformation', method: 'post', data: data, meta: 1,})};
+// 材料--删除
+export const removeMaterialCost = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/removeMaterialCost', method: 'post', data: data,})};
+// 材料名称查询
+export const getMaterialCostInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getMaterialCostInformation', method: 'get', params: data,})};
+
+// 其他列表
+export const getOtherCategoriesInformationList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getOtherCategoriesInformationList', method: 'get', params: data,})};
+// 其他新增
+export const addOtherCategories = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/addOtherCategories', method: 'post', data: data, meta: 1,})};
+// 其他编辑
+export const editOtherCategories = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/editOtherCategories', method: 'post', data: data, meta: 1,})};
+// 其他--删除
+export const removeOtherCategories = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/removeOtherCategories', method: 'post', data: data,})};
+
+
+/**
+ * @name material -------------- 材料管理
+ * @author fjs
+ * @param data
+ * */
+// 材料统计列表
+export const getMaterialManageList = data => {return $ajax({url: process.env.API_HOST + '/materialManager/getMaterialManageList', method: 'get', params: data,})};
+
+// 材料统计详情列表
+export const getMaterialManageInformation = data => {return $ajax({url: process.env.API_HOST + '/materialManager/getMaterialManageInformation', method: 'get', params: data,})};
+// 材料统计详情新增
+export const addMaterialManageInformation = data => {return $ajax({url: process.env.API_HOST + '/materialManager/addMaterialManageInformation', method: 'post', data: data, meta: 1,})};
+// 材料统计详情编辑
+export const editMaterialManageInformation = data => {return $ajax({url: process.env.API_HOST + '/materialManager/editMaterialManageInformation', method: 'post', data: data, meta: 1,})};
+// 材料统计详情--删除
+export const deleteMaterialManageInformation = data => {return $ajax({url: process.env.API_HOST + '/materialManager/deleteMaterialManageInformation', method: 'post', data: data,})};

@@ -36,6 +36,17 @@ const projectEvaluate = () => import('../pages/project/projectEvaluate');
 const projectDocument = () => import('../pages/project/projectDocument');
 
 
+/* 经费预算 */
+import cost from '../pages/cost/cost';
+const costList = () => import('../pages/cost/costList');
+const costProject = () => import('../pages/cost/costProject');
+
+
+/* 材料管理 */
+import material from '../pages/material/material';
+const materialList = () => import('../pages/material/materialList');
+
+
 /* 所有的路由 */
 const allRoutes = [
   {
@@ -118,6 +129,66 @@ const allRoutes = [
             nextButton: [],
           }
         }
+      },
+    ]
+  },
+
+  {
+    path: '/cost',
+    component: cost,
+    name: 'cost',
+    meta: {
+      name: '经费预算',
+      icon: 'icon-project_fee'
+    },
+    children: [
+      {
+        path: 'costList',
+        component: costList,
+        name: 'costList',
+        meta: {
+          name: '经费预算统计',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        },
+      },
+      {
+        path: 'costProject',
+        component: costProject,
+        name: 'costProject',
+        meta: {
+          name: '项目经费预算管理',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        },
+      },
+    ]
+  },
+
+  {
+    path: '/material',
+    component: material,
+    name: 'material',
+    meta: {
+      name: '设备管理',
+      icon: 'icon-project_equipment'
+    },
+    children: [
+      {
+        path: 'materialList',
+        component: materialList,
+        name: 'materialList',
+        meta: {
+          name: '项目设备统计',
+          button: {
+            buttons: [],
+            nextButton: [],
+          }
+        },
       },
     ]
   },
