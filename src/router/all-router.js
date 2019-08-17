@@ -174,7 +174,7 @@ const allRoutes = [
     component: material,
     name: 'material',
     meta: {
-      name: '设备管理',
+      name: '材料管理',
       icon: 'icon-project_equipment'
     },
     children: [
@@ -183,7 +183,7 @@ const allRoutes = [
         component: materialList,
         name: 'materialList',
         meta: {
-          name: '项目设备统计',
+          name: '材料统计',
           button: {
             buttons: [],
             nextButton: [],
