@@ -133,7 +133,7 @@
 
             <el-col :span="24">
               <el-form-item label="备注：" label-width="100px">
-                <el-input type="textarea" :rows="3" resize="none" placeholder="请输入备注内容" v-model="costMaterial.remark"></el-input>
+                <el-input type="textarea" :rows="3" resize="none" placeholder="请输入备注内容" v-model="costMaterial.ramark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
