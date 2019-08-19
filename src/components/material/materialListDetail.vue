@@ -165,7 +165,6 @@
           size: this.size,
           attributionDepartment: this.info.attributionDepartment,
           materialName: this.info.materialName,
-          inOutType: 1,
         };
         if(this.search.value1) {
           params.inOutType = this.search.value1;

@@ -45,7 +45,7 @@
           <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
           <!-- circle -->
-          <column :header="header"></column>
+          <column :header="header" @changeStatus="changeStatus"></column>
 
           <el-table-column fixed="right" label="操作" width="120" align="center">
             <template slot-scope="scope">
@@ -69,23 +69,14 @@
       </div>
 
       <!-- 新增或编辑其他类别 -->
-      <el-dialog :title="Object.keys(costOther).length?'编辑':'新增'" :visible.sync="costOtherDialogShow" center custom-class="dialogStyle" @close="cancelAdd">
+      <el-dialog :title="Object.keys(costOther).length !== 1?'编辑':'新增'" :visible.sync="costOtherDialogShow" center custom-class="dialogStyle" @close="cancelAdd">
         <el-form :model="costOther" label-position="right" size="mini">
           <el-row style="width:100%;line-height:40px;margin:0 auto;">
 
             <el-col :span="24">
               <el-col :span="12">
-                <el-form-item label="费用报销单号：" label-width="100px">
-                  <el-select v-model="costOther.oddNumbers" filterable remote reserve-keyword placeholder="请输入名称查询费用报销单号并添加"
-                             :remote-method="searchNames"
-                             :loading="loading"
-                             size="small"
-                             value-key="propertyNum"
-                             @visible-change="val => {let self = this;if(!val) self.listDown=[];}"
-                             style="width:100%;"
-                  >
-                    <el-option v-for="item in listDown" :key="item.id" :label="item.oddNumbers" :value="item"></el-option>
-                  </el-select>
+                <el-form-item label="费用报销单号：" label-width="120px">
+                  <el-input type="text" v-model="costOther.oddNumbers"></el-input>
                 </el-form-item>
               </el-col>
             </el-col>
@@ -100,7 +91,7 @@
 
             <el-col :span="24">
               <el-form-item label="备注：" label-width="120px">
-                <el-input type="textarea" :rows="3" resize="none" placeholder="请输入备注内容" v-model="costOther.remark"></el-input>
+                <el-input type="textarea" :rows="3" resize="none" placeholder="请输入备注内容" v-model="costOther.ramark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -126,7 +117,6 @@
     editOtherCategories,
     removeOtherCategories,
     downloadProjectProgress,
-    getMaterialCostInformation
   } from '../../axios/api.js'
   import column from '../../components/tableColumn'
 
@@ -214,10 +204,11 @@
 
       // submit costOther
       async addOrEditcostOther() {
-        if (this.costOther.tuitionInformation && this.costOther.amountPatronage && this.costOther.raiseMount) {
+        if (this.costOther.oddNumbers) {
           let params = {
             ...this.costOther,
-            projectId: this.search.value1,
+            projectId: this.info.projectId,
+            fundId: this.info.id,
           };
           let res;
           if (this.costOtherFlag) {
@@ -228,9 +219,9 @@
           if (res.status === 1) {
             this.costOtherDialogShow = false;
             if (this.costOtherFlag) {
-              Message({showClose: true, type: 'success', message: '预算设置成功！'});
+              Message({showClose: true, type: 'success', message: '编辑成功！'});
             } else {
-              Message({showClose: true, type: 'success', message: '新增经费类别成功！'});
+              Message({showClose: true, type: 'success', message: '新增成功！'});
             }
             this.getList();
           }
@@ -258,7 +249,7 @@
         this.costOtherDialogShow = false;
       },
 
-      // 根据条件查询客户下拉列表
+      /*// 根据条件查询客户下拉列表
       searchNames(query) {
         let self = this;
         self.listDown = [];
@@ -274,6 +265,13 @@
         } else {
           self.listDown = [];
         }
+      },*/
+
+      // change the value of select
+      async changeStatus(obj, prop) {
+        this.costOtherFlag = 1;
+        this.costOther = obj;
+        this.addOrEditcostOther();
       },
 
       // show default module

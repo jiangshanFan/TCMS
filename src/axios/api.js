@@ -238,7 +238,7 @@ export const editMaterialCostInformation = data => {return $ajax({url: process.e
 // 材料--删除
 export const removeMaterialCost = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/removeMaterialCost', method: 'post', data: data,})};
 // 材料名称查询
-export const getMaterialCostInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getMaterialCostInformation', method: 'get', params: data,})};
+export const getEnterpriseResourcePlanList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getEnterpriseResourcePlanList', method: 'get', params: data,})};
 
 // 其他列表
 export const getOtherCategoriesInformationList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getOtherCategoriesInformationList', method: 'get', params: data,})};

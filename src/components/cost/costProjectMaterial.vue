@@ -52,7 +52,7 @@
           <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
           <!-- circle -->
-          <column :header="header"></column>
+          <column :header="header" @changeStatus="changeStatus"></column>
 
           <el-table-column fixed="right" label="操作" width="120" align="center">
             <template slot-scope="scope">
@@ -102,24 +102,21 @@
                              :remote-method="searchNames"
                              :loading="loading"
                              size="small"
-                             value-key="propertyNum"
+                             value-key="id"
                              @visible-change="val => {let self = this;if(!val) self.listDown=[];}"
                              style="width:100%;"
                   >
                     <el-option v-for="item in listDown" :key="item.id" :label="item.tradeName" :value="item" :disabled="item.projectName !== null && item.projectName !== ''">
-                      <p style="width:100%;overflow-x:auto;padding:0;margin:0;max-width:300px;">
-                        <!--<span class="fl">{{ item.equipmentName}}</span>-->
-                        <span class="select_color f12 ml20 ovwh">
-                          <b class="pr40">{{ item.tradeName}}</b>
-                          <b class="cc">采购部门：</b><b>{{ item.dept}}</b>
-                          <b class="cc">采购时间：</b><b>{{ item.orderDate}}</b>
-                          <b class="cc">材料编码：</b><b>{{ item.standardType}}</b>
-                          <b class="cc">采购数量：</b><b>{{ item.purchaseNum}}</b>
-                          <b class="cc">规格型号：</b><b>{{ item.standardType}}</b>
-                          <b class="cc">采购商家：</b><b>{{ item.assetOwnership}}</b>
-                          <b class="cc">已关联项目名称：</b><b>{{ item.projectName}}</b>
-                        </span>
-                      </p>
+                      <span class="select_color f12 ml20 lh24 dis" style="max-width:960px;overflow-x:auto;">
+                        <b class="pr40">{{ item.tradeName}}</b>
+                        <b class="cc">采购部门：</b><b>{{ item.dept}}</b>
+                        <b class="cc">采购时间：</b><b>{{ item.orderDate}}</b>
+                        <b class="cc">材料编码：</b><b>{{ item.partNo}}</b>
+                        <b class="cc">采购数量：</b><b>{{ item.purchaseNum}}</b>
+                        <b class="cc">规格型号：</b><b>{{ item.specification}}</b>
+                        <b class="cc">采购商家：</b><b>{{ item.purchaseAme}}</b>
+                        <b class="cc">已关联项目名称：</b><b>{{ item.projectName}}</b>
+                      </span>
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -162,7 +159,7 @@
     editMaterialCostInformation,
     removeMaterialCost,
     downloadProjectProgress,
-    getMaterialCostInformation
+    getEnterpriseResourcePlanList
   } from '../../axios/api.js'
   import column from '../../components/tableColumn'
 
@@ -255,11 +252,15 @@
 
       // submit costMaterial
       async addOrEditcostMaterial() {
-        if (this.costMaterial.tuitionInformation && this.costMaterial.amountPatronage && this.costMaterial.raiseMount) {
+        if (this.costMaterial.tradeName) {
           let params = {
             ...this.costMaterial,
-            projectId: this.search.value1,
+            projectId: this.info.projectId,
+            fundId: this.info.id,
           };
+          if (!this.costMaterialFlag) {
+            params.enterpriseId = this.costMaterial.tradeName.id;
+          }
           let res;
           if (this.costMaterialFlag) {
             res = await editMaterialCostInformation(params);
@@ -269,9 +270,9 @@
           if (res.status === 1) {
             this.costMaterialDialogShow = false;
             if (this.costMaterialFlag) {
-              Message({showClose: true, type: 'success', message: '预算设置成功！'});
+              Message({showClose: true, type: 'success', message: '编辑成功！'});
             } else {
-              Message({showClose: true, type: 'success', message: '新增经费类别成功！'});
+              Message({showClose: true, type: 'success', message: '新增成功！'});
             }
             this.getList();
           }
@@ -309,13 +310,13 @@
         };
         // 交货日期
         if(costM) {
-          params.projectEndTimeStart = costM[0];
-          params.projectEndTimeEnd = costM[1];
+          params.orderDateStart = costM[0];
+          params.orderDateEnd = costM[1];
         }
         if (query) {
           self.loading = true;
           setTimeout(async () => {
-            let res = await getMaterialCostInformation(params);
+            let res = await getEnterpriseResourcePlanList(params);
             if (res.status === 1) {
               self.listDown = res.msg;
               self.loading = false;
@@ -324,6 +325,13 @@
         } else {
           self.listDown = [];
         }
+      },
+
+      // change the value of select
+      async changeStatus(obj, prop) {
+        this.costMaterialFlag = 1;
+        this.costMaterial = obj;
+        this.addOrEditcostMaterial();
       },
 
       // show default module

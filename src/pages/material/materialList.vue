@@ -94,7 +94,6 @@
         let params = {
           page: this.currentPage,
           size: this.size,
-          attributionDepartment: 2,
         };
         if(this.search.value1) {
           params.materialName = this.search.value1;

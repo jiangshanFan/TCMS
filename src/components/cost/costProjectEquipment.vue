@@ -52,7 +52,7 @@
           <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
 
           <!-- circle -->
-          <column :header="header"></column>
+          <column :header="header" @changeStatus="changeStatus"></column>
 
           <el-table-column fixed="right" label="操作" width="120" align="center">
             <template slot-scope="scope">
@@ -116,6 +116,7 @@
                                    start-placeholder="开始日期"
                                    end-placeholder="结束日期"
                                    :default-time="['00:00:00', '23:59:59']"
+                                   :disabled="costEquipmentFlag === 1"
                                    size="mini">
                   </el-date-picker>
                 </el-form-item>
@@ -129,20 +130,18 @@
                              value-key="propertyNum"
                              @visible-change="val => {let self = this;if(!val) self.listDown=[];}"
                              style="width:100%;"
+                             :disabled="costEquipmentFlag === 1"
                   >
                     <el-option v-for="item in listDown" :key="item.id" :label="item.equipmentName" :value="item" :disabled="item.projectName !== null && item.projectName !== ''">
-                      <p style="width:100%;overflow-x:auto;padding:0;margin:0;max-width:300px;">
-                        <!--<span class="fl">{{ item.equipmentName}}</span>-->
-                        <span class="select_color f12 ml20 ovwh">
-                          <b class="pr40">{{ item.equipmentName}}</b>
-                          <b class="cc">固定资产编号：</b><b>{{ item.propertyNum}}</b>
-                          <b class="cc">交货日期：</b><b>{{ item.recordedDate}}</b>
-                          <b class="cc">规格型号：</b><b>{{ item.standardType}}</b>
-                          <b class="cc">实际金额：</b><b>{{ item.actualAmount}}</b>
-                          <b class="cc">资产归属：</b><b>{{ item.assetOwnership}}</b>
-                          <b class="cc">已关联项目名称：</b><b>{{ item.projectName}}</b>
-                        </span>
-                      </p>
+                      <span class="select_color f12 ml20 lh24 dis" style="max-width:960px;overflow-x:auto;">
+                        <b class="pr40">{{ item.equipmentName}}</b>
+                        <b class="cc">固定资产编号：</b><b>{{ item.propertyNum}}</b>
+                        <b class="cc">交货日期：</b><b>{{ item.deliveryTime}}</b>
+                        <b class="cc">规格型号：</b><b>{{ item.standardType}}</b>
+                        <b class="cc">实际金额：</b><b>{{ item.actualAmount}}</b>
+                        <b class="cc">资产归属：</b><b>{{ item.assetOwnership}}</b>
+                        <b class="cc">已关联项目名称：</b><b>{{ item.projectName}}</b>
+                      </span>
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -273,9 +272,11 @@
           let params = {
             ...this.costEquipment,
             projectId: this.info.projectId,
-            propertyNum: this.costEquipment.equipmentName.propertyNum,
             fundId: this.info.id,
           };
+          if (!this.costEquipmentFlag) {
+            params.propertyNum = this.costEquipment.equipmentName.propertyNum;
+          }
           let res;
           if (this.costEquipmentFlag) {
             res = await editEquipmentOutlayInformation(params);
@@ -285,9 +286,9 @@
           if (res.status === 1) {
             this.costEquipmentDialogShow = false;
             if (this.costEquipmentFlag) {
-              Message({showClose: true, type: 'success', message: '预算设置成功！'});
+              Message({showClose: true, type: 'success', message: '编辑成功！'});
             } else {
-              Message({showClose: true, type: 'success', message: '新增经费类别成功！'});
+              Message({showClose: true, type: 'success', message: '新增成功！'});
             }
             this.getList();
           }
@@ -327,8 +328,8 @@
         };
         // 交货日期
         if(costE) {
-          params.projectEndTimeStart = costE[0];
-          params.projectEndTimeEnd = costE[1];
+          params.playStartTime = costE[0];
+          params.playEndTime = costE[1];
         }
         if (query) {
           self.loading = true;
@@ -342,6 +343,13 @@
         } else {
           self.listDown = [];
         }
+      },
+
+      // change the value of select
+      async changeStatus(obj, prop) {
+        this.costEquipmentFlag = 1;
+        this.costEquipment = obj;
+        this.addOrEditcostEquipment();
       },
 
       // show default module
