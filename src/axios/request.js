@@ -3,6 +3,7 @@ import axios from "axios";
 import Qs from "qs";  /** 需要进行引入才可以使用 */
 import { Message } from 'element-ui';
 import vm from '../main.js'
+import { queryProjectProjectName } from './api'
 
 /****** 创建axios实例 ******/
 const $ajax = axios.create({
@@ -53,7 +54,7 @@ $ajax.interceptors.request.use(config => {
 
 /****** respone拦截器==>对响应做处理 ******/
 $ajax.interceptors.response.use(
-  response => {  //成功请求到数据
+  async response => {  //成功请求到数据
     // this.$loading({lock: true, text: 'Loading', spinner: 'el-icon-loading', background: 'rgba(0, 0, 0, 0.7)'}).close();
     if(response.config.responseType === 'blob') {  /** 此处代码是为了做二进制流的下载判断*/
       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
@@ -67,6 +68,12 @@ $ajax.interceptors.response.use(
         }
         if(response.config.url === '/api/projectMember/export/downloadProjectMember') {
           filename = `项目人员表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        }
+        if(response.config.url === process.env.API_HOST + '/projectFund/export/downloadProjectFundList') {
+          filename = `项目经费预算管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        }
+        if(response.config.url === process.env.API_HOST + '/projectFund/export/downloadEquipmentOutlayInformationList') {
+          filename = `设备费用支出管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
         }
       }else{
 

@@ -49,7 +49,6 @@
             <template slot-scope="scope">
               <span>
                 <el-button class="underline f12" @click="openmaterialListDetailDialog(scope.row)" type="text" align="center" v-if="scope.row.inOutType !== 1">编辑</el-button>
-                <el-button class="underline f12" @click="deletes(scope.row)" type="text" align="center" v-if="scope.row.inOutType !== 1">删除</el-button>
               </span>
             </template>
           </el-table-column>
@@ -90,7 +89,7 @@
             <el-col :span="12" v-else>
               <el-form-item :label="materialListDetail.inOutType === 3? '借出部门：': '归还部门：'" label-width="120px">
                 <el-select v-model="materialListDetail.inOutDepartment" placeholder="请选择" size="mini" style="width:100%;">
-                  <el-option v-for="item in options.inOutDepartment" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                  <el-option v-for="item in options.inOutDepartment" :key="item.id" :label="item.pleaseDepartmentName" :value="item.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -137,7 +136,8 @@
     editMaterialManageInformation,
     deleteMaterialManageInformation,
     downloadProjectProgress,
-    queryProjectProjectName
+    queryProjectProjectName,
+    queryTechnicalCentreDept
   } from '../../axios/api.js'
   import column from '../../components/tableColumn'
 
@@ -146,8 +146,12 @@
     components: {
       'column': column,
     },
-    created() {
+    async created() {
       this.info = this.$store.getters.materialList_edit;
+      let res = await queryTechnicalCentreDept();
+      if (res.status === 1) {
+        this.options.inOutDepartment = [...res.msg];
+      }
     },
     async mounted() {
       let res = await queryProjectProjectName();
@@ -226,7 +230,7 @@
 
       // submit materialListDetail
       async addOrEditmaterialListDetail() {
-        if (this.materialListDetail.projectName && this.materialListDetail.inOutType && this.materialListDetail.intOutNum) {
+        if ((this.materialListDetail.projectName || this.materialListDetail.inOutType) && this.materialListDetail.intOutNum) {
           let params = {
             ...this.materialListDetail,
           };
@@ -325,13 +329,7 @@
             { id: 4, name: '归还'}
           ],
           inOutDepartment: [
-            { id: 1, name: '研发部'},
-            { id: 2, name: 'IME部'},
-            { id: 3, name: '先进制造技术研究所'},
-            { id: 4, name: '数字化部'},
-            { id: 5, name: '开发部'},
-            { id: 6, name: '新型复合材料研究工程实验室'},
-            { id: 7, name: '非技术中心部门'},
+
           ],
           attributionDepartment : [
             '',

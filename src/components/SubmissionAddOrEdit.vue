@@ -114,11 +114,17 @@ import { insertDisclosurePaper, updateDisclosurePaper, } from '../axios/api.js'
   export default {
     name: "SubmissionAddOrEdit",
     created() {
-      this.basicInfo = Object.assign({},this.$store.getters.knowledge_submission);
+      /*let info = this.$store.getters.knowledge_submission;
+      if (Object.keys(info).length) {
+        this.basicInfo = Object.assign({}, info);
+      }*/
+      this.basicInfo = Object.assign({status: 1,}, this.$store.getters.knowledge_submission);
       console.log(this.basicInfo);
-      if (!this.basicInfo.status) {
-        this.basicInfo.status = 1;
-      }
+      /*if (!Object.keys(this.basicInfo).length) {
+        this.basicInfo = {
+          status: 1,  // 定义对象初始化，若要定义子对象，必须先初始化对象，即先放入此对象
+        };
+      }*/
     },
     mounted() {
       if (Object.keys(this.basicInfo).length === 1) {
@@ -160,7 +166,9 @@ import { insertDisclosurePaper, updateDisclosurePaper, } from '../axios/api.js'
     data() {
       return {
         // all info
-        basicInfo: {},
+        basicInfo: {
+
+        },
 
         status: [
           { id: 1, label: '项目启动'},

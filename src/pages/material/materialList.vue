@@ -17,7 +17,7 @@
           <div class="fl mr20 mb20">
             <span>归属部门：</span>
             <el-select v-model="search.value2" placeholder="请选择" size="mini" style="width:calc(100% - 100px);" clearable>
-              <el-option v-for="item in options.attributionDepartment" :key="item.id" :label="item.label" :value="item.id"></el-option>
+              <el-option v-for="item in options.attributionDepartment" :key="item.id" :label="item.pleaseDepartmentName" :value="item.id"></el-option>
             </el-select>
           </div>
 
@@ -71,7 +71,7 @@
 /* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
-  import { getMaterialManageList, } from '../../axios/api.js'
+  import { getMaterialManageList, queryTechnicalCentreDept } from '../../axios/api.js'
   import column from '../../components/tableColumn'
   import breadcrumbList from '../../components/breadcrumbList'
   import materialListDetail from '../../components/material/materialListDetail'
@@ -83,9 +83,13 @@
       'column': column,
       'AddOrEdit': materialListDetail,
     },
-    created() {
+    async created() {
       // console.log(this.$route);
       this.getList();
+      let res = await queryTechnicalCentreDept();
+      if (res.status === 1) {
+        this.options.attributionDepartment = [...res.msg];
+      }
     },
 
     methods: {
@@ -167,13 +171,7 @@
         search: {},
         options: {
           attributionDepartment: [
-            { label: '研发部', id: 1,},
-            { label: 'IME部', id: 2,},
-            { label: '先进制造技术研究所', id: 3,},
-            { label: '数字化部', id: 4,},
-            { label: '开发部', id: 5,},
-            { label: '新型复合材料研究工程实验室', id: 6,},
-            { label: '非技术中心部门', id: 7,},
+
           ],
         },
 

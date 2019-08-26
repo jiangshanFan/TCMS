@@ -209,6 +209,10 @@ export const editeFileManageFolder = data => {return $ajax({url: process.env.API
  * */
 // 经费预算统计列表
 export const getProjectCostList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getProjectCostList', method: 'get', params: data,})};
+// 经费预算统计列表--导出Excel
+export const downloadProjectFundList = (data, arg) => {return $ajax({url: process.env.API_HOST + '/projectFund/export/downloadProjectFundList', method: 'get', params: data, responseType: 'blob', args: arg,})};
+
+
 // 单个项目经费预算管理
 export const getProjectFundList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getProjectFundList', method: 'get', params: data,})};
 // 新增经费类别
@@ -220,6 +224,9 @@ export const removeProjectFundInformation = data => {return $ajax({url: process.
 
 // 设备列表
 export const getEquipmentOutlayInformationList = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/getEquipmentOutlayInformationList', method: 'get', params: data,})};
+// 设备经费--导出Excel
+export const downloadEquipmentOutlayInformationList = (data, arg) => {return $ajax({url: process.env.API_HOST + '/projectFund/export/downloadEquipmentOutlayInformationList', method: 'get', params: data, responseType: 'blob', args: arg,})};
+
 // 设备新增
 export const addEquipmentOutlayInformation = data => {return $ajax({url: process.env.API_HOST + '/projectFund/projectFund/addEquipmentOutlayInformation', method: 'post', data: data, meta: 1,})};
 // 设备编辑
@@ -266,3 +273,7 @@ export const addMaterialManageInformation = data => {return $ajax({url: process.
 export const editMaterialManageInformation = data => {return $ajax({url: process.env.API_HOST + '/materialManager/editMaterialManageInformation', method: 'post', data: data, meta: 1,})};
 // 材料统计详情--删除
 export const deleteMaterialManageInformation = data => {return $ajax({url: process.env.API_HOST + '/materialManager/deleteMaterialManageInformation', method: 'post', data: data,})};
+
+
+/* 技术中心部门信息 */
+export const queryTechnicalCentreDept = data => {return $ajax({url: process.env.API_HOST + '/technicalCentreDept/technicalCentreDept/queryTechnicalCentreDept', method: 'get', params: data,})};

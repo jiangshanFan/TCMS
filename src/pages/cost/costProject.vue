@@ -114,7 +114,7 @@
     addProjectFundInformation,
     editProjectFundInformation,
     removeProjectFundInformation,
-    downloadProjectProgress,
+    downloadProjectFundList,
     queryProjectProjectName,
   } from '../../axios/api.js'
   import column from '../../components/tableColumn'
@@ -206,7 +206,13 @@
 
       // download Excel
       async exportExcel() {
-        let res = await downloadProjectProgress({projectId: this.search.value1});
+        let params = {
+          projectId: this.search.value1
+        };
+        if(this.search.value2) {
+          params.tuitionInformation = this.search.value2;
+        }
+        let res = await downloadProjectFundList(params);
       },
 
       // submit costType

@@ -24,7 +24,7 @@
           <div class="fl mr20 mb20">
             <span>采购部门：</span>
             <el-select v-model="search.value3" placeholder="请选择" size="mini" style="width:calc(100% - 100px);" clearable>
-              <el-option v-for="item in options.dept" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              <el-option v-for="item in options.dept" :key="item.id" :label="item.pleaseDepartmentName" :value="item.pleaseDepartmentName"></el-option>
             </el-select>
           </div>
 
@@ -159,7 +159,8 @@
     editMaterialCostInformation,
     removeMaterialCost,
     downloadProjectProgress,
-    getEnterpriseResourcePlanList
+    getEnterpriseResourcePlanList,
+    queryTechnicalCentreDept
   } from '../../axios/api.js'
   import column from '../../components/tableColumn'
 
@@ -171,6 +172,11 @@
     async created() {
       this.info = this.$store.getters.costProject_edit;
       this.getList();
+
+      let res = await queryTechnicalCentreDept();
+      if (res.status === 1) {
+        this.options.dept = [...res.msg];
+      }
     },
 
     methods: {
@@ -375,8 +381,7 @@
         options: {
           projectName: [],
           dept: [
-            { id: 0, name: '项目新购设备'},
-            { id: 1, name: '预算调配设备'}
+
           ],
           fundType: [
             { id: 0, name: '资助'},

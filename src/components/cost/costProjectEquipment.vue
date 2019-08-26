@@ -175,7 +175,7 @@
     addEquipmentOutlayInformation,
     editEquipmentOutlayInformation,
     removeEquipmentOutlayInformation,
-    downloadProjectProgress,
+    downloadEquipmentOutlayInformationList,
     getEquipmentInformation
   } from '../../axios/api.js'
   import column from '../../components/tableColumn'
@@ -263,7 +263,24 @@
 
       // download Excel
       async exportExcel() {
-        let res = await downloadProjectProgress({projectId: this.search.value1});
+        let params = {
+          projectId: this.info.projectId,
+          fundId: this.info.id,
+        };
+        if(this.search.value1) {
+          params.equipmentName = this.search.value1;
+        }
+        if(this.search.value2) {
+          params.deviceClass = this.search.value2;
+        } else if (this.search.value2 === 0) {
+          params.deviceClass = this.search.value2;
+        }
+        if(this.search.value3) {
+          params.fundType = this.search.value3;
+        } else if (this.search.value3 === 0) {
+          params.fundType = this.search.value3;
+        }
+        let res = await downloadEquipmentOutlayInformationList(params);
       },
 
       // submit costEquipment
