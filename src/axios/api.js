@@ -83,7 +83,7 @@ export const deletePatent = data => {return $ajax({url: process.env.API_HOST + '
 //专利相关--专利续费管理
 export const getPatentRenewManageList = data => {return $ajax({url: process.env.API_HOST + '/patent/getPatentRenewManageList', method: 'get', params: data,})};
 //专利相关--下载续费管理
-export const exportPatentRenewManageList = data => {return $ajax({url: process.env.API_HOST + '/patent/exportPatentRenewManageList', method: 'get', params: data,})};
+export const exportPatentRenewManageList = (data, arg) => {return $ajax({url: process.env.API_HOST + '/patent/export/exportPatentRenewManageList', method: 'get', params: data,responseType: 'blob', args: arg,})};
 //专利相关--续费管理详情
 export const getRenewInfoList = data => {return $ajax({url: process.env.API_HOST + '/patent/getRenewInfoList', method: 'get', params: data,})};
 //专利相关--填写续费信息

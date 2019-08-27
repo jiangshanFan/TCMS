@@ -54,7 +54,7 @@ $ajax.interceptors.request.use(config => {
 
 /****** respone拦截器==>对响应做处理 ******/
 $ajax.interceptors.response.use(
-  async response => {  //成功请求到数据
+  response => {  //成功请求到数据
     // this.$loading({lock: true, text: 'Loading', spinner: 'el-icon-loading', background: 'rgba(0, 0, 0, 0.7)'}).close();
     if(response.config.responseType === 'blob') {  /** 此处代码是为了做二进制流的下载判断*/
       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
@@ -74,6 +74,9 @@ $ajax.interceptors.response.use(
         }
         if(response.config.url === process.env.API_HOST + '/projectFund/export/downloadEquipmentOutlayInformationList') {
           filename = `设备费用支出管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        }
+        if(response.config.url === process.env.API_HOST + '/patent/export/exportPatentRenewManageList') {
+          filename = `专利续费管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
         }
       }else{
 

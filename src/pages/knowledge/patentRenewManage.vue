@@ -322,7 +322,7 @@
       },
 
       // 导出Excel
-      exportExcel() {
+      async exportExcel() {
         let params = {
           page: this.currentPage,
           size: this.size,
@@ -354,9 +354,7 @@
           params.oaOddSubmitStartTime = this.search.value8[0];
           params.oaOddSubmitEndTime = this.search.value8[1];
         }
-        let p = Qs.stringify(params);
-        console.log(`/api/patent/exportPatentRenewManageList?${p}`);
-        window.open(`/api/patent/exportPatentRenewManageList?${p}`);
+        let res = await exportPatentRenewManageList(params);
       },
 
       // 关闭弹框
