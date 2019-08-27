@@ -37,7 +37,7 @@
       <div class="mt20">
         <!-- 添加 -->
         <el-button type="primary" size="mini" @click="opencostMaterialDialog('')" v-if="$route.meta.button.nextButton.includes('新增')">新增</el-button>
-        <el-button type="primary" size="mini" @click="exportExcel" v-if="$route.meta.button.nextButton.includes('导出Excel')">导出Excel</el-button>
+        <!--<el-button type="primary" size="mini" @click="exportExcel" v-if="$route.meta.button.nextButton.includes('导出Excel')">导出Excel</el-button>-->
 
         <!-- 表格数据 -->
         <el-table
