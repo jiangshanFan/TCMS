@@ -266,7 +266,11 @@ export default {
     selectPaperNames(val) {
       this.listDown.forEach(item => {
         if (item.id === val) {
-          this.basicInfo.disclosurePaperDTO.paperCode = item.paperCode;
+          this.basicInfo.disclosurePaperDTO = {
+              paperCode : item.paperCode,
+              paperName : item.paperName,
+              id : item.id,
+          }
         }
       })
     },
