@@ -161,10 +161,10 @@
       addOrEdit(row) {
         if (!row) {
           this.$store.dispatch('project_progress', {projectId: this.search.value1});
-          this.breadcrumb.push({id: 'add', name: '新增'});
+          this.breadcrumb.push({id: 'add', name: '添加工作内容'});
         } else {
           this.$store.dispatch('project_progress', row);
-          this.breadcrumb.push({id: 'edit', name: '编辑'});
+          this.breadcrumb.push({id: 'edit', name: '编辑工作内容'});
         }
         this.show = !this.show;
       },

@@ -369,7 +369,7 @@
           { prop: 'priceTotalTax', label: '总金额', eachWidth: 30,},
           { prop: 'numberTimes', label: 'ERP单号+批次',},
           { prop: 'dept', label: '采购部门',},
-          { prop: 'ramark', label: '备注',},
+          { prop: 'ramark', label: '备注', width: 'unset'},
         ],
 
         // search

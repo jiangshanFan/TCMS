@@ -120,9 +120,11 @@ import { addProjectInformation, editProjectInformation, getEmployeesInfoList, } 
       this.basicInfo = Object.assign({},this.$store.getters.project_list);
       console.log(this.basicInfo);
       if (!this.basicInfo.status) {
-        this.basicInfo.status = 3;
-        this.basicInfo.bidding = 0;
-        this.basicInfo.type = 1;
+        this.basicInfo = {
+          status: 3,
+          bidding: 0,
+          type: 1,
+        }
       }
     },
     mounted() {

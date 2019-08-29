@@ -56,8 +56,8 @@ export default {
           主要是供面包屑用，防止点击面包屑后进入某个路由下的 '' 路由,比如/manage/
           而我们的路由是
           [
-              /manage/menu1,
-              /manage/menu2
+            /manage/menu1,
+            /manage/menu2
           ]
       */
 

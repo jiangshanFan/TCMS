@@ -399,7 +399,7 @@
           { prop: 'providerConsult', label: '供应商', eachWidth: 30,},
           { prop: 'contractNum', label: '关联采购合同编号', eachWidth: 15,},
           { prop: 'contractName', label: '合同名称',},
-          { prop: 'ramark', label: '备注',},
+          { prop: 'ramark', label: '备注', width: 'unset'},
         ],
 
         // search
