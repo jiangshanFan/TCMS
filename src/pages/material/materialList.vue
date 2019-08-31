@@ -84,12 +84,19 @@
       'AddOrEdit': materialListDetail,
     },
     async created() {
-      // console.log(this.$route);
+      this.header.forEach(async item => {
+        if (item.prop === 'attributionDepartment') {
+          let res = await queryTechnicalCentreDept();
+          if (res.status === 1) {
+            this.options.attributionDepartment = [...res.msg];
+            item.change = ["", ...[...res.msg].map(item => item.pleaseDepartmentName)];
+          }
+        }
+      });
+    },
+
+    mounted() {
       this.getList();
-      let res = await queryTechnicalCentreDept();
-      if (res.status === 1) {
-        this.options.attributionDepartment = [...res.msg];
-      }
     },
 
     methods: {
@@ -130,6 +137,8 @@
 
       lookDetail(row) {
         let params = JSON.parse(JSON.stringify(row));
+        /* 赋值归属部门名称 */
+        params.attributionDepartmentName = [{},...this.options.attributionDepartment][params.attributionDepartment].pleaseDepartmentName;
         this.$store.dispatch('materialList_edit', params);
         this.breadcrumb.push({id: 'edit', name: '详情'});
 
@@ -153,9 +162,15 @@
         currentPage: 1,
         size: 10,
 
+        options: {
+          attributionDepartment: [
+
+          ],
+        },
+
         header: [
           { prop: 'materialName', label: '材料名称', width: 'unset'},
-          { prop: 'attributionDepartment', label: '归属部门', eachWidth: 40, change: ['', '研发部', 'IME部', '先进制造技术研究所', '数字化部', '开发部', '新型复合材料研究工程实验室', '非技术中心部门']},
+          { prop: 'attributionDepartment', label: '归属部门', eachWidth: 40,},
           { prop: 'remainingQuantity', label: '库存数量', eachWidth: 20,},
           { prop: 'unit', label: '单位', eachWidth: 40,},
           { prop: 'unitPrice', label: '最新单价',},
@@ -169,11 +184,6 @@
 
         // search
         search: {},
-        options: {
-          attributionDepartment: [
-
-          ],
-        },
 
         show: false,
 

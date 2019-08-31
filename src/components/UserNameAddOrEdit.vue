@@ -22,12 +22,15 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="工号：" prop="workNo" :rules="[{ required: true, max: 10, message: '不能超过十个字符！', trigger: ['blur', 'change'] }]" v-if="form.role.id !== 5">
+          <el-form-item label="工号：" prop="workNo" :rules="[{ required: true, max: 10, message: '不能超过十个字符！', trigger: ['blur', 'change'] }]"><!-- v-if="form.role.id !== 5"-->
             <el-input v-model="form.workNo" maxLength="10" placeholder="请输入工号"></el-input>
           </el-form-item>
 
-          <el-form-item label="部门：" prop="dept" :rules="[{ required: true, max: 50, message: '该项不能为空！', trigger: 'change' }]">
-            <el-input v-model="form.dept" placeholder="请输入部门"></el-input>
+          <el-form-item label="部门：" prop="dept" :rules="[{ required: true, message: '该项不能为空！', trigger: 'change' }]">
+            <!--<el-input v-model="form.dept" placeholder="请输入部门"></el-input>-->
+            <el-select v-model="form.dept" placeholder="请选择部门" style="width:100%;">
+              <el-option v-for="item in options.dept" :key="item.id" :label="item.pleaseDepartmentName" :value="item.id"></el-option>
+            </el-select>
           </el-form-item>
           <!-- 手机号码和邮箱 -->
           <el-form-item label="手机号：" prop="mobile" :rules="[{ required: true, min:11, max: 11, message: '请输入11位手机号码', trigger: 'change' }]">
@@ -52,27 +55,33 @@
 /* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
-  import { insertUser, updateUser, getRoleList, } from '../axios/api.js'
+  import { insertUser, updateUser, getRoleList, queryTechnicalCentreDept } from '../axios/api.js'
   export default {
     name: "UserNameAddOrEdit",
     async created() {
-      this.form = Object.assign({},this.$store.getters.auth_userName);
-      if (!this.form.status) {
-        this.form.status = 1;
+      // get deptList
+      let res1 = await queryTechnicalCentreDept();
+      if (res1.status === 1) {
+        this.options.dept = res1.msg;
       }
 
       // get roleList
       let res = await getRoleList({status: 1,});
       if (res.status === 1) {
         this.options.roleList = res.msg;
+        this.form = Object.assign({},this.$store.getters.auth_userName);
+        if (!this.form.status) {
+          this.form.status = 1;
+        }
+        if (!this.form.accountName) {
+          this.choose = 0;
+        } else {
+          this.choose = 1;
+        }
       }
     },
     async mounted() {
-      if (!this.form.accountName) {
-        this.choose = 0;
-      } else {
-        this.choose = 1;
-      }
+
     },
     methods: {
       submitForm(formName) {
@@ -125,6 +134,9 @@
           roleList: [
 
           ],
+          dept: [
+
+          ]
         },
 
 

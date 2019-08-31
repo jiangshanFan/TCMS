@@ -72,7 +72,7 @@
 /* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
-  import { getUserList, deleteUser, resetPwd, } from '../../axios/api.js'
+  import { getUserList, deleteUser, resetPwd, queryTechnicalCentreDept } from '../../axios/api.js'
   import column from '../../components/tableColumn'
   import breadcrumbList from '../../components/breadcrumbList'
   import UserNameAddOrEdit from '../../components/UserNameAddOrEdit'
@@ -85,7 +85,15 @@
       'column': column,
     },
     created() {
-      console.log(this.$route);
+      /* 通过在创建组件的周期内改写header的值，可以改变子组件对应的值 */
+      this.header.forEach(async item => {
+        if (item.prop === 'dept') {
+          let res = await queryTechnicalCentreDept();
+          if (res.status === 1) {
+            item.change = ["", ...[...res.msg].map(item => item.pleaseDepartmentName)];
+          }
+        }
+      });
       this.getList();
     },
 

@@ -6,7 +6,7 @@
       <div class="section-search mb20 mt20">
         <el-row>
           <div class="fl mr20 mb20 lh28">
-            <span>归属部门：<b>{{options.attributionDepartment[info.attributionDepartment]}}</b></span>
+            <span>归属部门：<b>{{info.attributionDepartmentName}}</b></span>
           </div>
 
           <div class="fl mr20 mb20 lh28">
@@ -89,7 +89,7 @@
             <el-col :span="12" v-else>
               <el-form-item :label="materialListDetail.inOutType === 3? '借出部门：': '归还部门：'" label-width="120px">
                 <el-select v-model="materialListDetail.inOutDepartment" placeholder="请选择" size="mini" style="width:100%;">
-                  <el-option v-for="item in options.inOutDepartment" :key="item.id" :label="item.pleaseDepartmentName" :value="item.id"></el-option>
+                  <el-option v-for="item in options.inOutDepartment" :key="item.id" :label="item.pleaseDepartmentName" :value="item.id" :disabled="item.disabled"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -147,11 +147,26 @@
       'column': column,
     },
     async created() {
+      let self = this;
       this.info = this.$store.getters.materialList_edit;
-      let res = await queryTechnicalCentreDept();
-      if (res.status === 1) {
-        this.options.inOutDepartment = [...res.msg];
-      }
+
+      this.header.forEach(async item => {
+        if (item.prop === 'inOutDepartment') {
+          let res = await queryTechnicalCentreDept();
+          if (res.status === 1) {
+            self.options.inOutDepartment = [...res.msg].map(item => {
+              if (item.id === self.info.attributionDepartment) {
+                /* 禁止外借或者归还时选择当前材料归属部门 */
+                item.disabled = true;
+              }
+              return item;
+            });
+            /* 改变列表中借出/归还部门由数字变为字符串 */
+            item.change = ["", ...[...res.msg].map(item => item.pleaseDepartmentName)];
+            self.inOutDepartmentChange = [...item.change];
+          }
+        }
+      });
     },
     async mounted() {
       let res = await queryProjectProjectName();
@@ -233,6 +248,7 @@
         if ((this.materialListDetail.projectName || this.materialListDetail.inOutType) && this.materialListDetail.intOutNum) {
           let params = {
             ...this.materialListDetail,
+            attributionDepartment: this.info.attributionDepartment,
           };
           let res;
           if (this.materialListDetailFlag) {
@@ -259,7 +275,7 @@
         this.materialListDetailDialogShow = true;
         if (row) {
           this.materialListDetailFlag = 1;
-          this.materialListDetail = row;
+          this.materialListDetail = {...row};
         } else {
           this.materialListDetailFlag = 0;
           this.materialListDetail = {
@@ -298,7 +314,7 @@
 
           { prop: 'intOutNum', label: '出入库数量', eachWidth: 40,},
           { prop: 'remainingQuantity', label: '库存剩余数量', eachWidth: 30,},
-          { prop: 'inOutDepartment', label: '借出/归还部门', change: ['', '研发部', 'IME部', '先进制造技术研究所', '数字化部', '开发部', '新型复合材料研究工程实验室', '非技术中心部门']},
+          { prop: 'inOutDepartment', label: '借出/归还部门',},
           { prop: 'createTime', label: '时间', eachWidth: 30,},
           { prop: 'numberTimes', label: 'ERP单号+批次', eachWidth: 30,},
           { prop: 'projectName', label: '项目名称', eachWidth: 30,},
@@ -306,7 +322,7 @@
           { prop: 'unitPrice', label: '单价', eachWidth: 30,},
           { prop: 'totalMoney', label: '总金额', eachWidth: 30,},
 
-          { prop: 'ramark', label: '备注', width: 'unset'},
+          { prop: 'remark', label: '备注', width: 'unset'},
         ],
 
         // search
@@ -331,17 +347,10 @@
           inOutDepartment: [
 
           ],
-          attributionDepartment : [
-            '',
-            '研发部',
-            'IME部',
-            '先进制造技术研究所',
-            '数字化部',
-            '开发部',
-            '新型复合材料研究工程实验室',
-            '非技术中心部门'
-          ]
         },
+
+        // header 中所需要change 字段
+        inOutDepartmentChange: [],
 
         show: false,
         info: {},
