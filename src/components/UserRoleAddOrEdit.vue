@@ -17,6 +17,14 @@
           </el-form-item>
         </el-col>
 
+        <el-col :span="6">
+          <el-form-item label="是否属于管理层：" prop="status" label-width="130px">
+            <el-select v-model="basicInfo.manager" placeholder="请选择">
+              <el-option v-for="item in manager" :key="item.id" :label="item.label" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
       </el-row>
 
       <el-row>
@@ -65,7 +73,10 @@
     async created() {
       this.basicInfo = Object.assign({},this.$store.getters.auth_userRole);
       if (!this.basicInfo.status) {
-        this.basicInfo.status = 1;
+        this.basicInfo = {
+          status : 1,
+          manager: false,
+        }
       }
     },
     async mounted() {
@@ -74,7 +85,7 @@
         this.permissionLists = res.msg;
       }
 
-      if (Object.keys(this.basicInfo).length === 1) {
+      if (Object.keys(this.basicInfo).length === 2) {
         this.choose = 0;
       } else {
         this.choose = 1;
@@ -199,7 +210,10 @@
           { id: 0, label: '关闭'},
           { id: 1, label: '启用'},
         ],
-
+        manager: [
+          { id: false, label: '否'},
+          { id: true, label: '是'},
+        ],
         // basicInfo
         basicInfo: {},
         permissionLists: [],
