@@ -13,6 +13,10 @@
             <span>材料名称：<b>{{info.materialName}}</b></span>
           </div>
 
+          <div class="fl mr20 mb20 lh28">
+            <span>剩余库存数量：<b>{{info.remainingQuantity}}</b></span>
+          </div>
+
           <div class="fl mr20 mb20">
             <span>出入库方式：</span>
             <el-select v-model="search.value1" placeholder="请选择" size="mini" style="width:calc(100% - 100px);" clearable>
@@ -71,13 +75,13 @@
         <el-form :model="materialListDetail" label-position="right" size="mini">
           <el-row style="width:100%;line-height:60px;margin:0 auto;">
 
-            <el-col :span="12" class="mb20">
+            <!--<el-col :span="12" class="mb20">
               <span>材料名称：<b>{{materialListDetail.materialName}}</b></span>
             </el-col>
 
             <el-col :span="12" class="mb20">
               <span>库存数量：<b>{{materialListDetail.remainingQuantity}}</b></span>
-            </el-col>
+            </el-col>-->
 
             <el-col :span="12">
               <el-form-item label="出入库方式：" label-width="120px">
@@ -314,7 +318,7 @@
           // { prop: 'fundType', label: '费用类型', select: [ { id: 0, label: '资助'}, { id: 1, label: '自筹'},]},
 
           { prop: 'intOutNum', label: '出入库数量', eachWidth: 40,},
-          { prop: 'remainingQuantity', label: '库存剩余数量', eachWidth: 30,},
+          // { prop: 'remainingQuantity', label: '库存剩余数量', eachWidth: 30,},
           { prop: 'inOutDepartment', label: '借出/归还部门',},
           { prop: 'createTime', label: '时间', eachWidth: 30,},
           { prop: 'numberTimes', label: 'ERP单号+批次', eachWidth: 30,},
