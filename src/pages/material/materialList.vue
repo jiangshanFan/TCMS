@@ -46,7 +46,15 @@
           <el-table-column fixed="right" label="操作" width="80" align="center">
             <template slot-scope="scope">
               <span>
-                <el-button class="underline f12" @click="lookDetail(scope.row)" type="text" align="center">详情</el-button>
+                <el-button
+                  class="underline f12"
+                  @click="lookDetail(scope.row)"
+                  type="text"
+                  align="center"
+                  v-if="$store.getters.userLoginVO.manager || $store.getters.userLoginVO.dept === scope.row.attributionDepartment"
+                >
+                  详情
+                </el-button>
               </span>
             </template>
           </el-table-column>

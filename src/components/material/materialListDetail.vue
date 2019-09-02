@@ -49,6 +49,7 @@
             <template slot-scope="scope">
               <span>
                 <el-button class="underline f12" @click="openmaterialListDetailDialog(scope.row)" type="text" align="center" v-if="scope.row.inOutType !== 1">编辑</el-button>
+                <el-button class="underline f12" @click="deletes(scope.row)" type="text" align="center" v-if="scope.row.inOutType !== 1">删除</el-button>
               </span>
             </template>
           </el-table-column>
@@ -78,6 +79,14 @@
               <span>库存数量：<b>{{materialListDetail.remainingQuantity}}</b></span>
             </el-col>
 
+            <el-col :span="12">
+              <el-form-item label="出入库方式：" label-width="120px">
+                <el-select v-model="materialListDetail.inOutType" placeholder="请选择" size="mini" style="width:100%;">
+                  <el-option v-for="item in options.inOutTypeOne" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+
             <el-col :span="12" v-if="materialListDetail.inOutType === 2">
               <el-form-item label="项目名称：" label-width="120px">
                 <el-select v-model="materialListDetail.projectName" placeholder="请选择" size="mini" style="width:100%;">
@@ -90,14 +99,6 @@
               <el-form-item :label="materialListDetail.inOutType === 3? '借出部门：': '归还部门：'" label-width="120px">
                 <el-select v-model="materialListDetail.inOutDepartment" placeholder="请选择" size="mini" style="width:100%;">
                   <el-option v-for="item in options.inOutDepartment" :key="item.id" :label="item.pleaseDepartmentName" :value="item.id" :disabled="item.disabled"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item label="出入库方式：" label-width="120px">
-                <el-select v-model="materialListDetail.inOutType" placeholder="请选择" size="mini" style="width:100%;">
-                  <el-option v-for="item in options.inOutTypeOne" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
