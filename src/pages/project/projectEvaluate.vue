@@ -167,12 +167,12 @@
 
         header: [
           { prop: 'name', label: '姓名', eachWidth: 40,},
-          { prop: 'oneSelfGraded', label: '指标1自评分', },
+          { prop: 'oneSelfGraded', label: '指标1自评分', number: 1},
 
-          { prop: 'oneIndicatorGraded', label: '指标1负责人评分',},
-          { prop: 'twoSelfGraded', label: '指标2自评分',},
-          { prop: 'twoIndicatorGraded', label: '指标2负责人评分',},
-          { prop: 'scoreTotal', label: '总分',},
+          { prop: 'oneIndicatorGraded', label: '指标1负责人评分', number: 1},
+          { prop: 'twoSelfGraded', label: '指标2自评分', number: 1},
+          { prop: 'twoIndicatorGraded', label: '指标2负责人评分', number: 1},
+          { prop: 'scoreTotal', label: '总分', eachWidth: 40, number: 1},
           { prop: 'remark', label: '说明', width: 'unset'},
 
         ],

@@ -72,13 +72,13 @@
 
         <el-col :span="6">
           <el-form-item label="资助总额：" prop="supportAmount">
-            <el-input style="width:100%;" v-model="basicInfo.supportAmount" clearable></el-input>
+            <el-input style="width:100%;" v-model="basicInfo.supportAmount" clearable placeholder="单位/元"></el-input>
           </el-form-item>
         </el-col>
 
         <el-col :span="6">
           <el-form-item label="自筹经费：" prop="raiseAmount">
-            <el-input style="width:100%;" v-model="basicInfo.raiseAmount" clearable></el-input>
+            <el-input style="width:100%;" v-model="basicInfo.raiseAmount" clearable placeholder="单位/元"></el-input>
           </el-form-item>
         </el-col>
 
@@ -118,6 +118,11 @@ import { addProjectInformation, editProjectInformation, getEmployeesInfoList, } 
     name: "ProjectAddOrEdit",
     created() {
       this.basicInfo = Object.assign({},this.$store.getters.project_list);
+      for (let i of Object.keys(this.basicInfo)) {
+        if ('supportAmount|raiseAmount|projectCostTotal'.match(i)) {
+          this.basicInfo[i] = parseFloat(this.basicInfo[i]) / 100;
+        }
+      }
       console.log(this.basicInfo);
       if (!this.basicInfo.status) {
         this.basicInfo = {
@@ -138,11 +143,17 @@ import { addProjectInformation, editProjectInformation, getEmployeesInfoList, } 
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
+            let params = {...this.basicInfo};
+            for (let index of Object.keys(params)) {
+              if ('supportAmount|raiseAmount'.match(index)) {
+                params[index] = parseFloat(params[index]) * 100;
+              }
+            }
             let res;
             if (this.choose === 0) {
-              res = await addProjectInformation(this.basicInfo);
+              res = await addProjectInformation(params);
             } else {
-              res = await editProjectInformation(this.basicInfo);
+              res = await editProjectInformation(params);
             }
             if (res.status === 1) {
               if (this.choose === 1) {
@@ -182,6 +193,19 @@ import { addProjectInformation, editProjectInformation, getEmployeesInfoList, } 
       },
     },
     data() {
+      let validate1 = (rule, value, callback) => {
+        if (!value) {
+          value = "";
+          callback();
+        } else {
+          if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+            callback(new Error('输入有误，请核对'));
+            Message({showClose: true, type: 'error', message: '提示“小数点后2位”！'})
+          } else {
+            callback();
+          }
+        }
+      };
       return {
         // all info
         basicInfo: {},
@@ -217,6 +241,8 @@ import { addProjectInformation, editProjectInformation, getEmployeesInfoList, } 
           empName: [
             { required: true, message: '项目负责人不能为空', trigger: ['blur','change'] },
           ],
+          supportAmount: [{ validator: validate1, trigger: ['blur']},],
+          raiseAmount: [{ validator: validate1, trigger: ['blur']},],
         },
 
         // choose api

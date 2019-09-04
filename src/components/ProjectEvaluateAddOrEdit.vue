@@ -7,27 +7,28 @@
         <el-form :model="basicInfo" :rules="rules" ref="ProjectEvaluateAddOrEdit" label-width="120px" label-position="right" size="mini">
 
           <el-row :gutter="10" class="spec">
+            <!-- @change="basicInfo = { ...basicInfo, oneSelfGraded: basicInfo.oneSelfGraded.replace(/[^0-9]+/,'') }"-->
             <el-col :span="12">
               <el-form-item label="指标1自评分：" prop="oneSelfGraded" label-width="120px">
-                <el-input style="width:100%;" v-model="basicInfo.oneSelfGraded" clearable @change="basicInfo.oneSelfGraded = basicInfo.oneSelfGraded.replace(/[^0-9-]+/,'')"></el-input>
+                <el-input style="width:100%;" v-model="basicInfo.oneSelfGraded" clearable></el-input>
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
-              <el-form-item label="指标1项目负责人评分：" prop="empName" label-width="180px">
-                <el-input style="width:100%;" v-model="basicInfo.oneIndicatorGraded" clearable @change="basicInfo.oneIndicatorGraded = basicInfo.oneIndicatorGraded.replace(/[^0-9-]+/,'')"></el-input>
+              <el-form-item label="指标1项目负责人评分：" prop="oneIndicatorGraded" label-width="180px">
+                <el-input style="width:100%;" v-model="basicInfo.oneIndicatorGraded" clearable></el-input>
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
-              <el-form-item label="指标2自评分：" prop="techInterfaceDept" label-width="120px">
-                <el-input style="width:100%;" v-model="basicInfo.twoSelfGraded" clearable @change="basicInfo.twoSelfGraded = basicInfo.twoSelfGraded.replace(/[^0-9-]+/,'')"></el-input>
+              <el-form-item label="指标2自评分：" prop="twoSelfGraded" label-width="120px">
+                <el-input style="width:100%;" v-model="basicInfo.twoSelfGraded" clearable></el-input>
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
-              <el-form-item label="指标2项目负责人评分：" prop="supportAmount" label-width="180px">
-                <el-input style="width:100%;" v-model="basicInfo.twoIndicatorGraded" clearable @change="basicInfo.twoIndicatorGraded = basicInfo.twoIndicatorGraded.replace(/[^0-9-]+/,'')"></el-input>
+              <el-form-item label="指标2项目负责人评分：" prop="twoIndicatorGraded" label-width="180px">
+                <el-input style="width:100%;" v-model="basicInfo.twoIndicatorGraded" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -63,6 +64,11 @@ import { revampProjectMember, } from '../axios/api.js'
     name: "ProjectEvaluateAddOrEdit",
     created() {
       this.basicInfo = Object.assign({},this.$store.getters.project_evaluate);
+      for (let i of Object.keys(this.basicInfo)) {
+        if ('oneSelfGraded|oneIndicatorGraded|twoSelfGraded|twoIndicatorGraded'.match(i)) {
+          this.basicInfo[i] = parseFloat(this.basicInfo[i]) / 100;
+        }
+      }
     },
     mounted() {
 
@@ -71,7 +77,13 @@ import { revampProjectMember, } from '../axios/api.js'
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            let res= await revampProjectMember(this.basicInfo);
+            let params = {...this.basicInfo};
+            for (let index of Object.keys(params)) {
+              if ('oneSelfGraded|oneIndicatorGraded|twoSelfGraded|twoIndicatorGraded'.match(index)) {
+                params[index] = parseFloat(params[index]) * 100;
+              }
+            }
+            let res= await revampProjectMember(params);
             if (res.status === 1) {
 
               this.$emit('ifChange','edit');
@@ -90,12 +102,28 @@ import { revampProjectMember, } from '../axios/api.js'
       }
     },
     data() {
+      let validate1 = (rule, value, callback) => {
+        if (!value) {
+          value = "";
+          callback();
+        } else {
+          if (!/^\d(\.\d)?$/.test(value)) {
+            callback(new Error('输入有误，请核对'));
+            Message({showClose: true, type: 'error', message: '提示“小数点前1位，小数点后1位”！'})
+          } else {
+            callback();
+          }
+        }
+      };
       return {
         // all info
         basicInfo: {},
 
         rules: {
-
+          oneSelfGraded: [{ validator: validate1, trigger: ['blur']},],
+          oneIndicatorGraded: [{ validator: validate1, trigger: ['blur']},],
+          twoSelfGraded: [{ validator: validate1, trigger: ['blur']},],
+          twoIndicatorGraded: [{ validator: validate1, trigger: ['blur']},],
         },
 
         // choose api
