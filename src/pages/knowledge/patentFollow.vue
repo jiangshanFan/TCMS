@@ -94,6 +94,7 @@
               <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
               <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
               <span v-else-if="h.multiProp">{{h.multiProp.map(function (item) { if(scope.row[item]) return scope.row[item];}).filter(current => {return current !== null && current !== undefined;}).join('、')}}</span> <!--<span v-for="(p,ind) in h.multiProp" :key="ind">{{scope.row[p]}}</span>-->
+              <span v-else-if="h.date === 1">{{scope.row[h.prop]? $format(new Date(scope.row[h.prop]).getTime()).dates : ''}}</span>
               <span v-else>{{scope.row[h.prop]}}</span>
             </template>
           </el-table-column>
@@ -286,14 +287,14 @@ import PatentAddOrEdit from '../../components/PatentAddOrEdit'
           { prop: 'type', label: '专利类型', change: ['','实用','发明','外观','软件著作权',]},
           { prop: 'paperName', label: '交底书名称', parent:'disclosurePaperDTO'},
           { prop: 'paperCode', label: '交底书编号', parent:'disclosurePaperDTO'},
-          { prop: 'officialAcceptanceTime', label: '官方受理时间',},
+          { prop: 'officialAcceptanceTime', label: '官方受理时间', date: 1},
           { prop: 'status', label: '专利状态', change: ['','已受理','初审中','实审中','待缴费','已撤回','已驳回','已放弃','已授权','变更中','已失效']},
           { prop: 'whetherChange', label: '是否有变更', change: ['不变更','变更',]},
           { prop: 'authorizationCost', label: '授权缴费',},
           { prop: 'authorizationOaOddNum', label: '授权费OA单号',},
           { prop: 'disclosurePaperDTO.', label: 'OA单状态',},
-          { prop: 'planAuthorizeTime', label: '预计授权日期',},
-          { prop: 'realAuthorizeTime', label: '实际授权日期',},
+          { prop: 'planAuthorizeTime', label: '预计授权日期', date: 1},
+          { prop: 'realAuthorizeTime', label: '实际授权日期', date: 1},
           { prop: 'patentee', label: '专利权人',},
           { prop: 'inventor', label: '发明人清单', multiProp: ['firstInventor','secondInventor','thirdInventor','otherInventor']},
           { prop: 'project', label: '关联项目',},

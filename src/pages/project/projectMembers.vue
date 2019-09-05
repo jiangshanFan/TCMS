@@ -266,11 +266,11 @@
 
           { prop: 'position', label: '工作职位',},
           { prop: 'sex', label: '性别',},
-          { prop: 'birthday', label: '出生日期',},
+          { prop: 'birthday', label: '出生日期', date: 1},
           { prop: 'highEducation', label: '学历', eachWidth: 40,},
           { prop: 'school', label: '毕业学校',},
           { prop: 'type', label: '状态', eachWidth: 40,},
-          { prop: 'unitTime', label: '入职时间',},
+          { prop: 'unitTime', label: '入职时间', date: 1},
           { prop: 'whetherInspection', label: '是否考评', select: [ { id: 0, label: '否'}, { id: 1, label: '是'},]},
           { prop: 'dept', label: '部门', eachWidth: 40,},
           { prop: 'mobile', label: '联系电话',},

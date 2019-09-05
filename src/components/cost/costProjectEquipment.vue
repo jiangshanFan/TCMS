@@ -141,6 +141,8 @@
                         <b class="cc">实际金额：</b><b>{{ item.actualAmount}}</b>
                         <b class="cc">资产归属：</b><b>{{ item.assetOwnership}}</b>
                         <b class="cc">已关联项目名称：</b><b>{{ item.projectName}}</b>
+                        <b class="cc">申报项目名称：</b><b>{{ item.applicationProjectName}}</b>
+                        <b class="cc">申报补助项目名称：</b><b>{{ item.applySubsidyProjectName}}</b>
                       </span>
                     </el-option>
                   </el-select>

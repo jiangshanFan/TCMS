@@ -76,6 +76,7 @@
             <template slot-scope="scope">
               <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
               <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
+              <span v-else-if="h.date === 1">{{scope.row[h.prop]? $format(new Date(scope.row[h.prop]).getTime()).dates : ''}}</span>
               <span v-else-if="h.multiProp">{{h.multiProp.map(function (item) { if(scope.row[item]) return scope.row[item];}).filter(current => {return current !== null && current !== undefined;}).join('、')}}</span> <!--<span v-for="(p,ind) in h.multiProp" :key="ind">{{scope.row[p]}}</span>-->
               <span v-else>{{scope.row[h.prop]}}</span>
             </template>
@@ -241,7 +242,7 @@
         header: [
           { prop: 'dissertationCode', label: '论文编号',},
           { prop: 'dissertationName', label: '论文名称',},
-          { prop: 'createTime', label: '提交时间',},
+          { prop: 'createTime', label: '提交时间', date: 1},
           { prop: 'writer', label: '撰稿人',},
           { prop: 'firstAuthor', label: '第一作者',},
           { prop: 'secondAuthor', label: '第二作者',},

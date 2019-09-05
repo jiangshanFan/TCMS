@@ -320,7 +320,7 @@
           { prop: 'intOutNum', label: '出入库数量', eachWidth: 40,},
           // { prop: 'remainingQuantity', label: '库存剩余数量', eachWidth: 30,},
           { prop: 'inOutDepartment', label: '借出/归还部门',},
-          { prop: 'createTime', label: '时间', eachWidth: 30,},
+          { prop: 'createTime', label: '时间', eachWidth: 30, date: 1},
           { prop: 'numberTimes', label: 'ERP单号+批次', eachWidth: 30,},
           { prop: 'projectName', label: '项目名称', eachWidth: 30,},
           { prop: 'unit', label: '单位', eachWidth: 30,},

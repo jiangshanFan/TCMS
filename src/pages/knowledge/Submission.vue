@@ -103,6 +103,7 @@
             <template slot-scope="scope">
               <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
               <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
+              <span v-else-if="h.date === 1">{{scope.row[h.prop]? $format(new Date(scope.row[h.prop]).getTime()).dates : ''}}</span>
               <span v-else-if="h.multiProp">{{h.multiProp.map(function (item) { if(scope.row[item]) return scope.row[item];}).filter(current => {return current !== null && current !== undefined;}).join('、')}}</span> <!--<span v-for="(p,ind) in h.multiProp" :key="ind">{{scope.row[p]}}</span>-->
               <span v-else>{{scope.row[h.prop]}}</span>
             </template>
@@ -275,9 +276,9 @@ import breadcrumbList from '../../components/breadcrumbList'
           { prop: 'paperCode', label: '交底书编码',},
           { prop: 'paperName', label: '交底书名称',},
           { prop: 'patentCount', label: '申请专利数',},
-          { prop: 'planTime', label: '计划完成时间',},
-          { prop: 'realTime', label: '实际完成时间',},
-          { prop: 'agentHandleTime', label: '代理受理时间',},
+          { prop: 'planTime', label: '计划完成时间', date: 1},
+          { prop: 'realTime', label: '实际完成时间', date: 1},
+          { prop: 'agentHandleTime', label: '代理受理时间', date: 1},
           { prop: 'status', label: '交底书状态', change: ['','项目启动','交底完成','已委托代理','委托终止','确认代理','缴费中','代理完成']},
           { prop: 'agentCost', label: '代理费',},
           { prop: 'officialFee', label: '官费',},

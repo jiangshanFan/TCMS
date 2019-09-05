@@ -120,7 +120,9 @@ import { addProjectInformation, editProjectInformation, getEmployeesInfoList, } 
       this.basicInfo = Object.assign({},this.$store.getters.project_list);
       for (let i of Object.keys(this.basicInfo)) {
         if ('supportAmount|raiseAmount|projectCostTotal'.match(i)) {
-          this.basicInfo[i] = parseFloat(this.basicInfo[i]) / 100;
+          if (this.basicInfo[i]) {
+            this.basicInfo[i] = parseFloat(this.basicInfo[i]) / 100;
+          }
         }
       }
       console.log(this.basicInfo);
@@ -146,7 +148,9 @@ import { addProjectInformation, editProjectInformation, getEmployeesInfoList, } 
             let params = {...this.basicInfo};
             for (let index of Object.keys(params)) {
               if ('supportAmount|raiseAmount'.match(index)) {
-                params[index] = parseFloat(params[index]) * 100;
+                if (params[index]) {
+                  params[index] = parseFloat(params[index]) * 100;
+                }
               }
             }
             let res;

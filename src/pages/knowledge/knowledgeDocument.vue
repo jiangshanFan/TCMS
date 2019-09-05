@@ -94,6 +94,7 @@
                 <template slot-scope="scope">
                   <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
                   <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
+                  <span v-else-if="h.date === 1">{{scope.row[h.prop]? $format(new Date(scope.row[h.prop]).getTime()).dates : ''}}</span>
                   <span v-else-if="h.multiProp">{{h.multiProp.map(function (item) { if(scope.row[item]) return scope.row[item];}).filter(current => {return current !== null && current !== undefined;}).join('、')}}</span> <!--<span v-for="(p,ind) in h.multiProp" :key="ind">{{scope.row[p]}}</span>-->
                   <span v-else>{{scope.row[h.prop]}}</span>
                 </template>
@@ -139,6 +140,7 @@
                   <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
                   <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
                   <span v-else-if="h.multiProp">{{h.multiProp.map(function (item) { if(scope.row[item]) return scope.row[item];}).filter(current => {return current !== null && current !== undefined;}).join('、')}}</span> <!--<span v-for="(p,ind) in h.multiProp" :key="ind">{{scope.row[p]}}</span>-->
+                  <span v-else-if="h.date === 1">{{scope.row[h.prop]? $format(new Date(scope.row[h.prop]).getTime()).dates : ''}}</span>
                   <span v-else>{{scope.row[h.prop]}}</span>
                 </template>
               </el-table-column>
@@ -465,14 +467,14 @@
 
         header: [
           { prop: 'fileName', label: '附件名称', width: 'unset'},
-          { prop: 'createTime', label: '上传时间',},
+          { prop: 'createTime', label: '上传时间', date: 1},
           { prop: 'userName', label: '上传人',},
         ],
 
         header1: [
           { prop: 'fileName', label: '附件名称',},
           { prop: 'filePath', label: '附件位置', width: 'unset'},
-          { prop: 'createTime', label: '上传时间',},
+          { prop: 'createTime', label: '上传时间', date: 1},
           { prop: 'userName', label: '上传人',},
         ],
 

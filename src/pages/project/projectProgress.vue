@@ -196,10 +196,10 @@
           { prop: 'workContent', label: '工作内容',},
 
           { prop: 'name', label: '负责人',},
-          { prop: 'planStartTime', label: '计划开始日期',},
-          { prop: 'planEndTime', label: '计划完成日期',},
-          { prop: 'realStartTime', label: '实际开始日期',},
-          { prop: 'realEndTime', label: '实际完成日期',},
+          { prop: 'planStartTime', label: '计划开始日期', date: 1},
+          { prop: 'planEndTime', label: '计划完成日期', date: 1},
+          { prop: 'realStartTime', label: '实际开始日期', date: 1},
+          { prop: 'realEndTime', label: '实际完成日期', date: 1},
           { prop: 'percentComplete', label: '完成百分比',},
           { prop: 'remark', label: '备注', width:'unset', },
 

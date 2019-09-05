@@ -26,7 +26,9 @@
 
           <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
           <!-- java无法处理小说点，通过乘除100，变为整数存储 -->
-          <span v-else-if="h.number">{{scope.row[h.prop] / 100}}</span>
+          <span v-else-if="h.number">{{scope.row[h.prop]? scope.row[h.prop] / 100 : ''}}</span>
+
+          <span v-else-if="h.date === 1">{{scope.row[h.prop]? $format(new Date(scope.row[h.prop]).getTime()).dates : ''}}</span>
 
           <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
 

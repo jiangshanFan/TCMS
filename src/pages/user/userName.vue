@@ -197,7 +197,7 @@
           { prop: 'userName', label: '用户名称',},
           { prop: 'workNo', label: '工号', eachWidth: 50,},
           { prop: 'dept', label: '部门', eachWidth: 50,},
-          { prop: 'createTime', label: '创建时间',},
+          { prop: 'createTime', label: '创建时间', date: 1},
           { prop: 'mobile', label: '手机号', eachWidth: 50,},
           { prop: 'mail', label: '邮箱', width: 'unset'},
         ],

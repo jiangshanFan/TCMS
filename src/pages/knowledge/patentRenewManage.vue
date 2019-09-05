@@ -100,6 +100,7 @@
             <template slot-scope="scope">
               <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
               <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
+              <span v-else-if="h.date === 1">{{scope.row[h.prop]? $format(new Date(scope.row[h.prop]).getTime()).dates : ''}}</span>
               <span v-else-if="h.multiProp">{{h.multiProp.map(function (item) { if(scope.row[item]) return scope.row[item];}).filter(current => {return current !== null && current !== undefined;}).join('、')}}</span> <!--<span v-for="(p,ind) in h.multiProp" :key="ind">{{scope.row[p]}}</span>-->
               <span v-else>{{scope.row[h.prop]}}</span>
             </template>
@@ -433,16 +434,16 @@
           { prop: 'patentName', label: '专利名称',},
           { prop: 'renewCount', label: '已续费年限',},
           { prop: 'type', label: '专利类型', change: ['','实用','发明','外观','软件著作权',]},
-          { prop: 'officialAcceptanceTime', label: '官方受理时间',},
-          { prop: 'realAuthorizeTime', label: '授权日期',},
-          { prop: 'patentValidity', label: '专利权期限',},
+          { prop: 'officialAcceptanceTime', label: '官方受理时间', date: 1},
+          { prop: 'realAuthorizeTime', label: '授权日期', date: 1},
+          { prop: 'patentValidity', label: '专利权期限', date: 1},
           { prop: 'gainWay', label: '取得方式', change: ['','原始取得','归属转让','授权使用',]},
           { prop: 'patentee', label: '专利权人',},
           { prop: 'inventor', label: '发明人清单', multiProp: ['firstInventor','secondInventor','thirdInventor','otherInventor']},
           { prop: 'renewStatus', label: '缴费状态', change: ['','待续费','已续费','停止续费',]},
-          { prop: 'latestRenewTime', label: '最迟续费时间',},
+          { prop: 'latestRenewTime', label: '最迟续费时间', date: 1},
           { prop: 'renewAmount', label: '预计续费金额',},
-          { prop: 'oaOddSubmitTime', label: 'OA单提交时间',},
+          { prop: 'oaOddSubmitTime', label: 'OA单提交时间', date: 1},
           { prop: 'oaApplyCost', label: 'OA申请实际费用',},
           { prop: 'oaOddNum', label: '续费OA单号',},
           { prop: 'oaStatus', label: 'OA单状态',},

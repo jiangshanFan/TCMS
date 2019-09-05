@@ -180,8 +180,8 @@
           { prop: 'projectName', label: '项目名称',},
           { prop: 'projectMan', label: '项目负责人',},
           { prop: 'status', label: '项目状态', change: ['', '规划中', '待审批', '进行中', '已关闭', '验收中', '已完成',]},
-          { prop: 'projectStartTime', label: '项目计划开始日期',},
-          { prop: 'projectEndTime', label: '项目计划完成日期',},
+          { prop: 'projectStartTime', label: '项目计划开始日期', date: 1},
+          { prop: 'projectEndTime', label: '项目计划完成日期', date: 1},
           { prop: 'fundTypeNum', label: '经费支出类别',},
           // { prop: 'type', label: '项目类型', change: ['', '政府合作项目', '企业内部项目', '企业间合作项目', '科研预研究项目']},
 

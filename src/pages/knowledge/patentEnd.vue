@@ -95,6 +95,7 @@
               <span v-if="h.change">{{h.change[scope.row[h.prop]]}}</span>
               <span v-else-if="h.parent">{{scope.row[h.parent]?scope.row[h.parent][h.prop]:''}}</span>
               <span v-else-if="h.multiProp">{{h.multiProp.map(function (item) { if(scope.row[item]) return scope.row[item];}).filter(current => {return current !== null && current !== undefined;}).join('、')}}</span> <!--<span v-for="(p,ind) in h.multiProp" :key="ind">{{scope.row[p]}}</span>-->
+              <span v-else-if="h.date === 1">{{scope.row[h.prop]? $format(new Date(scope.row[h.prop]).getTime()).dates : ''}}</span>
               <span v-else>{{scope.row[h.prop]}}</span>
             </template>
           </el-table-column>
@@ -245,16 +246,16 @@
           { prop: 'patentApplyNum', label: '专利申请号',},
           { prop: 'type', label: '专利类型', change: ['','实用','发明','外观','软件著作权',]},
           { prop: 'status', label: '专利状态', change: ['','待官方受理','初审中','实审中','待缴费','已撤回','已驳回','已放弃','已授权','变更中','已失效']},
-          { prop: 'renewCount', label: '专利申请日',},
-          { prop: 'realAuthorizeTime', label: '授权日期',},
+          { prop: 'renewCount', label: '专利申请日', date: 1},
+          { prop: 'realAuthorizeTime', label: '授权日期', date: 1},
 
-          { prop: 'patentValidity', label: '专利权期限',},
+          { prop: 'patentValidity', label: '专利权期限', date: 1},
           { prop: 'gainWay', label: '取得方式', change: ['','原始取得','归属转让','授权使用',]},
           { prop: 'patentee', label: '专利权人',},
           { prop: 'inventor', label: '发明人清单', multiProp: ['firstInventor','secondInventor','thirdInventor','otherInventor']},
           { prop: 'renewAmount', label: '费用',},
-          { prop: 'latestRenewTime', label: '最迟续费时间',},
-          { prop: 'latestSupplyPayTime', label: '最迟补续费时间',},
+          { prop: 'latestRenewTime', label: '最迟续费时间', date: 1},
+          { prop: 'latestSupplyPayTime', label: '最迟补续费时间', date: 1},
 
           { prop: 'remark', label: '备注',},
         ],

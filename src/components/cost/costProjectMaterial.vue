@@ -362,7 +362,7 @@
 
           { prop: 'fundType', label: '费用类型', select: [ { id: 0, label: '资助'}, { id: 1, label: '自筹'},]},
 
-          { prop: 'orderDate', label: '采购时间',},
+          { prop: 'orderDate', label: '采购时间', date: 1},
           { prop: 'purchaseNum', label: '采购数量', eachWidth: 20,},
           { prop: 'purchaseUnit', label: '单位',},
           { prop: 'price', label: '单价', eachWidth: 30,},
