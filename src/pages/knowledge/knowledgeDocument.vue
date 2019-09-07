@@ -19,7 +19,7 @@
 
       <!-- content -->
       <el-container>
-        <el-aside width="200px">
+        <el-aside class="pr20" style="max-width:300px;width: auto;min-width:200px;">
           <el-tree
             ref="tree"
             node-key="id"
@@ -211,15 +211,17 @@
         if (res.status === 1) {
           this.tree = res.msg;
           if (val === 0) {
-            let defaultData = this.tree[0].fileManages[0].fileManages[0];
+            if (this.tree[0]) {
+              let defaultData = this.tree[0].fileManages[0].fileManages[0];
 
-            this.defaultKeys = [1, this.tree[0].fileManages[0].id];
+              this.defaultKeys = [1, this.tree[0].fileManages[0].id];
 
-            setTimeout(() => {
-              this.$refs.tree.setCurrentKey(defaultData.id);
-            },300);
+              setTimeout(() => {
+                this.$refs.tree.setCurrentKey(defaultData.id);
+              }, 300);
 
-            this.handleNodeClick(defaultData);
+              this.handleNodeClick(defaultData);
+            }
           }
         }
       },
