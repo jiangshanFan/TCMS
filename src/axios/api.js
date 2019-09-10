@@ -197,7 +197,7 @@ export const getFileEnclosureInformationProject = data => {return $ajax({url: pr
 //项目文档管理--删除上传的文件
 export const removeFileEnclosureInformationProject = data => {return $ajax({url: process.env.API_HOST + '/projectFileManageInformation/projectFileManage/removeFileEnclosureInformation', method: 'get', params: data,})};
 //项目文档管理--添加附件  --------no use
-export const addUploadManyFileProject = data => {return $ajax({url: process.env.API_HOST + '/projectFileManageInformation/projectFileManage/addUploadManyFile', method: 'post', data: data, meta: 1,})};
+export const addUploadManyFileProject = data => {return $ajax({url: process.env.API_HOST + '/projectFileManageInformation/projectFileManage/addUploadManyFile', method: 'post', data: data, meta: 2})};
 //项目文档管理--修改文件夹名称
 export const editeFileManageFolder = data => {return $ajax({url: process.env.API_HOST + '/projectFileManageInformation/projectFileManage/editeFileManageFolder', method: 'post', data: data,})};
 

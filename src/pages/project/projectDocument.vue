@@ -46,7 +46,7 @@
 
         <el-main>
           <div class="mt20" v-if="show">
-            <!-- 添加 name="fileType"-->
+            <!-- 添加 name="fileType" :http-request="uploadFiles"-->
             <div class="addFiles">
               <el-upload
                 class="upload-demo"
@@ -170,7 +170,16 @@
 /* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
-  import { getFileManageInformationProject, removeFileManageFolderProject, saveFileManageFolderProject, getFileEnclosureInformationListProject, removeFileEnclosureInformationProject, getFileEnclosureInformationProject, editeFileManageFolder } from '../../axios/api.js'
+  import {
+    getFileManageInformationProject,
+    removeFileManageFolderProject,
+    saveFileManageFolderProject,
+    getFileEnclosureInformationListProject,
+    removeFileEnclosureInformationProject,
+    getFileEnclosureInformationProject,
+    editeFileManageFolder,
+    addUploadManyFileProject
+  } from '../../axios/api.js'
   import breadcrumbList from '../../components/breadcrumbList'
 
   export default {
@@ -305,10 +314,22 @@
         });
       },
 
+      // // http-request
+      // uploadFiles(file) {
+      //   this.uploadFilesData.append('file', file.file);
+      // },
+
       // add new files
-      submitUpload() {
+      async submitUpload() {
+        // this.uploadFilesData = new FormData();
         // console.log(e.dataTransfer.files);
         this.$refs.upload.submit();
+        // this.uploadFilesData.append('path', 'projectDocument');
+        // this.uploadFilesData.append('folderId', this.folderId);
+        // let res = await addUploadManyFileProject(this.uploadFilesData);
+        // if (res.status === 1) {
+        //   console.log('success!')
+        // }
         if (this.fileList.length) {
           this.fileStatus = true;
         }
@@ -485,7 +506,8 @@
         breadcrumb: [
           { id: 'project', name: '项目管理', path: '/project',},
           { id: 'projectDocument', name: '项目文档管理', path: '/project/projectDocument',},
-        ]
+        ],
+        uploadFilesData:{}
       }
     },
   }
