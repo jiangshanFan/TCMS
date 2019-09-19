@@ -19,7 +19,7 @@
 
       <!-- content -->
       <el-container>
-        <el-aside class="pr20" style="max-width:300px;width: auto;min-width:200px;">
+        <el-aside class="pr20" style="max-width:520px;width: auto;min-width:200px;">
           <el-tree
             ref="tree"
             node-key="id"
@@ -254,8 +254,8 @@
         this.$prompt('请输入文件夹名称', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          // inputErrorMessage: '邮箱格式不正确'
+          inputPattern: /^.{1,30}$/,
+          inputErrorMessage: '格式不正确,请输入1~30个字符！'
         }).then( async ({ value }) => {
           if (value) {
             let res = await saveFileManageFolderProject({id: data.id, fileName: value,});
@@ -296,11 +296,13 @@
 
       // change folder name
       change(node, data) {
-        this.$prompt(`当前文件夹名称为“${node.label}”,请在下方框中输入新的名称：`, '提示', {
+        this.$prompt(`<p>当前文件夹名称为<br />"<span style="word-break: break-all;">${node.label}</span>"<br />,请在下方框中输入新的名称：`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          // inputErrorMessage: '邮箱格式不正确'
+          dangerouslyUseHTMLString: true,
+          inputPattern: /^.{1,30}$/,
+            // /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+          inputErrorMessage: '格式不正确,请输入1~30个字符！'
         }).then( async ({ value }) => {
           let res = await editeFileManageFolder({id: data.id, fileName: value,});
           if (res.status === 1) {
@@ -543,8 +545,8 @@
     overflow: hidden;
     line-height: 28px;
     .node_span {
-      max-width: 200px;
-      margin-right: 20px;
+      max-width: 450px;
+      margin-right: 10px;
       display:block;
     }
     .add {
