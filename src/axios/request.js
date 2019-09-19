@@ -25,7 +25,9 @@ $ajax.interceptors.request.use(config => {
     if(config.meta === 1) {
       config.headers['Content-Type'] = 'application/json';
       // config.data = JSON.stringify(config.data);
-    }else {
+    } else if (config.meta === 2) {
+      config.headers['Content-Type'] = 'multipart/form-data';
+    } else {
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       config.data = Qs.stringify(config.data,{
         serializeDate: (date) => {

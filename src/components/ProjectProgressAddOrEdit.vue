@@ -63,7 +63,7 @@
 
             <el-col :span="12">
               <el-form-item label="完成百分比：" prop="percentComplete">
-                <el-input style="width:100%;" v-model="basicInfo.percentComplete" clearable></el-input>
+                <el-input style="width:calc(100% - 40px);" v-model="basicInfo.percentComplete" clearable></el-input><span class="pl20">%</span>
               </el-form-item>
             </el-col>
           </el-row>
@@ -155,6 +155,19 @@ import { saveProjectProgressManagement, revampProjectProgressManagement, getEmpl
       },
     },
     data() {
+      let validate1 = (rule, value, callback) => {
+        if (!value) {
+          value = "";
+          callback();
+        } else {
+          if (!/^(0|[1-9][0-9]?|100)$/.test(value)) {
+            callback(new Error('输入有误，请核对'));
+            Message({showClose: true, type: 'error', message: '“完成百分比输入错误，请输入数字“0-100”，不支持小数”！'})
+          } else {
+            callback();
+          }
+        }
+      };
       return {
         // all info
         basicInfo: {},
@@ -167,6 +180,9 @@ import { saveProjectProgressManagement, revampProjectProgressManagement, getEmpl
           ],
           workContent: [
             { required: true, message: '工作内容不能为空！', trigger: ['blur', 'change']},
+          ],
+          percentComplete: [
+            { validator: validate1, trigger: ['blur', 'change']}
           ],
         },
 

@@ -19,7 +19,7 @@
 
       <!-- content -->
       <el-container>
-        <el-aside class="pr20" style="max-width:300px;width: auto;">
+        <el-aside class="pr20" style="max-width:520px;width: auto;min-width:200px;">
           <el-tree
             ref="tree"
             node-key="id"
@@ -46,7 +46,7 @@
 
         <el-main>
           <div class="mt20" v-if="show">
-            <!-- 添加 name="fileType"-->
+            <!-- 添加 name="fileType" :http-request="uploadFiles"-->
             <div class="addFiles">
               <el-upload
                 class="upload-demo"
@@ -170,7 +170,16 @@
 /* eslint-disable */
   import { Message, MessageBox, Loading } from 'element-ui';
   /** 导入api.js */
-  import { getFileManageInformationProject, removeFileManageFolderProject, saveFileManageFolderProject, getFileEnclosureInformationListProject, removeFileEnclosureInformationProject, getFileEnclosureInformationProject, editeFileManageFolder } from '../../axios/api.js'
+  import {
+    getFileManageInformationProject,
+    removeFileManageFolderProject,
+    saveFileManageFolderProject,
+    getFileEnclosureInformationListProject,
+    removeFileEnclosureInformationProject,
+    getFileEnclosureInformationProject,
+    editeFileManageFolder,
+    addUploadManyFileProject
+  } from '../../axios/api.js'
   import breadcrumbList from '../../components/breadcrumbList'
 
   export default {
@@ -205,15 +214,17 @@
         if (res.status === 1) {
           this.tree = res.msg;
           if (val === 0) {
-            let defaultData = this.tree[0].fileManages[0].fileManages[0];
+            if (this.tree[0]) {
+              let defaultData = this.tree[0].fileManages[0].fileManages[0];
 
-            this.defaultKeys = [1, this.tree[0].fileManages[0].id];
+              this.defaultKeys = [1, this.tree[0].fileManages[0].id];
 
-            setTimeout(() => {
-              this.$refs.tree.setCurrentKey(defaultData.id);
-            },500);
+              setTimeout(() => {
+                this.$refs.tree.setCurrentKey(defaultData.id);
+              },500);
 
-            this.handleNodeClick(defaultData);
+              this.handleNodeClick(defaultData);
+            }
           }
         }
       },
@@ -243,8 +254,8 @@
         this.$prompt('请输入文件夹名称', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          // inputErrorMessage: '邮箱格式不正确'
+          inputPattern: /^.{1,30}$/,
+          inputErrorMessage: '格式不正确,请输入1~30个字符！'
         }).then( async ({ value }) => {
           if (value) {
             let res = await saveFileManageFolderProject({id: data.id, fileName: value,});
@@ -285,11 +296,13 @@
 
       // change folder name
       change(node, data) {
-        this.$prompt(`当前文件夹名称为“${node.label}”,请在下方框中输入新的名称：`, '提示', {
+        this.$prompt(`<p>当前文件夹名称为<br />"<span style="word-break: break-all;">${node.label}</span>"<br />,请在下方框中输入新的名称：`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          // inputErrorMessage: '邮箱格式不正确'
+          dangerouslyUseHTMLString: true,
+          inputPattern: /^.{1,30}$/,
+            // /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+          inputErrorMessage: '格式不正确,请输入1~30个字符！'
         }).then( async ({ value }) => {
           let res = await editeFileManageFolder({id: data.id, fileName: value,});
           if (res.status === 1) {
@@ -303,10 +316,22 @@
         });
       },
 
+      // // http-request
+      // uploadFiles(file) {
+      //   this.uploadFilesData.append('file', file.file);
+      // },
+
       // add new files
-      submitUpload() {
+      async submitUpload() {
+        // this.uploadFilesData = new FormData();
         // console.log(e.dataTransfer.files);
         this.$refs.upload.submit();
+        // this.uploadFilesData.append('path', 'projectDocument');
+        // this.uploadFilesData.append('folderId', this.folderId);
+        // let res = await addUploadManyFileProject(this.uploadFilesData);
+        // if (res.status === 1) {
+        //   console.log('success!')
+        // }
         if (this.fileList.length) {
           this.fileStatus = true;
         }
@@ -483,7 +508,8 @@
         breadcrumb: [
           { id: 'project', name: '项目管理', path: '/project',},
           { id: 'projectDocument', name: '项目文档管理', path: '/project/projectDocument',},
-        ]
+        ],
+        uploadFilesData:{}
       }
     },
   }
@@ -519,8 +545,8 @@
     overflow: hidden;
     line-height: 28px;
     .node_span {
-      max-width: 200px;
-      margin-right: 20px;
+      max-width: 450px;
+      margin-right: 10px;
       display:block;
     }
     .add {
