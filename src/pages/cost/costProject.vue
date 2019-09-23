@@ -217,7 +217,8 @@
 
       // submit costType
       async addOrEditCostType() {
-        if (this.costType.tuitionInformation && this.costType.amountPatronage && this.costType.raiseMount) {
+        /* 注意：input 框中内容的类型是字符串，所有填入的内容都会转换成字符串 */
+        if (this.costType.tuitionInformation && /^\d+(\.\d+)?$/.test(this.costType.amountPatronage) && /^\d+(\.\d+)?$/.test(this.costType.raiseMount)) {
           let params = {
             ...this.costType,
             projectId: this.search.value1,

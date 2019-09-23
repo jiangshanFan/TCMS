@@ -246,6 +246,8 @@
           this.successFiles = [];
           this.errorFiles = [];
           this.getTableList();
+        } else {
+          this.show = false;
         }
       },
 
