@@ -28,8 +28,7 @@
   export default {
     name: "login",
     created() {
-      sessionStorage.clear();  //
-      // console.log(sessionStorage);
+      sessionStorage.clear();
     },
     mounted() {
       this.$store.commit('Auth/CLEAR_PERMISSION');  // avoid losing the efficacy of token, goto the page of login.vue, but the token still resist
@@ -45,10 +44,8 @@
             let res = await login(params);
             if(res.status === 1) {
               sessionStorage.setItem('token',res.msg.authorization);
-              // localStorage.setItem('token',res.msg.authorization);
               sessionStorage.setItem('accountName',res.msg.userLoginVO.userName);
               sessionStorage.setItem('userLoginVO',JSON.stringify(res.msg.userLoginVO));
-              // localStorage.setItem('userLoginVO',JSON.stringify(res.msg.userLoginVO));
 
               this.$store.dispatch('token', sessionStorage.getItem('token'));
               this.$store.dispatch('accountName', sessionStorage.getItem('accountName'));
