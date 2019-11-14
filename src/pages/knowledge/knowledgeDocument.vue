@@ -314,34 +314,46 @@
       submitUpload() {
         // console.log(e.dataTransfer.files);
         this.$refs.upload.submit();
-        if (this.fileList.length) {
-          this.fileStatus = true;
-        }
-
+        this.fileStatus = true;
+        // if (this.fileList.length) {
+        //   this.fileStatus = true;
+        // }
+        setTimeout(() => {
+          this.getTableList();
+        },1000)
+        
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handleSuccess(response, file, fileList) {
-        this.getTableList();
         console.log(response, file, fileList);
-        let index = fileList.indexOf(file);
-        if(index>-1){  // clear fileList after upload
-          console.log(this.fileList);
-          return fileList.splice(index,1)
+        if (file.status === 'success') {
+          if (response.status === 1) {
+            this.successFiles.push(file.name);
+            let index = fileList.indexOf(file);
+            if(index>-1){  // clear fileList after upload
+              console.log(this.fileList);
+              return fileList.splice(index,1)
+            }
+          } else {
+            Message({showClose: true, type: 'warning', message: response.msg});
+          }
         }
+        
       },
       handleError(err, file, fileList) {
         console.log(err, file, fileList);
+        this.errorFiles.push(file.name);
       },
       handleChange(file, fileList) {
         console.log(file, fileList);
-        this.fileList = fileList;
-        if (file.status === 'fail') {
-          this.errorFiles.push(file.name);
-        } else if (file.status === 'success') {
-          this.successFiles.push(file.name);
-        }
+        // this.fileList = fileList;
+        // if (file.status === 'fail') {
+        //   this.errorFiles.push(file.name);
+        // } else if (file.status === 'success') {
+        //   this.successFiles.push(file.name);
+        // }
       },
       maxExceed(file, fileList) {
         console.log('超出最大限制数量');
