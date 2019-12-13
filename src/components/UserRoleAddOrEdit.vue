@@ -102,7 +102,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            // getCheckedKeys
+            // 由于showChecked方法只有点击复选框才能出发，所以this.permissionIdss无法在进入页面时获取到之前的选择，只能使用checkedKeys
             let ifValid = false;
             let checkedKeys = this.$refs.tree.getCheckedKeys();
             console.log(checkedKeys);
@@ -117,9 +117,9 @@
               if (ifValid) {
                 let res;
                 if (this.choose === 0) {
-                  res = await insertRole({...this.basicInfo, permissionIds: this.permissionIdss});
+                  res = await insertRole({...this.basicInfo, permissionIds: checkedKeys});
                 } else {
-                  res = await updateRole({...this.basicInfo, permissionIds: this.permissionIdss});
+                  res = await updateRole({...this.basicInfo, permissionIds: checkedKeys});
                 }
                 if (res.status === 1) {
                   if (this.choose === 1) {
