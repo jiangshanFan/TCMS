@@ -2,230 +2,215 @@
   <div class="projectProgress posr">
     <!--面包屑-->
     <breadcrumbList :breadcrumb-list="breadcrumb" @showDefault="showDefault"></breadcrumbList>
+    <!-- 新增任务页面及编辑任务页面 -->
+    <addNewTask v-if="show===1" @ifChange="showDefault"></addNewTask>
+    <editTask v-else-if="show===2" @ifChange="showDefault"></editTask>
+    <div class="p20" v-else>
+      <el-form size="mini" ref="form" :rules="rules" :model="form" label-width="80px">
+        <el-form-item label="项目名称" prop="projectName">
+          <el-select
+            :rules="[{ required: true, message: '请选择项目名称',trigger:'change'}]"
+            @change="projectChange(form.projectName)"
+            v-model="form.projectName"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in productName"
+              :key="item.id"
+              :label="item.label"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
 
-    <AddOrEdit v-if="show" @ifChange="showDefault"></AddOrEdit>
+      <!-- 新增子任务及新增任务 -->
+      <el-button
+        size="mini"
+        type="primary"
+        @click="dialogVisible=true"
+        v-if="this.$route.meta.button.buttons.includes('新增子项目')"
+      >新增子项目</el-button>
+      <el-button
+        size="mini"
+        type="primary"
+        @click="gotonewtask"
+        v-if="this.$route.meta.button.buttons.includes('新增任务')"
+      >新增任务</el-button>
 
-    <div class="projectProgresss pl20 pr20" v-else>
-      <!--  search -->
-      <div class="section-search mb20 mt20">
-        <el-row>
-          <div class="fl mr20 mb20">
-            <span>项目名称：</span>
-            <el-select v-model="search.value1" placeholder="请选择" size="mini" style="width:calc(100% - 100px);">
-              <el-option v-for="item in options.projectName" :key="item.id" :label="item.projectName" :value="item.id"></el-option>
-            </el-select>
-          </div>
-
-          <div class="fl mr20 mb20">
-            <span class="c6">子项目内容：</span>
-            <el-input v-model="search.value2" size="mini" clearable style="width:calc(100% - 100px);"></el-input>
-          </div>
-
-          <div class="fl mr20 mb20">
-            <span class="c6">责任人：</span>
-            <el-input v-model="search.value3" size="mini" clearable style="width:calc(100% - 100px);"></el-input>
-          </div>
-
-          <el-button type="primary" size="mini" icon="el-icon-search" class="fl" @click="Search()"></el-button>
-        </el-row>
-        <hr>
-      </div>
-
-      <!-- content -->
-      <div class="mt20">
-        <!-- 添加 -->
-        <el-button type="primary" size="mini" @click="exportExcel">导出Excel</el-button>
-        <el-button type="primary" size="mini" @click="addOrEdit('')">添加工作内容</el-button>
-
-        <!-- 表格数据 -->
-        <el-table
-          :data="table.content"
-          stripe
-          border
-          size="small"
-          style="width: 100%;margin-top:10px;"
-          header-cell-class-name="header_cell table_header_shadow"
-          tooltip-effect="light">
-
-          <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
-
-          <!-- circle -->
-          <column :header="header"></column>
-
-          <el-table-column fixed="right" label="操作" width="120" align="center">
-            <template slot-scope="scope">
-              <span>
-                <el-button class="underline f12" @click="addOrEdit(scope.row)" type="text" align="center" v-if="$route.meta.button.buttons.includes('编辑')">编辑</el-button>
-                <el-button class="underline f12" @click="deletes(scope.row)" type="text" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
-              </span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!-- 分页 -->
-        <div class="pagination fr ovw-h mt20">
-          <el-pagination @current-change="handleCurrentChange"
-                         @size-change="handleSizeChange"
-                         :current-page="currentPage" :page-size="size"
-                         :page-sizes="[5, 10, 15, 20,50]"
-                         layout="total, sizes, prev, pager, next"
-                         :total="table.totalCount" v-if="table.totalCount">
-          </el-pagination>
-        </div>
-      </div>
+      <Gantte
+        style="margin-top:20px;"
+        ref="ganttes"
+        v-on:fun="showChange"
+        :gantte_data="gantte_datas"
+      ></Gantte>
+      <!-- 新增子任务弹窗 -->
+      <el-dialog title="新增子项目" :visible.sync="dialogVisible" width="30%">
+        <el-form size="mini" ref="forms" :rules="rule" :model="form" label-width="100px">
+          <el-form-item label="子项目名称" prop="cprojectName">
+            <el-input v-model="form.cprojectName"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="mini" type="primary" @click="subChildProject('forms')">确 定</el-button>
+          <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
-
 </template>
 
 <script>
 /* eslint-disable */
-  import { Message, MessageBox, Loading } from 'element-ui';
-  /** 导入api.js */
-  import { getProjectProgressManagement, removeProjectProgressManagement, downloadProjectProgress, queryProjectProjectName, } from '../../axios/api.js'
-  import column from '../../components/tableColumn'
-  import breadcrumbList from '../../components/breadcrumbList'
-  import ProjectProgressAddOrEdit from '../../components/ProjectProgressAddOrEdit'
+import { Message, MessageBox, Loading } from "element-ui";
+/** 导入api.js */
+import {
+  queryProjectProgressList,
+  queryProjectByMember,
+  saveSubproject
+} from "../../axios/api.js";
+import breadcrumbList from "../../components/breadcrumbList";
+// 引入新增任务页面及编辑页面
+import addNewTask from "../../components/addNewTask";
+import editTask from "../../components/editTask";
 
-  export default {
-    name: "projectProgress",
-    components: {
-      'breadcrumbList': breadcrumbList,
-      'AddOrEdit': ProjectProgressAddOrEdit,
-      'column': column,
-    },
-    async created() {
-      console.log(this.$route);
-      let res = await queryProjectProjectName();
-      if (res.status === 1) {
-        this.options.projectName = [...res.msg];
-        this.search.value1 = this.options.projectName[0].id;
-        this.getList();
+// 引入gante图
+import Gantte from "../../components/gantte";
+export default {
+  name: "projectProgress",
+  components: {
+    breadcrumbList: breadcrumbList,
+    // 注册新增任务页面及编辑页面
+    addNewTask: addNewTask,
+    editTask: editTask,
+    Gantte
+  },
+  created() {},
+  async mounted() {
+    let res = await queryProjectByMember();
+    if (res.status === 1) {
+      res.msg.forEach(item => {
+        this.productName.push({ label: item.projectName, id: item.id });
+      });
+    }
+    if (this.productName.length !== 0) {
+      this.form.projectName = this.productName[0].id;
+    }
+    this.projectChange();
+  },
+  methods: {
+    // funct(val) {
+    //   console.log(val);
+    //   v-on:childByValue="funct"
+    // },
+    showChange(params) {
+      if (params.id === 2) {
+        this.show = 2;
+        this.$store.dispatch("editTaskData", params.msg);
+        this.breadcrumb.push({ id: "er", name: "编辑任务" });
       }
     },
-
-    methods: {
-      // get dataList of table
-      async getList() {
-        let params = {
-          page: this.currentPage,
-          size: this.size,
-        };
-        if(this.search.value1) {
-          params.projectId = this.search.value1;
-          if(this.search.value2) {
-            params.subprojectContent = this.search.value2;
-          }
-          if(this.search.value3) {
-            params.name = this.search.value3;
-          }
-
-          let res = await getProjectProgressManagement(params);
-          if(res.status === 1) {
-            this.table = res.msg;
-          }
-        }
-      },
-
-      // search
-      Search() {
-        this.currentPage = 1;
-        this.getList();
-      },
-
-      handleCurrentChange(val) {
-        this.currentPage = val;
-        this.getList();
-      },
-
-      handleSizeChange(val) {
-        this.size = val;
-        this.getList();
-      },
-
-      deletes(row) {
-        this.$confirm(`此操作将删除"${row.subprojectContent}", 是否继续?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          let res = await removeProjectProgressManagement({id: row.id});
-          if(res.status === 1) {
-            this.getList();
-            Message({showClose: true, type: 'success', message: '删除成功！'});
-          }
-        }).catch(() => {
-          this.$message({type: 'info', message: '已取消删除'});
-        });
-      },
-
-      addOrEdit(row) {
-        if (!row) {
-          this.$store.dispatch('project_progress', {projectId: this.search.value1});
-          this.breadcrumb.push({id: 'add', name: '添加工作内容'});
+    // 新增子项目方法
+    subChildProject(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          let res = saveSubproject({
+            projectId: this.form.projectName,
+            subprojectName: this.form.cprojectName
+          }).then(res => {
+            if (res.status === 1) {
+              this.dialogVisible = false;
+              this.$message({
+                type: "success",
+                message: "新增成功"
+              });
+              this.form.cprojectName = "";
+            }
+          });
         } else {
-          this.$store.dispatch('project_progress', row);
-          this.breadcrumb.push({id: 'edit', name: '编辑工作内容'});
+          console.log("error submit!!");
+          return false;
         }
-        this.show = !this.show;
-      },
-
-      // download Excel
-      async exportExcel() {
-        let res = await downloadProjectProgress({projectId: this.search.value1});
-      },
-
-      // show default module
-      showDefault(val) {
-        if (val) {
-          this.show = false;
-          this.breadcrumb = this.breadcrumb.slice(0,2);
-          this.getList();
-        }
-      },
+      });
     },
-
-    data() {
-      return {
-        // table
-        table: {},
-        currentPage: 1,
-        size: 10,
-
-        header: [
-          { prop: 'subprojectContent', label: '子项目内容',},
-          { prop: 'workContent', label: '工作内容',},
-
-          { prop: 'name', label: '负责人',},
-          { prop: 'planStartTime', label: '计划开始日期', date: 1},
-          { prop: 'planEndTime', label: '计划完成日期', date: 1},
-          { prop: 'realStartTime', label: '实际开始日期', date: 1},
-          { prop: 'realEndTime', label: '实际完成日期', date: 1},
-          { prop: 'percentComplete', label: '完成百分比',},
-          { prop: 'remark', label: '备注', width:'unset', },
-
-        ],
-
-        // search
-        search: {
-          value1: '',
-        },
-        options: {
-          projectName: [],
-        },
-
-        show: false,
-
-        // breadcrumb
-        breadcrumb: [
-          { id: 'project', name: '项目管理', path: '/project',},
-          { id: 'projectProgress', name: '项目进度管理', path: '/project/projectProgress', thing: 'showDefault'},
-        ]
+    // 项目名称选择方法
+    async projectChange(val) {
+      // 获取任务进度列表
+      let res = await queryProjectProgressList({
+        projectId: this.form.projectName
+      });
+      if (res.status === 1) {
+        this.gantte_datas = JSON.parse(JSON.stringify(res));
       }
     },
+    // 跳转新增方法
+    gotonewtask() {
+      this.$store.dispatch("projectNameId", this.form.projectName);
+      this.show = 1;
+      this.breadcrumb.push({ id: "qw", name: "新增任务" });
+    },
+
+    // show default module
+    showDefault(val) {
+      if (val) {
+        this.show = 0;
+        this.breadcrumb = this.breadcrumb.slice(0, 2);
+        this.projectChange();
+      }
+    }
+  },
+
+  data() {
+    return {
+      // 弹窗判断值
+      dialogVisible: false,
+      // 项目名称
+      form: {
+        // 项目名称
+        projectName: "",
+        // 新增子项目名称
+        cprojectName: ""
+      },
+      show: 0,
+      // breadcrumb
+      breadcrumb: [
+        { id: "project", name: "项目管理", path: "/project" },
+        {
+          id: "projectProgress",
+          name: "项目进度管理",
+          path: "/project/projectProgress",
+          thing: "showDefault"
+        }
+      ],
+      // 传递到 Gantte 图中的数据源参数
+      gantte_datas: {},
+      // 验证规则
+      rules: {
+        projectName: [
+          {
+            required: true,
+            message: "请选择项目名称",
+            trigger: "blur"
+          }
+        ]
+      },
+      // 新增弹窗验证规则
+      rule: {
+        cprojectName: [
+          {
+            required: true,
+            message: "请填写子项目名称",
+            trigger: "blur"
+          }
+        ]
+      },
+      // 项目名称下拉
+      productName: []
+    };
   }
+};
 </script>
 
 <style scoped>
-
 </style>
 

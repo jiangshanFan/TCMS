@@ -12,6 +12,8 @@ Vue.use(ElementUI);
 Vue.use(store);
 Vue.use(router);
 
+
+
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
 
@@ -22,7 +24,7 @@ const vm = new Vue({
   render: h => h(App),
 });
 
-Vue.prototype.$goto = function(path) {
+Vue.prototype.$goto = function (path) {
   this.$router.push(path);
 };
 
@@ -33,7 +35,7 @@ Vue.prototype.$goto = function(path) {
  * @param {number} size
  * @returns {*}
  */
-Vue.prototype.$indexS = function(index, cur, size) {  //序号--序列化方法
+Vue.prototype.$indexS = function (index, cur, size) {  //序号--序列化方法
   let add = (cur - 1) * size + 1;
   return index + add;
 };
@@ -44,20 +46,78 @@ Vue.prototype.$indexS = function(index, cur, size) {  //序号--序列化方法
  * @param {string} url
  * @returns {*}
  */
-Vue.prototype.$exportExcel = function(url) {  // 下载导出Excel
+Vue.prototype.$exportExcel = function (url) {  // 下载导出Excel
   window.open(url);
 };
 
+/*验证处理方法*/
+
+Vue.prototype.$len = function checkUserName(numb, val) {
+  // var flag = 1;
+  //[\u4e00-\u9fa5]为汉字的unicode编码，/i表示匹配的时候不区分大小写。
+  var rxcn = /[\u4e00-\u9fa5]/g;
+  var num = 0;
+  // 全局查找中文字符替换成两个 ** 字符表示，然后获取替换后的字符串的字符长度 str.length
+  var str = val.replace(rxcn, '**');
+  num = str.length;
+  // 特殊字符限制
+  // if (/[^a-z\d\u4e00-\u9fa5]/.test(val)) {
+  //   flag = 3;
+  // }
+  // if (flag != 3) {
+  if (num > numb) {
+    this.$message({
+      type: 'warning',
+      message: '超出字数限制'
+    })
+    return 3;
+  } else if (num < 1) {
+    this.$message({
+      type: 'warning',
+      message: '不能为空'
+    })
+    return 2;
+  } else {
+    return 1;
+  }
+  //   }else {
+
+  //  }
+}
+
+/* 费用小数点处理方法 */
+Vue.prototype.$money = function manage(value) {
+  if (value !== null && value !== undefined) {
+    if (!/^\d{1,8}(\.\d{1,2})?$/.test(value)) {
+      // 错误处理方式
+      this.$message({
+        type: 'warning',
+        message: '限小数点前八位，后两位！'
+      })
+      return 2;
+    } else {
+      // 正确处理方式
+      // console.log('right')
+      return 1;
+    }
+  } else {
+    // this.$message({
+    //   type: 'warning',
+    //   message: '不能为空'
+    // })
+    return 3;
+  }
+}
+
 
 /*-- 日期和时间戳转换 --*/
-function add0(m){return m<10?'0'+m:m }
-Vue.prototype.$format = function format(shijianchuo)
-{//shijianchuo是整数，否则要parseInt转换
+function add0(m) { return m < 10 ? '0' + m : m }
+Vue.prototype.$format = function format(shijianchuo) {//shijianchuo是整数，否则要parseInt转换
   var time = new Date(shijianchuo);
   var y = time.getFullYear();
-  var m = time.getMonth()+1;
+  var m = time.getMonth() + 1;
   var d = time.getDate();
-  var h = time.getHours();
+  var h = time.getHours() + 8;
   var mm = time.getMinutes();
   var s = time.getSeconds();
   return {
@@ -67,8 +127,10 @@ Vue.prototype.$format = function format(shijianchuo)
     h: h,
     mm: mm,
     s: s,
-    dates: y+'-'+add0(m)+'-'+add0(d),
-    all: y+'-'+add0(m)+'-'+add0(d)+' '+h+mm+s,
+    dates: y + '-' + add0(m) + '-' + add0(d),
+    // dateso:y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h),
+    all: y + '-' + add0(m) + '-' + add0(d) + ' ' + h + ':' + mm + ':' + s,
+    alls: y + '-' + add0(m) + '-' + add0(d) + ' ' + (h - 8) + ':' + mm + ':' + s,
   }; //+' '+add0(h)+':'+add0(mm)+':'+add0(s)
 };
 

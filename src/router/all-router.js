@@ -18,386 +18,551 @@ const techArticle = () => import('../pages/knowledge/techArticle');
 
 const knowledgeDocument = () => import('../pages/knowledge/knowledgeDocument');
 
+/* 新增专利授权管理 */
+const pantentAuthorize = () => import('../pages/knowledge/patentAuthorize');
+
 /* 权限管理 */
 import user from '../pages/user/user';
 const userRole = () => import('../pages/user/userRole');
 const userName = () => import('../pages/user/userName');
 const newUserRole = () => import('../pages/user/newUserRole');
 const newUserName = () => import('../pages/user/newUserName');
-
+// 新增部门管理
+const newBranch = () => import('../pages/user/newBranch.vue')
 
 /* 项目管理 */
 import project from '../pages/project/project';
 const projectList = () => import('../pages/project/projectList');
 const newProject = () => import('../pages/project/newProject');
-const projectProgress = () => import('../pages/project/projectProgress');
 const projectMembers = () => import('../pages/project/projectMembers');
-const projectEvaluate = () => import('../pages/project/projectEvaluate');
 const projectDocument = () => import('../pages/project/projectDocument');
-
-
+// 任务统计
+const taskCensus = () => import('../pages/project/taskCensus.vue')
+// 简报页面
+const projectBulletin = () => import('../pages/project/projectBulletin.vue');
+// 新增考评下拉
+const projectEva = () => import('../pages/minister/projectEva.vue');
+const projectTeamManagement = () => import('../pages/minister/projectTeamManagement.vue')
+const projectMangerRun = () => import('../pages/minister/projectMangerRun.vue')
+// 项目统计
+const projectCensus = () => import('../pages/project/projectCensus.vue')
 /* 经费预算 */
 import cost from '../pages/cost/cost';
 const costList = () => import('../pages/cost/costList');
 const costProject = () => import('../pages/cost/costProject');
 
+/** 日志参数 */
+// 工作周志
+const jobDiary = () => import('../pages/jobdiary/jobDiary.vue')
+// 新增日志
+const addJobDiary = () => import('../pages/jobdiary/addJobDiary.vue')
+// 日志列表
+const jobDiaryList = () => import('../pages/jobdiary/jobDiaryList.vue')
 
+/**
+ * 任务进度重写
+ *  新增任务页面
+ *  编辑任务页面
+ * 2019.11.25
+ */
+const projectProgress = () => import('../pages/project/projectProgress');
+/** erp参数设置 */
+const preference = () => import('../pages/preferences/preference.vue')
+const erpPreferences = () => import('../pages/preferences/erpPreferences.vue')
 /* 材料管理 */
 import material from '../pages/material/material';
 const materialList = () => import('../pages/material/materialList');
 
 
 /* 所有的路由 */
-const allRoutes = [
-  {
-    path: '/project',
-    component: project,
-    name: 'project',
-    meta: {
-      name: '项目管理',
-      icon: 'icon-project_new'
-    },
-    children: [
-      {
-        path: 'projectList',
-        component: projectList,
-        name: 'projectList',
-        meta: {
-          name: '项目列表',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-      {
-        path: 'newProject',
-        component: newProject,
-        name: 'newProject',
-        meta: {
-          name: '新增项目',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        }
-      },
-      {
-        path: 'projectProgress',
-        component: projectProgress,
-        name: 'projectProgress',
-        meta: {
-          name: '项目进度管理',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-      {
-        path: 'projectMembers',
-        component: projectMembers,
-        name: 'projectMembers',
-        meta: {
-          name: '项目成员管理',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        }
-      },
-      {
-        path: 'projectEvaluate',
-        component: projectEvaluate,
-        name: 'projectEvaluate',
-        meta: {
-          name: '项目考评管理',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        }
-      },
-      {
-        path: 'projectDocument',
-        component: projectDocument,
-        name: 'projectDocument',
-        meta: {
-          name: '项目文档管理',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        }
-      },
-    ]
+const allRoutes = [{
+  path: '/project',
+  component: project,
+  name: 'project',
+  meta: {
+    name: '项目管理',
+    icon: 'icon-project_new'
   },
-
-  {
-    path: '/cost',
-    component: cost,
-    name: 'cost',
-    meta: {
-      name: '经费预算',
-      icon: 'icon-project_fee'
-    },
-    children: [
-      {
-        path: 'costList',
-        component: costList,
-        name: 'costList',
-        meta: {
-          name: '经费预算统计',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-      {
-        path: 'costProject',
-        component: costProject,
-        name: 'costProject',
-        meta: {
-          name: '项目经费预算管理',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-    ]
-  },
-
-  {
-    path: '/material',
-    component: material,
-    name: 'material',
-    meta: {
-      name: '材料管理',
-      icon: 'icon-project_equipment'
-    },
-    children: [
-      {
-        path: 'materialList',
-        component: materialList,
-        name: 'materialList',
-        meta: {
-          name: '材料统计',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-    ]
-  },
-
-  {
-    path: '/patent',
-    component: patent,
-    name: 'patent',
-    meta: {
-      name: '知识产权管理',
-      icon: 'icon-project_knowledge'
-    },
-    children: [
-      {
-        path: 'patentStatics',
-        component: patentStatics,
-        name: 'patentStatics',
-        meta: {
-          name: '知识产权统计',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        }
-      },
-
-      {
-        path: 'newSubmission',
-        component: newSubmission,
-        name: 'newSubmission',
-        meta: {
-          name: '新增交底书',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-
-      {
-        path: 'Submission',
-        component: Submission,
-        name: 'Submission',
-        meta: {
-          name: '交底书列表',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-
-      {
-        path: 'newPatent',
-        component: newPatent,
-        name: 'newPatent',
-        meta: {
-          name: '新增专利',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-
-      {
-        path: 'patentFollow',
-        component: patentFollow,
-        name: 'patentFollow',
-        meta: {
-          name: '专利跟踪表',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-
-      {
-        path: 'patentRenewManage',
-        component: patentRenewManage,
-        name: 'patentRenewManage',
-        meta: {
-          name: '专利续费管理',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-
-      {
-        path: 'patentEnd',
-        component: patentEnd,
-        name: 'patentEnd',
-        meta: {
-          name: '已终止专利',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-
-      {
-        path: 'newTechArticle',
-        component: newTechArticle,
-        name: 'newTechArticle',
-        meta: {
-          name: '新增技术论文',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-
-      {
-        path: 'techArticle',
-        component: techArticle,
-        name: 'techArticle',
-        meta: {
-          name: '技术论文列表',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-
-      {
-        path: 'knowledgeDocument',
-        component: knowledgeDocument,
-        name: 'knowledgeDocument',
-        meta: {
-          name: '知识产权文件存档',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-
-    ]
-  },
-
-  {
-    path: '/user',
-    component: user,
-    name: 'user',
-    meta: {
-      name: '权限管理',
-      icon: 'icon-project_auth'
-    },
-    children: [
-      {
-        path: 'userRole',
-        component: userRole,
-        name: 'userRole',
-        meta: {
-          name: '角色管理',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
-      },
-      {
-        path: 'newUserRole',
-        component: newUserRole,
-        name: 'newUserRole',
-        meta: {
-          name: '新增角色',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        }
-      },
-      {
-        path: 'userName',
-        component: userName,
-        name: 'userName',
-        meta: {
-          name: '账户管理',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
-        },
+  children: [
+    {
+      path: 'projectCensus',
+      component: projectCensus,
+      name: 'projectCensus',
+      meta: {
+        name: '项目统计',
         button: {
-
+          buttons: [],
+          nextButton: [],
+        }
+      }
+    },
+    {
+      path: 'projectList',
+      component: projectList,
+      name: 'projectList',
+      meta: {
+        name: '项目列表',
+        button: {
+          buttons: [],
+          nextButton: [],
+        }
+      }
+    },
+    {
+      path: 'newProject',
+      component: newProject,
+      name: 'newProject',
+      meta: {
+        name: '新增项目',
+        button: {
+          buttons: [],
+          nextButton: [],
+        }
+      }
+    },
+    {
+      path: 'projectMembers',
+      component: projectMembers,
+      name: 'projectMembers',
+      meta: {
+        name: '项目成员管理',
+        button: {
+          buttons: [],
+          nextButton: [],
+        }
+      }
+    },
+    {
+      path: 'projectProgress',
+      component: projectProgress,
+      name: 'projectProgress',
+      meta: {
+        name: '项目进度管理',
+        button: {
+          buttons: [],
+          nextButton: [],
         }
       },
-      {
-        path: 'newUserName',
-        component: newUserName,
-        name: 'newUserName',
-        meta: {
-          name: '新增账户',
-          button: {
-            buttons: [],
-            nextButton: [],
-          }
+    },
+    {
+      path: 'taskCensus',
+      component: taskCensus,
+      name: 'taskCensus',
+      meta: {
+        name: '任务统计',
+        button: {
+          buttons: [],
+          nextButton: []
         }
-      },
-
-    ]
+      }
+    },
+    {
+      path: 'projectDocument',
+      component: projectDocument,
+      name: 'projectDocument',
+      meta: {
+        name: '项目文档管理',
+        button: {
+          buttons: [],
+          nextButton: [],
+        }
+      }
+    },
+    // 新增简报页面
+    {
+      path: 'projectBulletin',
+      component: projectBulletin,
+      name: 'projectBulletin',
+      meta: {
+        name: '简报',
+        button: {
+          buttons: [],
+          nextButton: [],
+        }
+      }
+    }
+  ]
+},
+// 新增工作周志
+{
+  path: '/jobDiary',
+  component: jobDiary,
+  name: 'jobDiary',
+  meta: {
+    name: '工作日志',
+    icon: 'icon-project_new'
   },
+  children: [{
+    path: 'addJobDiary',
+    component: addJobDiary,
+    name: 'addJobDiary',
+    meta: {
+      name: '新增日志',
+      button: {
+
+        buttons: [],
+        nextButton: []
+      }
+    }
+  },
+  {
+    path: 'jobDiaryList',
+    component: jobDiaryList,
+    name: 'jobDiaryList',
+    meta: {
+      name: '日志列表',
+      button: {
+
+        buttons: [],
+        nextButton: []
+      }
+    }
+  }
+  ]
+},
+
+// 新增考评页面
+{
+  path: '/projectEva',
+  component: projectEva,
+  name: 'projectEva',
+  meta: {
+    name: '考评管理',
+    icon: 'icon-project_new'
+  },
+  children: [{
+    path: 'projectTeamManagement',
+    component: projectTeamManagement,
+    name: 'projectTeamManagement',
+    meta: {
+      name: '月度成员自评',
+      button: {
+        buttons: [],
+        nextButton: []
+      }
+    }
+  },
+  {
+    path: 'projectMangerRun',
+    component: projectMangerRun,
+    name: 'projectMangerRun',
+    meta: {
+      name: '月度部长考评',
+      button: {
+        buttons: [],
+        nextButton: []
+      }
+    }
+  }
+  ]
+},
+
+{
+  path: '/cost',
+  component: cost,
+  name: 'cost',
+  meta: {
+    name: '经费预算',
+    icon: 'icon-project_fee'
+  },
+  children: [{
+    path: 'costList',
+    component: costList,
+    name: 'costList',
+    meta: {
+      name: '经费预算统计',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+  {
+    path: 'costProject',
+    component: costProject,
+    name: 'costProject',
+    meta: {
+      name: '项目经费预算管理',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+  ]
+},
+
+{
+  path: '/material',
+  component: material,
+  name: 'material',
+  meta: {
+    name: '材料管理',
+    icon: 'icon-project_equipment'
+  },
+  children: [{
+    path: 'materialList',
+    component: materialList,
+    name: 'materialList',
+    meta: {
+      name: '材料统计',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },]
+},
+
+{
+  path: '/patent',
+  component: patent,
+  name: 'patent',
+  meta: {
+    name: '知识产权管理',
+    icon: 'icon-project_knowledge'
+  },
+  children: [{
+    path: 'patentStatics',
+    component: patentStatics,
+    name: 'patentStatics',
+    meta: {
+      name: '知识产权统计',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    }
+  },
+
+  {
+    path: 'newSubmission',
+    component: newSubmission,
+    name: 'newSubmission',
+    meta: {
+      name: '新增交底书',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+
+  {
+    path: 'Submission',
+    component: Submission,
+    name: 'Submission',
+    meta: {
+      name: '交底书列表',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+
+  {
+    path: 'newPatent',
+    component: newPatent,
+    name: 'newPatent',
+    meta: {
+      name: '新增专利',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+
+  {
+    path: 'patentFollow',
+    component: patentFollow,
+    name: 'patentFollow',
+    meta: {
+      name: '专利跟踪表',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+
+  {
+    path: 'pantentAuthorize',
+    component: pantentAuthorize,
+    name: 'pantentAuthorize',
+    meta: {
+      name: '待授权专利管理',
+      button: {
+        buttons: [],
+        nextButton: []
+      }
+    }
+  },
+
+  {
+    path: 'patentRenewManage',
+    component: patentRenewManage,
+    name: 'patentRenewManage',
+    meta: {
+      name: '专利续费管理',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+
+  {
+    path: 'patentEnd',
+    component: patentEnd,
+    name: 'patentEnd',
+    meta: {
+      name: '已终止专利',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+
+  {
+    path: 'newTechArticle',
+    component: newTechArticle,
+    name: 'newTechArticle',
+    meta: {
+      name: '新增技术论文',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+
+  {
+    path: 'techArticle',
+    component: techArticle,
+    name: 'techArticle',
+    meta: {
+      name: '技术论文列表',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+
+  {
+    path: 'knowledgeDocument',
+    component: knowledgeDocument,
+    name: 'knowledgeDocument',
+    meta: {
+      name: '知识产权文件存档',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+
+  ]
+},
+
+// ERP参数设置
+{
+  path: '/preference',
+  component: preference,
+  name: 'preference',
+  meta: {
+    name: '参数管理',
+    icon: 'icon-project_new'
+  },
+  children: [{
+    path: 'erpPreferences',
+    component: erpPreferences,
+    name: 'erpPreferences',
+    meta: {
+      name: 'ERP接口设置',
+      button: {
+
+        buttons: [],
+        nextButton: []
+      }
+    }
+  }]
+},
+
+{
+  path: '/user',
+  component: user,
+  name: 'user',
+  meta: {
+    name: '权限管理',
+    icon: 'icon-project_auth'
+  },
+  children: [{
+    path: 'userRole',
+    component: userRole,
+    name: 'userRole',
+    meta: {
+      name: '角色管理',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+  {
+    path: 'newUserRole',
+    component: newUserRole,
+    name: 'newUserRole',
+    meta: {
+      name: '新增角色',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    }
+  },
+  {
+    path: 'userName',
+    component: userName,
+    name: 'userName',
+    meta: {
+      name: '账户管理',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+  {
+    path: 'newBranch',
+    component: newBranch,
+    name: 'newBranch',
+    meta: {
+      name: '部门管理',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    },
+  },
+  {
+    path: 'newUserName',
+    component: newUserName,
+    name: 'newUserName',
+    meta: {
+      name: '新增账户',
+      button: {
+        buttons: [],
+        nextButton: [],
+      }
+    }
+  },
+
+  ]
+},
 ];
 
-export default  allRoutes;
+export default allRoutes;

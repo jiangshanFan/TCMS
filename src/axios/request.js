@@ -61,28 +61,28 @@ $ajax.interceptors.response.use(
     if(response.config.responseType === 'blob') {  /** 此处代码是为了做二进制流的下载判断*/
       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
       let filename = '';
-      /*if(response.config.method === 'get') {
-        if(response.config.url === '/api/createProject/export/downloadProjectList') {
-          filename = `项目列表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+     if(response.config.method === 'get') {
+        if(response.config.url === '/api/projectProgress/export/downloadStatisticsAssignmentMemberCount') {
+          filename = `项目成员工时统计(${vm.$format(new Date().getTime()).dates}).xlsx`;
         }
-        if(response.config.url === '/api/projectProgressManagement/export/downloadProjectProgress') {
-          filename = `项目进度表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        if(response.config.url === '/api/excel/export/downloadQueryPowerPointList') {
+          filename = `简报(${vm.$format(new Date().getTime()).dates}).xlsx`;
         }
-        if(response.config.url === '/api/projectMember/export/downloadProjectMember') {
-          filename = `项目人员表(${vm.$format(new Date().getTime()).dates}).xlsx`;
-        }
-        if(response.config.url === process.env.API_HOST + '/projectFund/export/downloadProjectFundList') {
-          filename = `项目经费预算管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
-        }
-        if(response.config.url === process.env.API_HOST + '/projectFund/export/downloadEquipmentOutlayInformationList') {
-          filename = `设备费用支出管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
-        }
-        if(response.config.url === process.env.API_HOST + '/patent/export/exportPatentRenewManageList') {
-          filename = `专利续费管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
-        }
+        // if(response.config.url === '/api/projectMember/export/downloadProjectMember') {
+        //   filename = `项目人员表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        // }
+        // if(response.config.url === process.env.API_HOST + '/projectFund/export/downloadProjectFundList') {
+        //   filename = `项目经费预算管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        // }
+        // if(response.config.url === process.env.API_HOST + '/projectFund/export/downloadEquipmentOutlayInformationList') {
+        //   filename = `设备费用支出管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        // }
+        // if(response.config.url === process.env.API_HOST + '/patent/export/exportPatentRenewManageList') {
+        //   filename = `专利续费管理表(${vm.$format(new Date().getTime()).dates}).xlsx`;
+        // }
       }else{
 
-      }*/
+      }
 
       // let reader = new FileReader();
       // reader.readAsBinaryString(response.data);

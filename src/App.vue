@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <!-- 设置动画有问题，会出现内容的加载出现脱离 -->
     <transition name="slide-fade">
       <router-view></router-view>
-      <!--<router-view v-if="!$store.getters.isLogin"></router-view>-->
     </transition>
   </div>
 </template>

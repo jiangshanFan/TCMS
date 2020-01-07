@@ -11,306 +11,513 @@
         <el-row>
           <div class="fl mr20 mb20">
             <span>项目名称：</span>
-            <el-select v-model="search.value1" placeholder="请选择" size="mini" style="width:calc(100% - 100px);">
-              <el-option v-for="item in options.projectName" :key="item.id" :label="item.projectName" :value="item.id"></el-option>
+            <el-select
+              @change="projectChange"
+              v-model="search.value1"
+              placeholder="请选择"
+              size="mini"
+              style="width:calc(100% - 100px);"
+            >
+              <el-option
+                v-for="item in options.projectName"
+                :key="item.id"
+                :label="item.projectName"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </div>
-
-          <div class="fl mr20 mb20">
-            <span>状态：</span>
-            <el-select v-model="search.value2" placeholder="请选择" size="mini" style="width:calc(100% - 100px);">
-              <el-option v-for="item in options.status" :key="item.id" :label="item.label" :value="item.label"></el-option>
-            </el-select>
-          </div>
-
-          <div class="fl mr20 mb20">
-            <span class="c6">姓名：</span>
-            <el-input v-model="search.value3" size="mini" clearable style="width:calc(100% - 100px);"></el-input>
-          </div>
-
-          <div class="fl mr20 mb20">
-            <span>是否考评：</span>
-            <el-select v-model="search.value4" placeholder="请选择" size="mini" style="width:calc(100% - 100px);">
-              <el-option v-for="item in options.evaluate" :key="item.id" :label="item.label" :value="item.id"></el-option>
-            </el-select>
-          </div>
-
-          <el-button type="primary" size="mini" icon="el-icon-search" class="fl" @click="Search()"></el-button>
         </el-row>
-        <hr>
+        <hr />
       </div>
 
       <!-- content -->
       <div class="mt20">
-        <!-- 添加 -->
         <div class="buttons ovwh">
-          <el-button type="primary" size="mini" @click="exportExcel">导出Excel</el-button>
-
-          <el-select v-model="newMember" filterable remote reserve-keyword placeholder="请输入名称查询成员并添加"
-                     :remote-method="searchNames"
-                     :loading="loading"
-                     size="small"
-                     value-key="empNo"
-                     @visible-change="val => {let self = this;if(!val) self.listDown=[];}">
-            <el-option v-for="item in listDown" :key="item.empNo" :label="item.name" :value="item">
-              <span class="fl">{{ item.name }}</span>
-              <span class="fr select_color f12 ml20 disib">
-                <b class="cc">性别：</b><b>{{ item.sex }}</b>
-                <b class="cc">部门：</b><b>{{item.dept}}</b>
-                <b class="cc">职位：</b><b>{{item.position}}</b>
-              </span>
-            </el-option>
-          </el-select>
-          <el-button type="primary" size="mini" @click="addNewMember()">新增项目成员</el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            @click="addProManber"
+            v-if="$route.meta.button.buttons.includes('新增项目成员')"
+          >新增项目成员</el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            @click="addProBer"
+            v-if="$route.meta.button.buttons.includes('项目负责人变更')"
+          >项目负责人变更</el-button>
         </div>
 
         <!-- 表格数据 -->
-        <el-table
-          :data="table.content"
-          stripe
-          border
-          size="small"
-          style="width: 100%;margin-top:10px;"
-          header-cell-class-name="header_cell table_header_shadow"
-          tooltip-effect="light">
+        <template>
+          <el-table
+            :data="tableBase.content"
+            style="width: 100%; margin-top:20px;"
+            stripe
+            border
+            size="small"
+            header-cell-class-name="header_cell table_header_shadow"
+          >
+            <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
+            <el-table-column align="center" prop="userName" label="姓名"></el-table-column>
+            <el-table-column align="center" prop="empNo" label="工号"></el-table-column>
+            <el-table-column align="center" prop="oneSelfGraded" label="项目角色">
+              <template slot-scope="scope">
+                <span
+                  v-for="(item,index) in options.projectManager"
+                  :key="index"
+                >{{item.id===scope.row.oneSelfGraded?item.label:""}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="deptName" label="部门"></el-table-column>
+            <el-table-column align="center" prop="mobile" label="联系电话"></el-table-column>
+            <el-table-column align="center" prop="mail" show-overflow-tooltip label="邮箱"></el-table-column>
+            <el-table-column align="center" label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  type="primary"
+                  size="mini"
+                  @click="deletes(scope.row)"
+                  v-if="scope.row.oneSelfGraded!==1"
+                >删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- 分页 -->
+          <el-pagination
+            style="margin-top:20px; float:right;"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            :current-page="currentPage"
+            :page-size="size"
+            :page-sizes="[5, 10, 15, 20,50]"
+            layout="total, sizes, prev, pager, next"
+            :total="tableBase.totalCount"
+          ></el-pagination>
+        </template>
 
-          <el-table-column fixed type="index" width="60" label="序号" align="center" :index="(index) => this.$indexS(index, currentPage, size)"></el-table-column>
-
-          <!-- circle -->
-          <column :header="header" @changeStatus="changeWhetherInspection"></column>
-
-          <el-table-column fixed="right" label="操作" width="60" align="center">
-            <template slot-scope="scope">
-              <span>
-                <el-button class="underline f12" @click="deletes(scope.row)" type="text" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
-              </span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!-- 分页 -->
-        <div class="pagination fr ovw-h mt20">
-          <el-pagination @current-change="handleCurrentChange"
-                         @size-change="handleSizeChange"
-                         :current-page="currentPage" :page-size="size"
-                         :page-sizes="[5, 10, 15, 20,50]"
-                         layout="total, sizes, prev, pager, next"
-                         :total="table.totalCount" v-if="table.totalCount">
-          </el-pagination>
-        </div>
+        <!-- 新增项目成员 -->
+        <el-dialog title="新增项目成员" :visible.sync="dialogVisible" width="50%">
+          <el-form size="mini" ref="ruleform" :model="form" :rules="ruless" label-width="100px">
+            <el-row :gutter="20">
+              <el-col :span="11">
+                <el-form-item label="真实姓名" prop="truename">
+                  <el-select
+                    v-model="form.truename"
+                    filterable
+                    remote
+                    reserve-keyword
+                    placeholder="请输入真实姓名"
+                    :remote-method="workNoBlur"
+                    :loading="loading"
+                    @change="nameChange(form.truename)"
+                  >
+                    <el-option
+                      v-for="item in listDown"
+                      :key="item.workNo"
+                      :label="item.userName"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <el-row :gutter="20" class="row_style">
+            <el-col :span="12">
+              <div>
+                <span class="col_style">工号</span>
+                <span style="margin-left:10px;">{{peopleInfo.workNo}}</span>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div>
+                <span class="col_style">部门</span>
+                <span style="margin-left:10px;">{{peopleInfo.deptName}}</span>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" class="row_style">
+            <el-col :span="12">
+              <div>
+                <span class="col_style">手机号</span>
+                <span style="margin-left:10px;">{{peopleInfo.mobile}}</span>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div>
+                <span class="col_style">邮箱</span>
+                <span style="margin-left:10px;">{{peopleInfo.mail}}</span>
+              </div>
+            </el-col>
+          </el-row>
+          <span slot="footer" class="dialog-footer">
+            <el-button size="mini" type="primary" @click="subManager('ruleform')">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!-- 项目负责人变更 -->
+        <el-dialog title="项目负责人变更" :visible.sync="prodialogVisible" width="50%">
+          <el-form size="mini" ref="ruled" :model="proform" :rules="rulesss" label-width="120px">
+            <el-row :gutter="20">
+              <el-col :span="11">
+                <el-form-item label="项目负责人" prop="newproname">
+                  <el-select
+                    v-model="proform.newproname"
+                    filterable
+                    remote
+                    reserve-keyword
+                    placeholder="请输入新项目负责人"
+                    :remote-method="nameBlur"
+                    :loading="loading"
+                    @change="proChange(proform.newproname)"
+                  >
+                    <el-option
+                      v-for="item in proList"
+                      :key="item.workNo"
+                      :label="item.userName"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <el-row :gutter="20" class="row_style">
+            <el-col :span="12">
+              <div>
+                <span class="col_style">工号</span>
+                <span style="margin-left:10px;">{{proInfo.workNo}}</span>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div>
+                <span class="col_style">部门</span>
+                <span style="margin-left:10px;">{{proInfo.deptName}}</span>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" class="row_style">
+            <el-col :span="12">
+              <div>
+                <span class="col_style">手机号</span>
+                <span style="margin-left:10px;">{{proInfo.mobile}}</span>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div>
+                <span class="col_style">邮箱</span>
+                <span style="margin-left:10px;">{{proInfo.mail}}</span>
+              </div>
+            </el-col>
+          </el-row>
+          <span slot="footer" class="dialog-footer">
+            <el-button size="mini" type="primary" @click="subProManager('ruled')">确 定</el-button>
+          </span>
+        </el-dialog>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
 /* eslint-disable */
-  import { Message, MessageBox, Loading } from 'element-ui';
-  /** 导入api.js */
-  import { getProjectMember, removeProjectMember, revampProjectMember, downloadProjectMember, queryProjectProjectName, getEmployeesInfoList, saveProjectMember, } from '../../axios/api.js'
-  import column from '../../components/tableColumn'
-  import breadcrumbList from '../../components/breadcrumbList'
-  import ProjectAddOrEdit from '../../components/ProjectAddOrEdit'
-
-  export default {
-    name: "projectMembers",
-    components: {
-      'breadcrumbList': breadcrumbList,
-      'AddOrEdit': ProjectAddOrEdit,
-      'column': column,
+import { Message, MessageBox, Loading } from "element-ui";
+/** 导入api.js */
+import {
+  getProjectMember,
+  removeProjectMember,
+  revampProjectMember,
+  downloadProjectMember,
+  queryProjectProjectName,
+  getEmployeesInfoList,
+  saveProjectMember,
+  changePersonProject
+} from "../../axios/api.js";
+import column from "../../components/tableColumn";
+import breadcrumbList from "../../components/breadcrumbList";
+import ProjectAddOrEdit from "../../components/ProjectAddOrEdit";
+export default {
+  name: "projectMembers",
+  components: {
+    breadcrumbList: breadcrumbList,
+    AddOrEdit: ProjectAddOrEdit,
+    column: column
+  },
+  async created() {
+    let res = await queryProjectProjectName();
+    if (res.status === 1 && res.msg.length !== 0) {
+      this.options.projectName = [...res.msg];
+      this.search.value1 = this.options.projectName[0].id;
+      this.getList();
+    }
+  },
+  mounted() {
+    this.form.projectManager = this.options.projectManager[1].id;
+  },
+  methods: {
+    // 项目成员新增
+    addProManber() {
+      this.dialogVisible = true;
+      this.form.proId = 2;
     },
-    async created() {
-      console.log(this.$route);
-      let res = await queryProjectProjectName();
+    // 项目负责人新增
+    addProBer() {
+      this.prodialogVisible = true;
+      this.proform.peoId = 1;
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
+
+    handleSizeChange(val) {
+      this.size = val;
+    },
+
+    // 获取部门成员列表
+    async getList() {
+      let res = await getProjectMember({
+        page: this.currentPage,
+        size: this.size,
+        projectId: this.search.value1
+      });
       if (res.status === 1) {
-        this.options.projectName = [...res.msg];
-        this.search.value1 = this.options.projectName[0].id;
-        this.getList();
-      }
-    },
-
-    methods: {
-      // get dataList of table
-      async getList() {
-        let params = {
-          page: this.currentPage,
-          size: this.size,
-        };
-        if(this.search.value1) {
-          params.projectId = this.search.value1;
-          if(this.search.value2 !== 'all') {
-            params.type = this.search.value2;
+        this.tableBase = res.msg;
+        res.msg.content.forEach(item => {
+          if (item.oneSelfGraded === 1) {
+            this.projectPeo = item.userName;
           }
-          if(this.search.value3) {
-            params.name = this.search.value3;
-          }
-          if(this.search.value4 !== -1) {
-            params.whetherInspection = this.search.value4;
-          }
-
-          let res = await getProjectMember(params);
-          if(res.status === 1) {
-            this.table = res.msg;
-          }
-        }
-      },
-
-      // search
-      Search() {
-        this.currentPage = 1;
-        this.getList();
-      },
-
-      handleCurrentChange(val) {
-        this.currentPage = val;
-        this.getList();
-      },
-
-      handleSizeChange(val) {
-        this.size = val;
-        this.getList();
-      },
-
-      deletes(row) {
-        this.$confirm(`此操作将删除"${row.name}", 是否继续?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          let res = await removeProjectMember({id: row.id});
-          if(res.status === 1) {
-            this.getList();
-            Message({showClose: true, type: 'success', message: '删除成功！'});
-          }
-        }).catch(() => {
-          this.$message({type: 'info', message: '已取消删除'});
         });
-      },
-
-      edits(row) {
-        this.$store.dispatch('project_progress', row);
-        this.show = !this.show;
-        this.breadcrumb.push({id: 'edit', name: '编辑'});
-      },
-
-      // download Excel
-      async exportExcel() {
-        let res = await downloadProjectMember({projectId: this.search.value1});
-      },
-
-      // 根据条件查询客户下拉列表
-      searchNames(query) {
-        let self = this;
-        self.listDown = [];
-        if (query) {
-          self.loading = true;
-          setTimeout(async () => {
-            let res = await getEmployeesInfoList({name: query});
-            if (res.status === 1) {
-              self.listDown = res.msg;
-              self.loading = false;
-            }
-          }, 200);
-        } else {
-          self.listDown = [];
-        }
-      },
-
-      // add new member
-      async addNewMember() {
-        if (this.newMember) {
-          let res = await saveProjectMember({...this.newMember, projectId: this.search.value1});
-          if (res.status === 1) {
-            this.getList();
-            Message({showClose: true, type: 'success', message: '新增项目成员成功！'});
-          }
-        } else {
-          Message({showClose: true, type: 'warning', message: '请输入名称查询成员！'});
-        }
-      },
-
-      // change whetherInspection
-      async changeWhetherInspection(obj) {
-        let res = await revampProjectMember(obj);
-        console.log(obj);
-        if (res.status === 1) {
-          this.getList();
-          Message({showClose: true, type: 'success', message: '修改考评成功！'});
-        }
-      },
-
-      // show default module
-      showDefault(val) {
-        if (val) {
-          this.show = false;
-          this.breadcrumb = this.breadcrumb.slice(0,2);
-          this.getList();
-        }
-      },
-    },
-
-    data() {
-      return {
-        // table
-        table: {},
-        currentPage: 1,
-        size: 10,
-
-        newMember: '',
-        loading: false, //下拉列表请求后提示加载中
-        listDown: [],
-
-        header: [
-          { prop: 'name', label: '姓名', eachWidth: 40,},
-          { prop: 'empNo', label: '工号', eachWidth: 60,},
-
-          { prop: 'position', label: '工作职位',},
-          { prop: 'sex', label: '性别',},
-          { prop: 'birthday', label: '出生日期', date: 1},
-          { prop: 'highEducation', label: '学历', eachWidth: 40,},
-          { prop: 'school', label: '毕业学校',},
-          { prop: 'type', label: '状态', eachWidth: 40,},
-          { prop: 'unitTime', label: '入职时间', date: 1},
-          { prop: 'whetherInspection', label: '是否考评', select: [ { id: 0, label: '否'}, { id: 1, label: '是'},]},
-          { prop: 'dept', label: '部门', eachWidth: 40,},
-          { prop: 'mobile', label: '联系电话',},
-          { prop: 'mail', label: '邮箱', width:'unset', },
-
-        ],
-
-        // search
-        search: {
-          value1: '',
-          value2: 'all',
-          value4: -1,
-        },
-        options: {
-          projectName: [],
-          status: [
-            { id: 0, label: 'all'},
-            { id: 1, label: '正式人员'},
-            { id: 2, label: '试用人员'},
-            { id: 3, label: '调转人员'},
-          ],
-          evaluate: [
-            { id: -1, label: 'all'},
-            { id: 1, label: '是'},
-            { id: 0, label: '否'},
-          ],
-        },
-
-        show: false,
-
-        // breadcrumb
-        breadcrumb: [
-          { id: 'project', name: '项目管理', path: '/project',},
-          { id: 'projectMembers', name: '项目成员管理', path: '/project/projectMembers', thing: 'showDefault'},
-        ]
       }
     },
+
+    // 分页
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getList();
+    },
+    handleSizeChange(val) {
+      this.size = val;
+      this.getList();
+    },
+
+    // 项目名称改变方法
+    projectChange() {
+      this.tableBase = {};
+      this.getList();
+    },
+    // 项目负责人新增
+    subProManager(formName) {
+      this.$confirm(
+        `是否将原项目负责人"${this.projectPeo}"替换为"${this.proInfo.userName}", 是否继续?`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      ).then(() => {
+        this.$refs[formName].validate(async valid => {
+          if (valid) {
+            let res = await changePersonProject({
+              empNo: this.proInfo.workNo,
+              projectId: this.search.value1,
+              oneSelfGraded: this.proform.peoId
+            });
+            if (res.status === 1) {
+              this.$message({
+                type: "success",
+                message: "提交成功"
+              });
+              this.prodialogVisible = false;
+              this.getList();
+              this.proform = {};
+              this.proInfo = {};
+            }
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
+      });
+    },
+    // 新增项目成员
+    subManager(formName) {
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          let res = await saveProjectMember({
+            empNo: this.peopleInfo.workNo,
+            projectId: this.search.value1,
+            oneSelfGraded: this.form.proId
+          });
+          if (res.status === 1) {
+            this.$message({
+              type: "success",
+              message: "提交成功"
+            });
+            this.dialogVisible = false;
+            this.getList();
+            this.form = {};
+            this.peopleInfo = {};
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+
+    // 删除方法
+    deletes(row) {
+      if (this.$route.meta.button.buttons.includes("删除")) {
+        this.$confirm(`此操作将删除"${row.userName}", 是否继续?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(async () => {
+            let res = await removeProjectMember({ id: row.id });
+            if (res.status === 1) {
+              this.getList();
+              Message({
+                showClose: true,
+                type: "success",
+                message: "删除成功！"
+              });
+            }
+          })
+          .catch(() => {
+            this.$message({ type: "info", message: "已取消删除" });
+          });
+      }
+    },
+
+    edits(row) {
+      this.$store.dispatch("project_progress", row);
+      this.show = !this.show;
+      this.breadcrumb.push({ id: "edit", name: "编辑" });
+    },
+
+    // 输入工号查询下拉列表
+    async workNoBlur(query) {
+      if (query !== "") {
+        this.loading = true;
+        let res = await getEmployeesInfoList({
+          name: query
+        });
+        if (res.status === 1) {
+          this.listDown = res.msg;
+          this.loading = false;
+        }
+      } else {
+        this.listDown = [];
+      }
+    },
+    // x项目负责人
+    async nameBlur(query) {
+      if (query !== "") {
+        this.loading = true;
+        let res = await getEmployeesInfoList({
+          name: query
+        });
+        if (res.status === 1) {
+          this.proList = res.msg;
+          this.loading = false;
+        }
+      } else {
+        this.proList = [];
+      }
+    },
+    proChange(val) {
+      this.proInfo = val;
+    },
+    nameChange(val) {
+      this.peopleInfo = val;
+    },
+    // show default module
+    showDefault(val) {
+      if (val) {
+        this.show = false;
+        this.breadcrumb = this.breadcrumb.slice(0, 2);
+        this.getList();
+      }
+    }
+  },
+
+  data() {
+    return {
+      // 表格数据
+      tableBase: {},
+      // table
+      table: {},
+      currentPage: 1,
+      size: 10,
+      // 成员信息
+      peopleInfo: {},
+      form: {
+        truename: "",
+        projectManager: "",
+        proId: ""
+      },
+      // 项目负责人
+      proInfo: {},
+      proform: {
+        newproname: "",
+        peoId: ""
+      },
+      loading: false, //下拉列表请求后提示加载中
+      listDown: [],
+      proList: [],
+      // search
+      search: {
+        value1: ""
+      },
+      options: {
+        projectName: [],
+        projectManager: [
+          { label: "项目负责人", id: 1 },
+          { label: "普通成员", id: 2 }
+        ]
+      },
+
+      show: false,
+
+      // breadcrumb
+      breadcrumb: [
+        { id: "project", name: "项目管理", path: "/project" },
+        {
+          id: "projectMembers",
+          name: "项目成员管理",
+          path: "/project/projectMembers",
+          thing: "showDefault"
+        }
+      ],
+      // 验证规则
+      ruless: {
+        truename: [
+          { required: true, message: "请输入真实姓名", trigger: "blur" }
+        ]
+      },
+      rulesss: {
+        newproname: [
+          { required: true, message: "请选择项目负责人", trigger: "blur" }
+        ]
+      },
+      dialogVisible: false,
+      prodialogVisible: false,
+      // 项目负责人
+      projectPeo: ""
+    };
   }
+};
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.row_style {
+  margin-top: 15px;
+}
+.col_style {
+  margin-left: 28px;
+  display: inline-block;
+  width: 56px;
+  text-align: right;
+}
 </style>

@@ -56,7 +56,6 @@
       'column': column,
     },
     created() {
-      console.log(this.$route);
       this.getList();
     },
 

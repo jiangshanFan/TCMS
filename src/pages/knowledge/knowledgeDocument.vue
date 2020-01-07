@@ -19,7 +19,7 @@
 
       <!-- content -->
       <el-container>
-        <el-aside class="pr20" style="max-width:520px;width: auto;min-width:200px;">
+        <el-aside class="pr20" style=" height:780px; max-width:520px;width: auto;min-width:200px; overflow:auto;">
           <el-tree
             ref="tree"
             node-key="id"
@@ -65,8 +65,8 @@
                 :file-list="fileList"
                 :multiple="true"
                 :auto-upload="false">
-                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                <el-button slot="trigger" size="small" type="primary" v-if="$route.meta.button.buttons.includes('添加附件')">选取文件</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload" v-if="$route.meta.button.buttons.includes('添加附件')">上传到服务器</el-button>
                 <div slot="tip" class="el-upload__tip">说明：每次上传附件数量不超过6个，单个文件不超过120M</div>
               </el-upload>
               <!-- show error files -->
@@ -102,8 +102,8 @@
 
               <el-table-column fixed="right" label="操作" width="100" align="center">
                 <template slot-scope="scope">
-                  <el-button @click="downloads(scope.row)" type="text" class="underline" align="center">下载</el-button>
-                  <el-button @click="deletes(scope.row)" type="text" class="underline" align="center">删除</el-button>
+                  <el-button @click="downloads(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('下载')">下载</el-button>
+                  <el-button @click="deletes(scope.row)" type="text" class="underline" align="center" v-if="$route.meta.button.buttons.includes('删除')">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
